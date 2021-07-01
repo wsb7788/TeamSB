@@ -22,11 +22,11 @@
         app:layout_constraintVertical_bias="0.100000024" />
 
     <Button
-        android:id="@+id/login_btn"
+        android:id="@+id/check_btn"
         android:layout_width="300dp"
         android:layout_height="70dp"
         android:layout_marginTop="10dp"
-        android:text="로그인"
+        android:text="중복확인"
         android:textColor="#000000"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -34,37 +34,33 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_et" />
+        app:layout_constraintTop_toBottomOf="@+id/nickname_et" />
 
-    <EditText
+    <TextView
         android:id="@+id/id_et"
         android:layout_width="300dp"
         android:layout_height="70dp"
-        android:background="#FDF2D0"
-        android:gravity="left|center_vertical"
-        android:hint="아이디"
+        android:gravity="center"
         android:paddingLeft="10sp"
+        android:text="닉네임을 설정해주세요."
         android:textAllCaps="false"
-        android:textColor="#AEABAB"
+        android:textColor="@color/black"
         android:textColorHighlight="#FF0000"
-        android:textColorHint="?android:attr/textColorHint"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2"
-        app:layout_constraintVertical_bias="0.2" />
+        app:layout_constraintVertical_bias="0.20" />
 
     <EditText
-        android:id="@+id/password_et"
+        android:id="@+id/nickname_et"
         android:layout_width="300dp"
         android:layout_height="70dp"
         android:layout_marginTop="10dp"
         android:background="#FDF2D0"
         android:gravity="left|center_vertical"
-        android:hint="비밀번호"
-        android:inputType="textPassword"
+        android:hint="*2~8자 이내로 설정해주세요."
         android:paddingLeft="10sp"
         android:textColor="#AEABAB"
         android:textSize="18sp"
@@ -73,12 +69,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/id_et" />
 
-    <CheckBox
-        android:id="@+id/checkBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="자동 로그인"
-        app:layout_constraintStart_toStartOf="@+id/login_btn"
-        app:layout_constraintTop_toBottomOf="@+id/login_btn" />
 </androidx.constraintlayout.widget.ConstraintLayout>
