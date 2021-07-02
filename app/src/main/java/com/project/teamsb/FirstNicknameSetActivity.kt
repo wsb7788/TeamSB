@@ -8,11 +8,15 @@ import com.project.teamsb.databinding.ActivityFirstnicknamesetBinding
 class FirstNicknameSetActivity : AppCompatActivity() {
 
 
-    val binding by lazy { ActivityFirstnicknamesetBinding.inflate(layoutInflater) }
+    private val binding by lazy { ActivityFirstnicknamesetBinding.inflate(layoutInflater) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+
+
 
 
     }
