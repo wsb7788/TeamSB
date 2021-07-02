@@ -20,45 +20,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.100000024" />
-    <TextView
-        android:id="@+id/id_et"
-        android:layout_width="300dp"
-        android:layout_height="70dp"
-        android:gravity="center"
-        android:paddingLeft="10sp"
-        android:text="닉네임을 설정해주세요."
-        android:textAllCaps="false"
-        android:textColor="@color/black"
-        android:textColorHighlight="#FF0000"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2"
-        app:layout_constraintVertical_bias="0.20" />
-
-    <EditText
-        android:id="@+id/nickname_et"
-        android:layout_width="200dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="10dp"
-        android:background="#FDF2D0"
-        android:gravity="left|center_vertical"
-        android:hint="*2~8자 이내."
-        android:paddingLeft="10sp"
-        android:textColor="#AEABAB"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/id_et"
-        app:layout_constraintTop_toBottomOf="@+id/id_et" />
 
     <Button
-        android:id="@+id/set_btn"
+        android:id="@+id/login_btn"
         android:layout_width="300dp"
         android:layout_height="70dp"
         android:layout_marginTop="10dp"
-        android:text="확 인"
+        android:text="로그인"
         android:textColor="#000000"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -66,19 +34,50 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nickname_et" />
+        app:layout_constraintTop_toBottomOf="@+id/password_et" />
 
-    <Button
-        android:id="@+id/check_btn"
-        android:layout_width="90dp"
+    <EditText
+        android:id="@+id/id_et"
+        android:layout_width="300dp"
         android:layout_height="70dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
-        android:textColor="#000000"
+        android:background="#FDF2D0"
+        android:gravity="left|center_vertical"
+        android:hint="아이디"
+        android:paddingLeft="10sp"
+        android:textAllCaps="false"
+        android:textColor="#AEABAB"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2"
+        app:layout_constraintVertical_bias="0.2" />
+
+    <EditText
+        android:id="@+id/password_et"
+        android:layout_width="300dp"
+        android:layout_height="70dp"
         android:layout_marginTop="10dp"
-        app:backgroundTint="#F9DA78"
-        android:text="중복확인"
-        app:layout_constraintStart_toEndOf="@+id/nickname_et"
+        android:background="#FDF2D0"
+        android:gravity="left|center_vertical"
+        android:hint="비밀번호"
+        android:inputType="textPassword"
+        android:paddingLeft="10sp"
+        android:textColor="#AEABAB"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/id_et" />
 
+    <CheckBox
+        android:id="@+id/autoLogin_cb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="자동 로그인"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="@+id/login_btn"
+        app:layout_constraintTop_toBottomOf="@+id/login_btn" />
 </androidx.constraintlayout.widget.ConstraintLayout>

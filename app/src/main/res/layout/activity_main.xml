@@ -1,86 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:orientation="vertical"
+    android:weightSum="100">
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
-        android:src="@drawable/gachon_logo"
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:menu="@menu/menu_toolbar">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="            앙로고띠"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <FrameLayout
+        android:id="@+id/fragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="80"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+    </FrameLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bnv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="12"
+        android:backgroundTint="@color/white"
+        app:itemIconTint="@drawable/navigation_icon_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.100000024" />
-
-    <Button
-        android:id="@+id/login_btn"
-        android:layout_width="300dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="10dp"
-        android:text="로그인"
-        android:textColor="#000000"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:backgroundTint="#F9DA78"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_et" />
-
-    <EditText
-        android:id="@+id/id_et"
-        android:layout_width="300dp"
-        android:layout_height="70dp"
-        android:background="#FDF2D0"
-        android:gravity="left|center_vertical"
-        android:hint="아이디"
-        android:paddingLeft="10sp"
-        android:textAllCaps="false"
-        android:textColor="#AEABAB"
-        android:textColorHighlight="#FF0000"
-        android:textColorHint="#AEABAB"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2"
-        app:layout_constraintVertical_bias="0.2" />
-
-    <EditText
-        android:id="@+id/password_et"
-        android:layout_width="300dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="10dp"
-        android:background="#FDF2D0"
-        android:gravity="left|center_vertical"
-        android:hint="비밀번호"
-        android:inputType="textPassword"
-        android:paddingLeft="10sp"
-        android:textColor="#AEABAB"
-        android:textColorHint="#AEABAB"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/id_et" />
-
-    <CheckBox
-        android:id="@+id/autoLogin_cb"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="자동 로그인"
-        android:textColor="@color/black"
-        app:layout_constraintStart_toStartOf="@+id/login_btn"
-        app:layout_constraintTop_toBottomOf="@+id/login_btn" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        app:menu="@menu/menu_navigation"
+        app:itemIconSize="50dp"
+        app:labelVisibilityMode="unlabeled" />
+</LinearLayout>

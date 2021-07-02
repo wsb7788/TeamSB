@@ -1,76 +1,61 @@
 package com.project.teamsb
 
-import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.appcompat.app.AlertDialog
+import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.project.teamsb.databinding.ActivityMainBinding
 
+class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 
-class MainActivity : AppCompatActivity() {
+    private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
-    private lateinit var binding: ActivityMainBinding
-
-
-
+    val manager = supportFragmentManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-
         setContentView(binding.root)
 
-        val pref = getSharedPreferences("loginCheck",MODE_PRIVATE)
-        val editor = pref.edit()
+        val bottomNavigationView = findViewById<View>(R.id.bnv) as BottomNavigationView             //OnNavigationItemSelectedListener 연결
+        bottomNavigationView.setOnNavigationItemSelectedListener(this)
 
+    }
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
 
-
-
-        if(pref.getBoolean("autoLoginCheck",false)){
-
-            login(pref.getString("id",""),pref.getString("pw",""))
+        when(item.itemId){
+            R.id.navigation_calendar ->{
+                ShowTabCalendar()
+            }
+            R.id.navigation_home ->{
+                ShowTabHome()
+            }
+            R.id.navigation_notice ->{
+                ShowTabNotice()
+            }
         }
-
-        binding.loginBtn.setOnClickListener {
-            val id = binding.idEt.text.toString()
-            val pw = binding.passwordEt.text.toString()
-            login(id,pw)
-        }
+        return true
     }
 
-    private fun login(id: String?, pw: String?){
-
-        val pref = getSharedPreferences("loginCheck",MODE_PRIVATE)
-        val editor = pref.edit()
-
-        if (id == "wsb7788" && pw == "1234") {
-            val intent = Intent(
-                applicationContext,
-                FirstNicknameSetActivity::class.java
-            )                                               // 서버 연결 후 로그인 여부 판별
-            intent.putExtra("아이디",id)
-            intent.putExtra("비밀번호",pw)
-
-            if(binding.autoLoginCb.isChecked){
-                editor.putBoolean("autoLoginCheck",true)
-                editor.putString("id",id)
-                editor.putString("pw",pw)
-            } else{
-                editor.clear()
-            }
-
-            editor.apply()
-            startActivity(intent)
-
-        } else {
-            val builder = AlertDialog.Builder(this)
-            builder.setTitle("로그인 실패")
-                .setMessage("아이디 또는 비밀번호가 틀립니다.")
-                .setPositiveButton("확인", null)
-            builder.show()
-        }
-
-
+    fun ShowTabCalendar(){
+        val transaction = manager.beginTransaction()
+        val fragment = CalendarFragment()
+        transaction.replace(binding.fragment.id, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
+    fun ShowTabHome(){
+        val transaction = manager.beginTransaction()
+        val fragment = HomeFragment()
+        transaction.replace(binding.fragment.id, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
+    fun ShowTabNotice(){
+        val transaction = manager.beginTransaction()
+        val fragment = NoticeFragment()
+        transaction.replace(binding.fragment.id, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
     }
 }

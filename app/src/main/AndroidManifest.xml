@@ -8,9 +8,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.NoActionBar">
+        android:theme="@style/Theme.TeamSB">
         <activity android:name=".FirstNicknameSetActivity"/>
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"/>
+
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
