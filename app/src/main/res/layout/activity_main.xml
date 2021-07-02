@@ -74,11 +74,12 @@
         app:layout_constraintTop_toBottomOf="@+id/id_et" />
 
     <CheckBox
-        android:id="@+id/checkBox"
+        android:id="@+id/autoLogin_cb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="자동 로그인"
+        android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="@+id/login_btn"
         app:layout_constraintTop_toBottomOf="@+id/login_btn" />
 </androidx.constraintlayout.widget.ConstraintLayout>
