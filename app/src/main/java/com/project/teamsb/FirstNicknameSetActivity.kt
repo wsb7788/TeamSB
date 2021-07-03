@@ -25,8 +25,7 @@ class FirstNicknameSetActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-
-
+    //민희 왔다감
 
     }
 }
