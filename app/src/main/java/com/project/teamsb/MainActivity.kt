@@ -1,21 +1,61 @@
 package com.project.teamsb
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.project.teamsb.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 
-    private lateinit var binding: ActivityMainBinding
+    private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
+    val manager = supportFragmentManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.button1.setOnClickListener {  }
+        val bottomNavigationView = findViewById<View>(R.id.bnv) as BottomNavigationView             //OnNavigationItemSelectedListener 연결
+        bottomNavigationView.setOnNavigationItemSelectedListener(this)
 
+    }
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
 
+        when(item.itemId){
+            R.id.navigation_calendar ->{
+                ShowTabCalendar()
+            }
+            R.id.navigation_home ->{
+                ShowTabHome()
+            }
+            R.id.navigation_notice ->{
+                ShowTabNotice()
+            }
+        }
+        return true
+    }
+
+    fun ShowTabCalendar(){
+        val transaction = manager.beginTransaction()
+        val fragment = CalendarFragment()
+        transaction.replace(binding.fragment.id, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
+    fun ShowTabHome(){
+        val transaction = manager.beginTransaction()
+        val fragment = HomeFragment()
+        transaction.replace(binding.fragment.id, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
+    fun ShowTabNotice(){
+        val transaction = manager.beginTransaction()
+        val fragment = NoticeFragment()
+        transaction.replace(binding.fragment.id, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
     }
 }
