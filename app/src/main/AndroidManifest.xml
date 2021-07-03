@@ -10,9 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TeamSB">
         <activity android:name=".FirstNicknameSetActivity"/>
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".LoginActivity"/>
 
-        <activity android:name=".LoginActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

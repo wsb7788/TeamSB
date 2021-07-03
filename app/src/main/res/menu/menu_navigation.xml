@@ -9,7 +9,9 @@
         android:id="@+id/navigation_home"
         android:icon="@drawable/home"
         android:title="home"
-        android:iconTint="@color/black"/>
+        android:iconTint="@color/black"
+
+        />
     <item
         android:id="@+id/navigation_notice"
         android:icon="@drawable/notice"

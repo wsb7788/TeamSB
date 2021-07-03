@@ -17,10 +17,14 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
 
         setContentView(binding.root)
 
-        val bottomNavigationView = findViewById<View>(R.id.bnv) as BottomNavigationView             //OnNavigationItemSelectedListener 연결
+        val bottomNavigationView = findViewById<View>(binding.bnv.id) as BottomNavigationView             //OnNavigationItemSelectedListener 연결
         bottomNavigationView.setOnNavigationItemSelectedListener(this)
 
+        bottomNavigationView.selectedItemId = R.id.navigation_home
+        ShowTabHome()
     }
+
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
 
         when(item.itemId){
