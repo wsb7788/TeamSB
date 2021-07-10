@@ -19,7 +19,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
 
     var retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl("https://13.209.10.30:3000")
+        .baseUrl("http://13.209.10.30:3000/")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
     var loginService: LoginAPI = retrofit.create(LoginAPI::class.java)
