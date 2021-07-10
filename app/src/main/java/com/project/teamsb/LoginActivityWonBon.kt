@@ -1,14 +1,15 @@
 package com.project.teamsb
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.google.gson.annotations.SerializedName
 import com.project.teamsb.databinding.ActivityLoginBinding
 
 
-class LoginActivity : AppCompatActivity() {
+
+class LoginActivityWonBon : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
 
@@ -71,35 +72,6 @@ class LoginActivity : AppCompatActivity() {
             builder.show()
         }
 
-
-    }
-    class LoginData{
-        @SerializedName("id")
-        lateinit var id: String
-
-        @SerializedName("password")
-        lateinit var password: String
-
-        fun LoginData(id:String, password:String){
-            this.id = id
-            this.password = password
-        }
-
-    }
-    class LoginResponse {
-        @SerializedName("code")
-        lateinit var code: Int
-
-        @SerializedName("message")
-        lateinit var message: String
-
-        @SerializedName("id")
-        lateinit var id:String
-
-        fun getcode() = code
-
-        @JvmName("getMessage1")
-        public final fun getMessage() = message
 
     }
 }
