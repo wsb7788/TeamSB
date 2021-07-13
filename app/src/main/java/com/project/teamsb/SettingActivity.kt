@@ -1,8 +1,9 @@
 package com.project.teamsb
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import com.project.teamsb.databinding.ActivitySearchBinding
 import com.project.teamsb.databinding.ActivitySettingBinding
 
 class SettingActivity:AppCompatActivity() {
@@ -12,7 +13,9 @@ class SettingActivity:AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = ActivitySettingBinding.inflate(layoutInflater)
-
         setContentView(binding.root)
+
+
+
     }
 }

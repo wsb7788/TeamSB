@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toolbar
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -41,7 +40,7 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.write_tb -> {
-                val intent = Intent(this, SearchActivity::class.java)
+                val intent = Intent(this, WriteActivity::class.java)
                 startActivity(intent)
             }
             R.id.setting_tb -> {

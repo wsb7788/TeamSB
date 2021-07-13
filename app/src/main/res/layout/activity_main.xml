@@ -16,15 +16,16 @@
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
-        app:menu="@menu/menu_toolbar">
+        app:menu="@menu/menu_toolbar"
+        android:backgroundTint="@color/white">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="            앙로고띠"
             android:gravity="center"
+            android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"/>
-
     </androidx.appcompat.widget.Toolbar>
 
     <FrameLayout
