@@ -12,6 +12,13 @@
         android:theme="@style/Theme.TeamSB">
         <activity android:name=".FirstNicknameSetActivity"/>
         <activity android:name=".MainActivity"/>
+        <activity android:name=".DeliveryActivity"/>
+        <activity android:name=".TaxiActivity"/>
+        <activity android:name=".FoodActivity"/>
+        <activity android:name=".LaundryActivity"/>
+        <activity android:name=".SearchActivity"/>
+        <activity android:name=".SettingActivity"/>
+
 
         <activity android:name=".LoginActivity">
             <intent-filter>
