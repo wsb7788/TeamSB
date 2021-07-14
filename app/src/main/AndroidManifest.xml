@@ -11,16 +11,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TeamSB">
         <activity android:name=".FirstNicknameSetActivity"/>
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".LoginActivity"/>
         <activity android:name=".DeliveryActivity"/>
         <activity android:name=".TaxiActivity"/>
         <activity android:name=".FoodActivity"/>
         <activity android:name=".LaundryActivity"/>
         <activity android:name=".WriteActivity"/>
+        <activity android:name=".SearchActivity"/>
         <activity android:name=".SettingActivity"/>
 
 
-        <activity android:name=".LoginActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

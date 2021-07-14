@@ -29,9 +29,12 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.setting)
+
 
 
     }
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_toolbar,menu)
@@ -43,10 +46,15 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
                 val intent = Intent(this, WriteActivity::class.java)
                 startActivity(intent)
             }
-            R.id.setting_tb -> {
+            R.id.search_tb -> {
+                val intent = Intent(this, SearchActivity::class.java)
+                startActivity(intent)
+            }
+            android.R.id.home -> {
                 val intent = Intent(this, SettingActivity::class.java)
                 startActivity(intent)
             }
+
         }
         return super.onOptionsItemSelected(item)
 
