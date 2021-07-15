@@ -10,10 +10,10 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="7"
-            app:contentInsetStart="0dp"
             android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
+            app:contentInsetStart="0dp"
             android:backgroundTint="@color/white">
             <TextView
                 android:layout_width="match_parent"
@@ -23,18 +23,123 @@
                 android:textColor="@color/black"
                 android:textSize="30sp"/>
         </androidx.appcompat.widget.Toolbar>
-        <View
 
+        <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="?android:attr/listDivider" />
-        <androidx.core.widget.NestedScrollView
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="93">
+            android:layout_weight="22"
+            android:paddingTop="20dp"
+            >
+        <LinearLayout
+            android:id="@+id/layout_title"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            app:layout_constraintWidth_percent="0.9"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:orientation="horizontal"
+            android:weightSum="100">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="27"
+                android:text="글 제목"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:gravity="start|center" />
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="75"
+                android:background="@null"
+                android:hint="제목을 입력하세요"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layout_category"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            app:layout_constraintWidth_percent="0.9"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_title"
+            android:orientation="horizontal"
+            android:weightSum="100">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="25"
+                android:text="카테고리"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:gravity="start|center" />
+
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="40"
+                android:layout_gravity="center|start"
+                android:gravity="center"
+                android:entries="@array/category"
+                android:spinnerMode="dialog"/>
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/line1"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintTop_toBottomOf="@+id/layout_category"
+            app:layout_constraintWidth_percent="0.9"
+            android:layout_marginTop="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="64"
+            >
+
+            <EditText
+                android:id="@+id/content_et"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/setting_option_rectangle"
+                android:gravity="top"
+                android:padding="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.9" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-        </androidx.core.widget.NestedScrollView>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="7"
+            android:background="@drawable/setting_option_rectangle"
+            app:backgroundTint="#ffd966"
+            android:layout_marginTop="20sp"
+            android:text="완료"
+            android:textSize="25sp"
+            android:padding="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/content_et" />
     </LinearLayout>
 
 </layout>
