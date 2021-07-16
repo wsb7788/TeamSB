@@ -18,10 +18,11 @@
         <activity android:name=".LaundryActivity"/>
         <activity android:name=".WriteActivity"/>
         <activity android:name=".SearchActivity"/>
+        <activity android:name=".MainActivity"/>
         <activity android:name=".SettingActivity"/>
 
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".PostActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

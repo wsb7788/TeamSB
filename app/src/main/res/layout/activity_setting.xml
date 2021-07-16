@@ -92,7 +92,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/line1"
-                    android:background="@drawable/setting_option_rectangle"
+                    android:background="@drawable/rectangle_black"
 
                     android:weightSum="100">
                     <TextView
@@ -128,7 +128,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/setting1"
-                    android:background="@drawable/setting_option_rectangle"
+                    android:background="@drawable/rectangle_black"
                     android:weightSum="100">
                     <TextView
                         android:text="알림 설정"
@@ -162,7 +162,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/setting2"
-                    android:background="@drawable/setting_option_rectangle"
+                    android:background="@drawable/rectangle_black"
                     android:weightSum="100">
                     <TextView
                         android:text="개인정보처리방침"
@@ -196,7 +196,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/setting3"
-                    android:background="@drawable/setting_option_rectangle"
+                    android:background="@drawable/rectangle_black"
                     android:weightSum="100">
                     <TextView
                         android:text="이용약관"
@@ -230,7 +230,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/setting4"
-                    android:background="@drawable/setting_option_rectangle"
+                    android:background="@drawable/rectangle_black"
                     android:weightSum="100">
                     <TextView
                         android:text="기숙사 이용 방법"
@@ -264,7 +264,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/setting5"
-                    android:background="@drawable/setting_option_rectangle"
+                    android:background="@drawable/rectangle_black"
                     android:weightSum="100">
                     <TextView
                         android:text="만든 사람들"
