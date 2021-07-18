@@ -1,14 +1,14 @@
-package com.project.teamsb
+package com.project.teamsb.main.home
 
 import android.os.Bundle
 import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
 import com.project.teamsb.databinding.ActivityDeliveryBinding
-import com.project.teamsb.databinding.ActivityFoodBinding
+import com.project.teamsb.databinding.ActivityTaxiBinding
 
 
-class FoodActivity: AppCompatActivity() {
-    val binding by lazy {ActivityFoodBinding.inflate(layoutInflater)}
+class TaxiActivity: AppCompatActivity() {
+    val binding by lazy {ActivityTaxiBinding.inflate(layoutInflater)}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

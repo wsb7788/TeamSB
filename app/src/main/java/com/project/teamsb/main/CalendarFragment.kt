@@ -1,10 +1,11 @@
-package com.project.teamsb
+package com.project.teamsb.main
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.project.teamsb.R
 import com.project.teamsb.databinding.FragmentCalendarBinding
 
 // TODO: Rename parameter arguments, choose names that match

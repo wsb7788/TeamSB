@@ -1,4 +1,4 @@
-package com.project.teamsb
+package com.project.teamsb.main.home
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.project.teamsb.databinding.ActivityMainBinding
 import com.project.teamsb.databinding.FragmentHomeBinding
 
 

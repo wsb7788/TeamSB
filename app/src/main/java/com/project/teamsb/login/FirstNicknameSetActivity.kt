@@ -1,9 +1,9 @@
-package com.project.teamsb
+package com.project.teamsb.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.project.teamsb.main.MainActivity
 import com.project.teamsb.databinding.ActivityFirstnicknamesetBinding
 
 class FirstNicknameSetActivity : AppCompatActivity() {

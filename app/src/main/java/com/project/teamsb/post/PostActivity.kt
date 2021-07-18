@@ -1,11 +1,10 @@
-package com.project.teamsb
+package com.project.teamsb.post
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.project.teamsb.R
 import com.project.teamsb.databinding.ActivityPostBinding
 
 

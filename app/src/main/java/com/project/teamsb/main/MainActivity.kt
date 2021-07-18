@@ -1,4 +1,4 @@
-package com.project.teamsb
+package com.project.teamsb.main
 
 import android.content.Intent
 import android.os.Build
@@ -9,7 +9,12 @@ import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.project.teamsb.R
+import com.project.teamsb.toolbar.SearchActivity
+import com.project.teamsb.toolbar.SettingActivity
+import com.project.teamsb.toolbar.WriteActivity
 import com.project.teamsb.databinding.ActivityMainBinding
+import com.project.teamsb.main.home.HomeFragment
 
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {

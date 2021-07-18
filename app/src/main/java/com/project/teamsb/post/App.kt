@@ -1,4 +1,4 @@
-package com.project.teamsb
+package com.project.teamsb.post
 
 import android.app.Application
 

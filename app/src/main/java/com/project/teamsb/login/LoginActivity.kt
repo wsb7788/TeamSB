@@ -1,11 +1,9 @@
-package com.project.teamsb
+package com.project.teamsb.login
 
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.google.gson.annotations.SerializedName
 import com.project.teamsb.databinding.ActivityLoginBinding
 import retrofit2.Call
 import retrofit2.Callback

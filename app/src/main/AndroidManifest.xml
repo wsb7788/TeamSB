@@ -5,25 +5,25 @@
     <application
         android:usesCleartextTraffic="true"
         android:allowBackup="true"
-        android:name=".App"
+        android:name=".post.App"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TeamSB">
-        <activity android:name=".FirstNicknameSetActivity"/>
-        <activity android:name=".LoginActivity"/>
-        <activity android:name=".DeliveryActivity"/>
-        <activity android:name=".TaxiActivity"/>
-        <activity android:name=".FoodActivity"/>
-        <activity android:name=".LaundryActivity"/>
-        <activity android:name=".WriteActivity"/>
-        <activity android:name=".SearchActivity"/>
-        <activity android:name=".MainActivity"/>
-        <activity android:name=".SettingActivity"/>
+        <activity android:name=".login.FirstNicknameSetActivity"/>
+        <activity android:name=".login.LoginActivity"/>
+        <activity android:name=".main.home.DeliveryActivity"/>
+        <activity android:name=".main.home.TaxiActivity"/>
+        <activity android:name=".main.home.FoodActivity"/>
+        <activity android:name=".main.home.LaundryActivity"/>
+        <activity android:name=".toolbar.WriteActivity"/>
+        <activity android:name=".toolbar.SearchActivity"/>
+        <activity android:name=".main.MainActivity"/>
+        <activity android:name=".toolbar.SettingActivity"/>
 
 
-        <activity android:name=".PostActivity">
+        <activity android:name=".post.PostActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -1,4 +1,4 @@
-package com.project.teamsb
+package com.project.teamsb.login
 
 data class ResultLogin(
     var check: Boolean = false,

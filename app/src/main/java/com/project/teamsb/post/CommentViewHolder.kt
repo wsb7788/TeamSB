@@ -1,9 +1,9 @@
-package com.project.teamsb
+package com.project.teamsb.post
 
 import android.util.Log
-import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.project.teamsb.R
 import com.project.teamsb.databinding.LayoutRecyclerCommentBinding
 
 class CommentViewHolder(val binding: LayoutRecyclerCommentBinding): RecyclerView.ViewHolder(binding.root) {
