@@ -1,5 +1,6 @@
 package com.project.teamsb.post
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -8,7 +9,7 @@ import com.project.teamsb.R
 import com.project.teamsb.databinding.ActivityPostBinding
 
 
-class PostActivity:AppCompatActivity() {
+class PostActivity:AppCompatActivity(){
 
     var TAG: String = "로그"
 
@@ -27,7 +28,7 @@ class PostActivity:AppCompatActivity() {
         Log.d(TAG, "MainActivity - onCreate() called")
         Log.d(TAG, "MainActivity - this.modelList.size: ${this.modelList.size}")
 
-        for(i in 1..10){
+        for(i in 1..100){
             val myModel = CommentModel(name = "원승빈 $i", profileImage = R.drawable.profile_image, content = "앙기모띠")
 
             this.modelList.add(myModel)

@@ -15,6 +15,7 @@ class CommentRecyclerAdapter: RecyclerView.Adapter<CommentViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentViewHolder {
         val binding = LayoutRecyclerCommentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+
         return CommentViewHolder(binding)
     }
 
