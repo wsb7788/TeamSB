@@ -25,10 +25,10 @@ class PostActivity:AppCompatActivity(){
         binding = ActivityPostBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        Log.d(TAG, "MainActivity - onCreate() called")
+        /*Log.d(TAG, "MainActivity - onCreate() called")
         Log.d(TAG, "MainActivity - this.modelList.size: ${this.modelList.size}")
 
-        for(i in 1..100){
+        for(i in 1..5){
             val myModel = CommentModel(name = "원승빈 $i", profileImage = R.drawable.profile_image, content = "앙기모띠")
 
             this.modelList.add(myModel)
@@ -43,6 +43,16 @@ class PostActivity:AppCompatActivity(){
 
             adapter = commentRecyclerAdapter
         }
+
+
+
+        binding.refreshLayout.setOnRefreshListener {
+            val myModel = CommentModel(name = "원승빈 키키", profileImage = R.drawable.profile_image, content = "앙기모띠")
+            this.modelList.add(myModel)
+            commentRecyclerAdapter.submitList(this.modelList)
+            commentRecyclerAdapter.notifyDataSetChanged()
+            binding.refreshLayout.isRefreshing = false
+        }*/
 
     }
 }

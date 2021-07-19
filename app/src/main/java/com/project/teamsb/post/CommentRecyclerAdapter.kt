@@ -14,6 +14,7 @@ class CommentRecyclerAdapter: RecyclerView.Adapter<CommentViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentViewHolder {
+        Log.d(TAG, "CommentRecyclerAdapter - onCreateViewHolder() called")
         val binding = LayoutRecyclerCommentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
         return CommentViewHolder(binding)
@@ -27,6 +28,7 @@ class CommentRecyclerAdapter: RecyclerView.Adapter<CommentViewHolder>() {
     override fun getItemCount() = this.modelList.size
 
     fun submitList(modelList: ArrayList<CommentModel>){
+        Log.d(TAG, "submitList called")
         this.modelList = modelList
     }
 }
