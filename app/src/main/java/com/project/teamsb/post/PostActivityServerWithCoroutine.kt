@@ -25,6 +25,7 @@ class PostActivityServerWithCoroutine : AppCompatActivity(){
     var modelList = ArrayList<CommentModel>()
     private lateinit var commentRecyclerAdapter: CommentRecyclerAdapter
     var index = 1
+    var start = 1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -37,9 +38,10 @@ class PostActivityServerWithCoroutine : AppCompatActivity(){
 
         binding.refreshLayout.setOnRefreshListener {
 
-            index += 2
+
             commentLoading(index)
             commentRecyclerAdapter.notifyDataSetChanged()
+
             binding.refreshLayout.isRefreshing = false
         }
 
@@ -50,9 +52,8 @@ class PostActivityServerWithCoroutine : AppCompatActivity(){
         CoroutineScope(Dispatchers.Main).launch {
             CoroutineScope(Dispatchers.Default).async {
                 try {
-                    modelList.clear()
                     var site =
-                        "https://www.aladin.co.kr/ttb/api/ItemList.aspx?ttbkey=ttbstarku22490125001&QueryType=ItemNewAll&MaxResults=$index&SearchTarget=Book&start=1&output=xml&version=20131101"
+                        "https://www.aladin.co.kr/ttb/api/ItemList.aspx?ttbkey=ttbstarku22490125001&QueryType=ItemNewAll&MaxResults=$index&SearchTarget=Book&start=$start&output=xml&version=20131101"
                     var url = URL(site)
                     var conn = url.openConnection()
                     var input = conn.getInputStream()
@@ -84,18 +85,20 @@ class PostActivityServerWithCoroutine : AppCompatActivity(){
 
                         modelList.add(myModel)
                     }
-                    commentRecyclerAdapter = CommentRecyclerAdapter()
-                    commentRecyclerAdapter.submitList(modelList)
+
+                    start += index
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
             }.await()
-
-                binding.rcvComment.apply {
-                    layoutManager = LinearLayoutManager(this@PostActivityServerWithCoroutine, LinearLayoutManager.VERTICAL, false)
-                    adapter = commentRecyclerAdapter
-
-            }
+                if(index == 1){
+                    commentRecyclerAdapter = CommentRecyclerAdapter()
+                    commentRecyclerAdapter.submitList(modelList)
+                    binding.rcvComment.apply {
+                        layoutManager = LinearLayoutManager(this@PostActivityServerWithCoroutine, LinearLayoutManager.VERTICAL, false)
+                        adapter = commentRecyclerAdapter
+                }
+            }else{ commentRecyclerAdapter.submitList(modelList) }
 
         }
     }
