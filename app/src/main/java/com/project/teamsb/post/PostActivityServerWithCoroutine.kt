@@ -91,14 +91,15 @@ class PostActivityServerWithCoroutine : AppCompatActivity(){
                     e.printStackTrace()
                 }
             }.await()
+            commentRecyclerAdapter = CommentRecyclerAdapter()
+            commentRecyclerAdapter.submitList(modelList)
                 if(index == 1){
-                    commentRecyclerAdapter = CommentRecyclerAdapter()
-                    commentRecyclerAdapter.submitList(modelList)
                     binding.rcvComment.apply {
                         layoutManager = LinearLayoutManager(this@PostActivityServerWithCoroutine, LinearLayoutManager.VERTICAL, false)
                         adapter = commentRecyclerAdapter
-                }
-            }else{ commentRecyclerAdapter.submitList(modelList) }
+                    }
+            }
+
 
         }
     }
