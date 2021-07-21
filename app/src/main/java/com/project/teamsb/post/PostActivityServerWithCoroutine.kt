@@ -24,8 +24,8 @@ class PostActivityServerWithCoroutine : AppCompatActivity(){
 
     var modelList = ArrayList<CommentModel>()
     private lateinit var commentRecyclerAdapter: CommentRecyclerAdapter
-    var index = 1
-    var start = 1
+    var index = 2
+    var page = 1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -34,12 +34,12 @@ class PostActivityServerWithCoroutine : AppCompatActivity(){
 
         Log.d(TAG, "MainActivity - onCreate() called")
 
-        commentLoading(index)
+        commentLoading()
 
         binding.refreshLayout.setOnRefreshListener {
 
 
-            commentLoading(index)
+            commentLoading()
             commentRecyclerAdapter.notifyDataSetChanged()
 
             binding.refreshLayout.isRefreshing = false
@@ -48,12 +48,12 @@ class PostActivityServerWithCoroutine : AppCompatActivity(){
 
     }
 
-    private fun commentLoading(index: Int){
+    private fun commentLoading(){
         CoroutineScope(Dispatchers.Main).launch {
             CoroutineScope(Dispatchers.Default).async {
                 try {
                     var site =
-                        "https://www.aladin.co.kr/ttb/api/ItemList.aspx?ttbkey=ttbstarku22490125001&QueryType=ItemNewAll&MaxResults=$index&SearchTarget=Book&start=$start&output=xml&version=20131101"
+                        "https://www.aladin.co.kr/ttb/api/ItemList.aspx?ttbkey=ttbstarku22490125001&QueryType=ItemNewAll&MaxResults=$index&SearchTarget=Book&start=$page&output=xml&version=20131101"
                     var url = URL(site)
                     var conn = url.openConnection()
                     var input = conn.getInputStream()
@@ -85,15 +85,14 @@ class PostActivityServerWithCoroutine : AppCompatActivity(){
 
                         modelList.add(myModel)
                     }
-
-                    start += index
+                    page += index
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
             }.await()
             commentRecyclerAdapter = CommentRecyclerAdapter()
             commentRecyclerAdapter.submitList(modelList)
-                if(index == 1){
+                if(index == 2){
                     binding.rcvComment.apply {
                         layoutManager = LinearLayoutManager(this@PostActivityServerWithCoroutine, LinearLayoutManager.VERTICAL, false)
                         adapter = commentRecyclerAdapter
