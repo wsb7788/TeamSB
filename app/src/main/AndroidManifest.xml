@@ -23,7 +23,7 @@
         <activity android:name=".toolbar.SettingActivity"/>
 
 
-        <activity android:name=".post.PostActivityServerWithCoroutine">
+        <activity android:name=".post.PostActivityServerWithCoroutine2">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
