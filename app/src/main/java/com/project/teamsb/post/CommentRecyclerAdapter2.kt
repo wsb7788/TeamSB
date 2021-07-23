@@ -36,7 +36,7 @@
         fun submitList(modelList: ArrayList<CommentModel>){
             Log.d(TAG, "submitList called")
             this.modelList.addAll(modelList)
-            this.modelList.add(CommentModel())
+//            this.modelList.add(CommentModel())
         }
         override fun getItemViewType(position: Int): Int {
             // 게시물과 프로그레스바 아이템뷰를 구분할 기준이 필요하다.

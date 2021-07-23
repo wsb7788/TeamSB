@@ -4,6 +4,8 @@ package com.project.teamsb.post
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.View.*
+import android.view.ViewTreeObserver
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,8 +26,9 @@ class PostActivityServerWithCoroutine2 : AppCompatActivity() {
 
     var modelList = ArrayList<CommentModel>()
     private lateinit var commentRecyclerAdapter: CommentRecyclerAdapter2
-    var index = 5
-    var page = 0
+    var index:Int = 5
+    var page:Int = 1
+    var isLoading = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,35 +38,40 @@ class PostActivityServerWithCoroutine2 : AppCompatActivity() {
 
         Log.d(TAG, "MainActivity - onCreate() called")
 
+        binding.postScrollView.viewTreeObserver.addOnScrollChangedListener {
+            var view = binding.postScrollView.getChildAt (binding.postScrollView.getChildCount() - 1);
+
+            var diff =(
+                view.getBottom() - (binding.postScrollView.getHeight() + binding.postScrollView
+                    .getScrollY())
+            );
+
+            if (diff == 0) {
+                if(!isLoading){
+                    isLoading = true
+                    Log.d(TAG, "로딩 리스너 호출!")
+
+                    commentLoading()
+
+                }
+                // your pagination code
+            }
+        };
+
         commentRecyclerAdapter = CommentRecyclerAdapter2()
+        binding.rcvComment.apply {
+            layoutManager = LinearLayoutManager(this@PostActivityServerWithCoroutine2, LinearLayoutManager.VERTICAL, false)
+            adapter = commentRecyclerAdapter
+        }
         commentLoading()
 
 
-        binding.refreshLayout.setOnRefreshListener {
+       /* binding.refreshLayout.setOnRefreshListener {
             commentLoading()
             commentRecyclerAdapter.deleteLoading()
             commentRecyclerAdapter.notifyDataSetChanged()
             binding.refreshLayout.isRefreshing = false
-        }
-        binding.rcvComment.addOnScrollListener(object : RecyclerView.OnScrollListener(){
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-
-                val lastVisibleItemPosition =
-                    (recyclerView.layoutManager as LinearLayoutManager?)!!.findLastCompletelyVisibleItemPosition()
-                val itemTotalCount = recyclerView.adapter!!.itemCount-1
-
-                // 스크롤이 끝에 도달했는지 확인
-                if (!binding.rcvComment.canScrollVertically(1) && lastVisibleItemPosition == itemTotalCount) {
-                    Log.d(TAG, "로딩 리스너 호출!")
-                    commentLoading()
-
-                    commentRecyclerAdapter.deleteLoading()
-                    commentRecyclerAdapter.notifyDataSetChanged()
-
-                }
-            }
-        })
+        }*/
     }
 
     private fun commentLoading(){
@@ -72,6 +80,7 @@ class PostActivityServerWithCoroutine2 : AppCompatActivity() {
                 CoroutineScope(Dispatchers.Default).async {
 
                     try {
+
                         var site =
                             "https://www.aladin.co.kr/ttb/api/ItemList.aspx?ttbkey=ttbstarku22490125001&QueryType=ItemNewAll&MaxResults=$index&SearchTarget=Book&start=$page&output=xml&version=20131101"
                         var url = URL(site)
@@ -85,6 +94,7 @@ class PostActivityServerWithCoroutine2 : AppCompatActivity() {
 
                         var item_node_list = root.getElementsByTagName("item")
                         Log.d("로그", "${item_node_list.length}")
+                        modelList.clear()
                         for (i in 0 until item_node_list.length) {
                             var itemelement = item_node_list.item(i) as Element
                             var data1nodelist = itemelement.getElementsByTagName("author")
@@ -104,6 +114,7 @@ class PostActivityServerWithCoroutine2 : AppCompatActivity() {
                                 CommentModel(name = data1, profileImage = data3, content = data2)
 
                             modelList.add(myModel)
+                            page++
 
                         }
 
@@ -113,15 +124,19 @@ class PostActivityServerWithCoroutine2 : AppCompatActivity() {
 
 
                 }.await()
-                commentRecyclerAdapter.submitList(modelList)
-                page += index
-
-                binding.rcvComment.apply {
-                    layoutManager = LinearLayoutManager(this@PostActivityServerWithCoroutine2, LinearLayoutManager.VERTICAL, false)
-                    adapter = commentRecyclerAdapter
-                }
-                commentRecyclerAdapter.deleteLoading()
+                binding.progressBar.visibility = VISIBLE
                 delay(1000)
+                commentRecyclerAdapter.submitList(modelList)
+//                commentRecyclerAdapter.deleteLoading()
+                commentRecyclerAdapter.notifyItemRangeChanged(page,index)
+//                commentRecyclerAdapter.notifyDataSetChanged()
+//                binding.rcvComment.scrollTo(0,0)
+                isLoading = false
+                binding.progressBar.visibility = INVISIBLE
+
+
+//                commentRecyclerAdapter.deleteLoading()
+
 
 
             }

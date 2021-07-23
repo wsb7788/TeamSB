@@ -33,14 +33,14 @@ class PostActivityServer : AppCompatActivity(){
         thread.start()
 
 
-        binding.refreshLayout.setOnRefreshListener {
+        /*binding.refreshLayout.setOnRefreshListener {
 
             val myModel = CommentModel(name = "원승빈 키키", profileImage = "https://img1.daumcdn.net/thumb/C100x100.mplusfriend/?fname=http%3A%2F%2Fk.kakaocdn.net%2Fdn%2FIxxPp%2FbtqC9MkM3oH%2FPpvHOkfOiOpKUwvvWcxhJ0%2Fimg_s.jpg", content = "앙기모띠")
             this.modelList.add(myModel)
             commentRecyclerAdapter.submitList(this.modelList)
             commentRecyclerAdapter.notifyDataSetChanged()
             binding.refreshLayout.isRefreshing = false
-        }
+        }*/
     }
 
     inner class NetworkThread : Thread() {

@@ -36,14 +36,14 @@ class PostActivityServerWithCoroutine3 : AppCompatActivity(){
 
         commentLoading()
 
-        binding.refreshLayout.setOnRefreshListener {
+        /*binding.refreshLayout.setOnRefreshListener {
 
 
             commentLoading()
             commentRecyclerAdapter.notifyDataSetChanged()
 
             binding.refreshLayout.isRefreshing = false
-        }
+        }*/
 
 
     }
