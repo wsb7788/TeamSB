@@ -125,7 +125,7 @@ class PostActivityServerWithCoroutine2 : AppCompatActivity() {
 
                 }.await()
                 binding.progressBar.visibility = VISIBLE
-                delay(1000)
+                delay(500)
                 commentRecyclerAdapter.submitList(modelList)
 //                commentRecyclerAdapter.deleteLoading()
                 commentRecyclerAdapter.notifyItemRangeChanged(page,index)

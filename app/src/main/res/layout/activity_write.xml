@@ -29,13 +29,15 @@
             android:layout_height="1dp"
             android:background="?android:attr/listDivider" />
 
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="22"
-            android:paddingTop="20dp"
-            >
+<androidx.core.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="86">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="20dp"
+        >
         <LinearLayout
             android:id="@+id/layout_title"
             android:layout_width="0dp"
@@ -92,40 +94,63 @@
                 android:entries="@array/category"
                 android:spinnerMode="dialog"/>
 
-        </LinearLayout>
 
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layout_keyword"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            app:layout_constraintWidth_percent="0.9"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_category"
+            android:orientation="horizontal"
+            android:weightSum="100">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="27"
+                android:text="키워드"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:gravity="start|center" />
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="75"
+                android:background="@null"
+                android:hint="#이잉 #이이잉 #이이이잉"
+                android:textSize="18sp" />
+
+        </LinearLayout>
         <View
             android:id="@+id/line1"
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:background="?android:attr/listDivider"
-            app:layout_constraintTop_toBottomOf="@+id/layout_category"
+            app:layout_constraintTop_toBottomOf="@+id/layout_keyword"
             app:layout_constraintWidth_percent="0.9"
             android:layout_marginTop="20dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="64"
-            >
+        <EditText
+            android:id="@+id/content_et"
+            android:layout_marginTop="20dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/rectangle_black"
+            android:gravity="top"
+            android:padding="5dp"
+            android:minLines="20"
 
-            <EditText
-                android:id="@+id/content_et"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:background="@drawable/rectangle_black"
-                android:gravity="top"
-                android:padding="5dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintWidth_percent="0.9" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/line1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintWidth_percent="0.9" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
 
         <Button
             android:layout_width="match_parent"
@@ -133,7 +158,6 @@
             android:layout_weight="7"
             android:background="@drawable/rectangle_black"
             app:backgroundTint="#ffd966"
-            android:layout_marginTop="20sp"
             android:text="완료"
             android:textSize="25sp"
             android:padding="0dp"

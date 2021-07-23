@@ -7,22 +7,25 @@
         android:orientation="vertical"
         android:weightSum="100">
         <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="7"
-            android:background="?attr/colorPrimary"
+            app:contentInsetStart="0dp"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
-            app:contentInsetStart="0dp"
-            android:backgroundTint="@color/white">
+            app:menu="@menu/menu_toolbar">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:text="            앙로고띠"
                 android:gravity="center"
-                android:text="검색"
                 android:textColor="@color/black"
-                android:textSize="30sp"/>
+                android:textSize="20sp"
+                android:textStyle="bold"/>
         </androidx.appcompat.widget.Toolbar>
+
         <View
 
             android:layout_width="match_parent"
