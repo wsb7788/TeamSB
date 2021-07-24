@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.project.teamsb.main.MainActivity
 import com.project.teamsb.databinding.ActivityFirstnicknamesetBinding
+import kotlinx.coroutines.delay
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -43,41 +44,51 @@ class FirstNicknameSetActivity : AppCompatActivity(),View.OnClickListener {
         val id = intent.getStringExtra("아이디")!!
 
         when(v){
-            binding.checkBtn ->{
-                loginService.nicknameCheck(nickName).enqueue(object: Callback<NicknameCheck> {
+            binding.checkBtn -> {
+                loginService.nicknameCheck(nickName).enqueue(object : Callback<NicknameCheck> {
                     override fun onFailure(call: Call<NicknameCheck>, t: Throwable) {
                         Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()
                     }
-                    override fun onResponse(call: Call<NicknameCheck>, response: Response<NicknameCheck>) {
+
+                    override fun onResponse(
+                        call: Call<NicknameCheck>,
+                        response: Response<NicknameCheck>
+                    ) {
                         val body = response.body()!!
-                        if( body.check){
+                        if (body.check) {
                             Toast.makeText(applicationContext, "사용 가능", Toast.LENGTH_SHORT).show()
-                        } else{
-                            Toast.makeText(applicationContext, "${body.message}", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(
+                                applicationContext,
+                                "${body.message}",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     }
                 })
             }
 
             binding.setBtn ->{
+
                 loginService.nicknameSet(id,nickName).enqueue(object :Callback<NicknameSet>{
                     override fun onResponse(call: Call<NicknameSet>, response: Response<NicknameSet>) {
 
-                        if(response.code() == 200){
+                        if(response.body()!!.code == 200){
                             Toast.makeText(applicationContext, "${response.body()}", Toast.LENGTH_SHORT).show()
+                            Log.d("로그","${response.body()}")
                             val intent = Intent(applicationContext, MainActivity::class.java)
                             startActivity(intent)
                         }else{
                             Log.d("로그","else called")
-                            Toast.makeText(applicationContext, "$response", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(applicationContext, "${response.body()}", Toast.LENGTH_SHORT).show()
                         }
                     }
                     override fun onFailure(call: Call<NicknameSet>, t: Throwable) {
                         Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()
                     }
 
-                })
-            }
+                })}
+
 
 
 

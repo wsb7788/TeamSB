@@ -39,19 +39,26 @@ class LoginActivity : AppCompatActivity() {
         if(pref.getBoolean("autoLoginCheck",false)){
             val id = pref.getString("id","")!!
             val pw = pref.getString("pw","")!!
-            loginService.requestLogin(id,pw).enqueue(object: Callback<ResultLogin> {
-                override fun onFailure(call: Call<ResultLogin>, t: Throwable) {
-                    Toast.makeText(applicationContext, "로그인 실패", Toast.LENGTH_SHORT).show()
-                }
-                override fun onResponse(call: Call<ResultLogin>, response: Response<ResultLogin>) {
-                    val intent = Intent(
-                        applicationContext,
-                        FirstNicknameSetActivity::class.java)
-                    intent.putExtra("아이디",id)
-                    intent.putExtra("비밀번호",pw)
-                    startActivity(intent)
-                }
-            })
+
+                loginService.requestLogin(id, pw).enqueue(object : Callback<ResultLogin> {
+                    override fun onFailure(call: Call<ResultLogin>, t: Throwable) {
+                        Toast.makeText(applicationContext, "로그인 실패", Toast.LENGTH_SHORT).show()
+                    }
+
+                    override fun onResponse(
+                        call: Call<ResultLogin>,
+                        response: Response<ResultLogin>
+                    ) {
+                        val intent = Intent(
+                            applicationContext,
+                            FirstNicknameSetActivity::class.java
+                        )
+                        intent.putExtra("아이디", id)
+                        intent.putExtra("비밀번호", pw)
+                        startActivity(intent)
+                    }
+                })
+
         }
 
         binding.loginBtn.setOnClickListener {

@@ -27,6 +27,13 @@ interface LoginAPI {
         @Field("nickname") nickname:String
     ) : Call<NicknameSet>
 
+    @FormUrlEncoded
+    @POST("/test/")
+    fun test(
+        @Field("id") id:String,
+        @Field("nickname") nickname:String
+    ) : Call<test>
+
 
 
 

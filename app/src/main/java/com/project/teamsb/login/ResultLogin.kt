@@ -18,5 +18,10 @@ data class NicknameSet(
     var code: Int = 0,
     var message: String = "")
 
+data class test(
+    var check: Boolean = false,
+    var code: Int = 0,
+    var message: String = "")
+
 
 
