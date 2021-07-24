@@ -12,19 +12,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TeamSB">
         <activity android:name=".login.FirstNicknameSetActivity"/>
-        <activity android:name=".login.LoginActivity"/>
+        <activity android:name=".post.PostActivityServerWithCoroutine2"/>
         <activity android:name=".main.home.DeliveryActivity"/>
         <activity android:name=".main.home.TaxiActivity"/>
         <activity android:name=".main.home.FoodActivity"/>
         <activity android:name=".main.home.LaundryActivity"/>
-
         <activity android:name=".toolbar.SearchActivity"/>
         <activity android:name=".main.MainActivity"/>
         <activity android:name=".toolbar.SettingActivity"/>
+        <activity android:name=".toolbar.WriteActivity"/>
 
-
-        <activity android:name=".post.PostActivityServerWithCoroutine2"/>
-            <activity android:name=".toolbar.WriteActivity">
+            <activity android:name=".login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

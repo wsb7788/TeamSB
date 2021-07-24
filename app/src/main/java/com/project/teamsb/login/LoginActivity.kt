@@ -47,6 +47,8 @@ class LoginActivity : AppCompatActivity() {
                     val intent = Intent(
                         applicationContext,
                         FirstNicknameSetActivity::class.java)
+                    intent.putExtra("아이디",id)
+                    intent.putExtra("비밀번호",pw)
                     startActivity(intent)
                 }
             })
@@ -78,6 +80,7 @@ class LoginActivity : AppCompatActivity() {
                     } else{
                         editor.clear()
                     }
+
 
                     editor.apply()
                     startActivity(intent)
