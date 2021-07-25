@@ -54,12 +54,12 @@ class CategoryActivity: AppCompatActivity() {
         postLoading()
 
 
+
     }
 
     private fun postLoading(){
-        runBlocking{
-            CoroutineScope(Dispatchers.Main).launch {
-                CoroutineScope(Dispatchers.Default).async {
+                CoroutineScope(Dispatchers.Main).launch {
+                CoroutineScope(Dispatchers.Default).launch {
                     modelList.clear()
                     Log.d("로그", "코루틴 호출!")
                     val category = intent.getStringExtra("category")!!
@@ -73,6 +73,9 @@ class CategoryActivity: AppCompatActivity() {
                                             val myModel = PostModel(title, text, timeStamp)
                                             modelList.add(myModel)
                                         }
+                                        postRecyclerAdapter.submitList(modelList)
+                                        postRecyclerAdapter.notifyItemRangeChanged((page*index),index)
+                                        page++
                                     }
                                     override fun onFailure(call: Call<ResultPost>, t: Throwable) {
                                         Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()
@@ -81,15 +84,7 @@ class CategoryActivity: AppCompatActivity() {
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
-                }.await()
-                delay(500)
-                postRecyclerAdapter.submitList(modelList)
-                postRecyclerAdapter.notifyItemRangeChanged((page*index),index)
-                page++
-
-
+                }
             }
-        }
-
     }
 }
