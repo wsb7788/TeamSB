@@ -41,10 +41,20 @@
             android:id="@+id/rcv_post"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintHeight_percent="1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/line"/>
+            app:layout_constraintTop_toBottomOf="@id/line"
+            app:layout_constraintBottom_toTopOf="@+id/progressBar"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rcv_post"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

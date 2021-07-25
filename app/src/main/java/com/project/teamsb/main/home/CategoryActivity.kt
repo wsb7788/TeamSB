@@ -4,9 +4,11 @@ import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.View.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.project.teamsb.databinding.ActivityCategoryBinding
 import com.project.teamsb.login.LoginAPI
 import com.project.teamsb.post.CommentModel
@@ -53,6 +55,21 @@ class CategoryActivity: AppCompatActivity() {
 
         postLoading()
 
+        binding.rcvPost.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val lastVisibleItemPosition =
+                    (recyclerView.layoutManager as LinearLayoutManager?)!!.findLastCompletelyVisibleItemPosition()
+                val itemTotalCount = recyclerView.adapter!!.itemCount-1
+
+                // 스크롤이 끝에 도달했는지 확인
+                if (!binding.rcvPost.canScrollVertically(1) && lastVisibleItemPosition == itemTotalCount) {
+                    postLoading()
+                }
+            }
+        })
+
 
 
     }
@@ -61,6 +78,7 @@ class CategoryActivity: AppCompatActivity() {
                 CoroutineScope(Dispatchers.Main).launch {
                 CoroutineScope(Dispatchers.Default).launch {
                     modelList.clear()
+
                     Log.d("로그", "코루틴 호출!")
                     val category = intent.getStringExtra("category")!!
                     try {
@@ -74,7 +92,10 @@ class CategoryActivity: AppCompatActivity() {
                                             modelList.add(myModel)
                                         }
                                         postRecyclerAdapter.submitList(modelList)
+
                                         postRecyclerAdapter.notifyItemRangeChanged((page*index),index)
+
+
                                         page++
                                     }
                                     override fun onFailure(call: Call<ResultPost>, t: Throwable) {
