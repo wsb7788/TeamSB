@@ -26,35 +26,25 @@ class HomeFragment : Fragment(),View.OnClickListener {
         return  binding.root
     }
     override fun onClick(v: View){
-
+        val intent = Intent(
+            activity,
+            CategoryActivity::class.java
+        )
         when(v){
-
             binding.btn1 ->{
-                val intent = Intent(
-                    activity,
-                    FoodActivity::class.java
-                )
+                intent.putExtra("category","delivery")
                 startActivity(intent)
             }
             binding.btn2 ->{
-                val intent = Intent(
-                    activity,
-                    DeliveryActivity::class.java
-                )
+                intent.putExtra("category","parcel")
                 startActivity(intent)
             }
             binding.btn3 ->{
-                val intent = Intent(
-                    activity,
-                    TaxiActivity::class.java
-                )
+                intent.putExtra("category","taxi")
                 startActivity(intent)
             }
             binding.btn4 ->{
-                val intent = Intent(
-                    activity,
-                    LaundryActivity::class.java
-                )
+                intent.putExtra("category","laundry")
                 startActivity(intent)
             }
         }

@@ -14,10 +14,10 @@
         android:layout_marginTop="10dp">
 
         <TextView
-            android:id="@+id/tv_comment_nickname"
+            android:id="@+id/tv_post_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="닉네임"
+            android:text="제목"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -25,23 +25,24 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tv_comment_content"
-            android:layout_width="wrap_content"
+            android:id="@+id/tv_post_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="내용"
+            android:minLines="2"
             android:layout_marginTop="10dp"
             android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_comment_nickname" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_post_title" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/tv_time_stamp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:text="00:00"
-            app:layout_constraintStart_toEndOf="@+id/tv_comment_nickname"
+            app:layout_constraintStart_toEndOf="@+id/tv_post_title"
             app:layout_constraintTop_toTopOf="parent" />
 
 

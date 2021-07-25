@@ -72,7 +72,6 @@ class FirstNicknameSetActivity : AppCompatActivity(),View.OnClickListener {
 
                 loginService.nicknameSet(id,nickName).enqueue(object :Callback<NicknameSet>{
                     override fun onResponse(call: Call<NicknameSet>, response: Response<NicknameSet>) {
-
                         if(response.body()!!.code == 200){
                             Toast.makeText(applicationContext, "${response.body()}", Toast.LENGTH_SHORT).show()
                             Log.d("로그","${response.body()}")
@@ -86,12 +85,7 @@ class FirstNicknameSetActivity : AppCompatActivity(),View.OnClickListener {
                     override fun onFailure(call: Call<NicknameSet>, t: Throwable) {
                         Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()
                     }
-
                 })}
-
-
-
-
             }
         }
 
