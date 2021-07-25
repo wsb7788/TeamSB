@@ -65,7 +65,9 @@ class CategoryActivity: AppCompatActivity() {
 
                 // 스크롤이 끝에 도달했는지 확인
                 if (!binding.rcvPost.canScrollVertically(1) && lastVisibleItemPosition == itemTotalCount) {
+                    postRecyclerAdapter.deleteLoading()
                     postLoading()
+
                 }
             }
         })
@@ -92,10 +94,7 @@ class CategoryActivity: AppCompatActivity() {
                                             modelList.add(myModel)
                                         }
                                         postRecyclerAdapter.submitList(modelList)
-
-                                        postRecyclerAdapter.notifyItemRangeChanged((page*index),index)
-
-
+                                        postRecyclerAdapter.notifyItemRangeChanged((page*index),index+1)
                                         page++
                                     }
                                     override fun onFailure(call: Call<ResultPost>, t: Throwable) {
