@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.teamsb.R
+import com.project.teamsb.api.ResultWrite
 import com.project.teamsb.api.ServerAPI
 import com.project.teamsb.databinding.ActivityWriteBinding
 import com.project.teamsb.post.CommentModel
@@ -14,6 +16,9 @@ import com.project.teamsb.post.CommentRecyclerAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -92,10 +97,25 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener{
     fun submit(){
         CoroutineScope(Dispatchers.Main).launch {
 
-
-
             CoroutineScope(Dispatchers.Default).launch {
+                val title = binding.tvTitle.text.toString()
+                val category = category
+                val userID = "starku2249"
+                val text = binding.contentEt.text.toString()
+                val keyword1 = ArrayList<String>(keyWord)
+                writeService.writeArticle(title, category,userID ,text,keyword1).enqueue(object: Callback<ResultWrite> {
+                    override fun onResponse(call: Call<ResultWrite>, response: Response<ResultWrite>) {
+                        if (response.body()!!.check){
+                            Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
+                        }else{
+                            Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
+                        }
+                    }
 
+                    override fun onFailure(call: Call<ResultWrite>, t: Throwable) {
+                        Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()
+                    }
+                })
 
             }
         }
@@ -113,9 +133,6 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener{
                 modelList.add(KeywordModel(text))
                 keywordRecyclerAdapter.submitList(modelList)
                 keywordRecyclerAdapter.notifyItemRangeChanged(keywordIndex++,1)
-
-
-
             }
 
         }

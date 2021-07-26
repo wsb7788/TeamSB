@@ -41,7 +41,7 @@ interface ServerAPI {
         @Field("category") category: String,
         @Field("userID") userID: String,
         @Field("text") text: String,
-        @Field("hash") hash: List<String>
+        @Field("hash") hash: ArrayList<String>
     ) : Call<ResultWrite>
 
 
