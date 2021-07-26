@@ -36,8 +36,6 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.setting)
 
-
-
     }
 
 

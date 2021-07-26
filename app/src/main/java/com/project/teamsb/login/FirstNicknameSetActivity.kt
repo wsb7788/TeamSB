@@ -6,6 +6,9 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.project.teamsb.api.NicknameCheck
+import com.project.teamsb.api.NicknameSet
+import com.project.teamsb.api.ServerAPI
 import com.project.teamsb.main.MainActivity
 import com.project.teamsb.databinding.ActivityFirstnicknamesetBinding
 import kotlinx.coroutines.delay
@@ -25,7 +28,7 @@ class FirstNicknameSetActivity : AppCompatActivity(),View.OnClickListener {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    var loginService: LoginAPI = retrofit.create(LoginAPI::class.java)
+    var loginService: ServerAPI = retrofit.create(ServerAPI::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
 

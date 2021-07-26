@@ -1,12 +1,9 @@
-package com.project.teamsb.login
+package com.project.teamsb.api
 
 import retrofit2.Call
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
+import retrofit2.http.*
 
-import retrofit2.http.POST
-
-interface LoginAPI {
+interface ServerAPI {
     @FormUrlEncoded
     @POST("/login/")
     fun requestLogin(
@@ -27,12 +24,16 @@ interface LoginAPI {
         @Field("nickname") nickname:String
     ) : Call<NicknameSet>
 
-    @FormUrlEncoded
-    @POST("/test/")
-    fun test(
-        @Field("id") id:String,
-        @Field("nickname") nickname:String
-    ) : Call<test>
+
+    @GET("/recentPost")
+    fun recentPost(
+    ) : Call<ResultPost>
+
+    @GET
+    fun categoryPost(
+        @Url url: String,
+        @Query("page") page: Int
+    ) : Call<ResultPost>
 
 
 

@@ -8,6 +8,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.project.teamsb.api.ResultPost
+import com.project.teamsb.api.ServerAPI
 import com.project.teamsb.databinding.ActivityCategoryBinding
 import kotlinx.coroutines.*
 import retrofit2.Call
@@ -30,7 +32,7 @@ class PostListActivity: AppCompatActivity() {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    var postService: PostAPI = retrofit.create(PostAPI::class.java)
+    var postService: ServerAPI = retrofit.create(ServerAPI::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

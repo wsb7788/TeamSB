@@ -16,5 +16,7 @@ class WriteActivity:AppCompatActivity() {
 
         setContentView(binding.root)
 
+
+
     }
 }

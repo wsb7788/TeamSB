@@ -1,4 +1,4 @@
-package com.project.teamsb.login
+package com.project.teamsb.api
 
 data class ResultLogin(
     var check: Boolean = false,
@@ -18,10 +18,20 @@ data class NicknameSet(
     var code: Int = 0,
     var message: String = "")
 
-data class test(
+data class ResultPost(
     var check: Boolean = false,
     var code: Int = 0,
-    var message: String = "")
+    var message: String = "",
+    var content: List<Content>)
 
+data class Content(
+    var no: Int = 0,
+    var title: String ="",
+    var category: String = "",
+    var timeStamp : String = "",
+    var mod_timeStamp : String = "",
+    var writeUser : String = "",
+    var text : String = "",
+    var hash: List<String>)
 
 

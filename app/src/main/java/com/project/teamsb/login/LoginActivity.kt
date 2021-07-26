@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.project.teamsb.api.ResultLogin
+import com.project.teamsb.api.ServerAPI
 import com.project.teamsb.databinding.ActivityLoginBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -20,7 +22,7 @@ class LoginActivity : AppCompatActivity() {
         .baseUrl("http://13.209.10.30:3000/")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
-    var loginService: LoginAPI = retrofit.create(LoginAPI::class.java)
+    var loginService: ServerAPI = retrofit.create(ServerAPI::class.java)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
