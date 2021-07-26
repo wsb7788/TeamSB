@@ -10,13 +10,11 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.project.teamsb.R
-import com.project.teamsb.toolbar.SearchActivity
 import com.project.teamsb.toolbar.SettingActivity
 import com.project.teamsb.toolbar.WriteActivity
 import com.project.teamsb.databinding.ActivityMainBinding
-import com.project.teamsb.main.home.CategoryActivity
+import com.project.teamsb.main.home.PostListActivity
 import com.project.teamsb.main.home.HomeFragment
-import com.project.teamsb.post.PostActivity
 
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
@@ -54,7 +52,7 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
                 startActivity(intent)
             }
             R.id.search_tb -> {
-                val intent = Intent(this, CategoryActivity::class.java)
+                val intent = Intent(this, PostListActivity::class.java)
                 intent.putExtra("category", "all")
                 startActivity(intent)
             }

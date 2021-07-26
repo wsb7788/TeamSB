@@ -132,10 +132,11 @@
             app:layout_constraintTop_toBottomOf="@+id/btn1"
             app:layout_constraintWidth_percent="0.2" />
 
-        <TextView
-            android:id="@+id/recycletv"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_recent"
             android:layout_width="0dp"
             android:layout_height="250dp"
+            android:padding="10sp"
             android:background="@drawable/home_rectangle"
             android:gravity="center"
             android:text="12312321"
@@ -144,18 +145,49 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView1"
-            app:layout_constraintWidth_percent="0.9" />
+            app:layout_constraintWidth_percent="0.9" >
+
+            <TextView
+                android:id="@+id/tv_recent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="최근 게시물"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                android:textSize="18sp"
+                android:textColor="@color/black"/>
+            <TextView
+                android:id="@+id/tv_recent_post"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/tv_recent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textSize="18sp"
+                android:text="더보기"
+                app:layout_constraintHorizontal_bias="1"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_recent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/foodtv"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="20dp"
-            android:text="     점심 (11:50~13:30)"
+            android:text="점심 (11:50~13:30)"
+            android:paddingLeft="20sp"
             android:textSize="25sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recycletv" />
+            app:layout_constraintTop_toBottomOf="@+id/layout_recent"/>
 
         <TextView
             android:id="@+id/tvt1"

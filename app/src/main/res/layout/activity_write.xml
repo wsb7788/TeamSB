@@ -1,169 +1,197 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:weightSum="100">
-        <androidx.appcompat.widget.Toolbar
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="7"
-            android:background="?attr/colorPrimary"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
-            app:contentInsetStart="0dp"
-            android:backgroundTint="@color/white">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="글쓰기"
-                android:textColor="@color/black"
-                android:textSize="30sp"/>
-        </androidx.appcompat.widget.Toolbar>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider" />
-
-<androidx.core.widget.NestedScrollView
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_weight="86">
-    <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_height="match_parent"
+    >
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/write_tb"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="20dp"
-        >
-        <LinearLayout
-            android:id="@+id/layout_title"
-            android:layout_width="0dp"
-            android:layout_height="55dp"
-            app:layout_constraintWidth_percent="0.9"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:orientation="horizontal"
-            android:weightSum="100">
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="27"
-                android:text="글 제목"
-                android:textSize="18sp"
-                android:textColor="@color/black"
-                android:gravity="start|center" />
-            <EditText
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="75"
-                android:background="@null"
-                android:hint="제목을 입력하세요"
-                android:textSize="18sp" />
-
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/layout_category"
-            android:layout_width="0dp"
-            android:layout_height="55dp"
-            app:layout_constraintWidth_percent="0.9"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_title"
-            android:orientation="horizontal"
-            android:weightSum="100">
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="25"
-                android:text="카테고리"
-                android:textSize="18sp"
-                android:textColor="@color/black"
-                android:gravity="start|center" />
-
-            <Spinner
-                android:id="@+id/spinner"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="40"
-                android:layout_gravity="center|start"
-                android:gravity="center"
-                android:entries="@array/category"
-                android:spinnerMode="dialog"/>
-
-
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/layout_keyword"
-            android:layout_width="0dp"
-            android:layout_height="55dp"
-            app:layout_constraintWidth_percent="0.9"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_category"
-            android:orientation="horizontal"
-            android:weightSum="100">
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="27"
-                android:text="키워드"
-                android:textSize="18sp"
-                android:textColor="@color/black"
-                android:gravity="start|center" />
-            <EditText
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="75"
-                android:background="@null"
-                android:hint="#이잉 #이이잉 #이이이잉"
-                android:textSize="18sp" />
-
-        </LinearLayout>
-        <View
-            android:id="@+id/line1"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider"
-            app:layout_constraintTop_toBottomOf="@+id/layout_keyword"
-            app:layout_constraintWidth_percent="0.9"
-            android:layout_marginTop="20dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <EditText
-            android:id="@+id/content_et"
-            android:layout_marginTop="20dp"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/rectangle_black"
-            android:gravity="top"
-            android:padding="5dp"
-            android:minLines="20"
-
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/line1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintWidth_percent="0.9" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.core.widget.NestedScrollView>
-
-        <Button
+        android:layout_height="50dp"
+        android:background="?attr/colorPrimary"
+        android:theme="?attr/actionBarTheme"
+        app:contentInsetStart="0dp"
+        android:backgroundTint="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="7"
-            android:background="@drawable/rectangle_black"
-            app:backgroundTint="#ffd966"
-            android:text="완료"
-            android:textSize="25sp"
-            android:padding="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/content_et" />
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="글쓰기"
+            android:textColor="@color/black"
+            android:textSize="30sp"/>
+    </androidx.appcompat.widget.Toolbar>
 
-</layout>
+    <View
+        android:id="@id/line1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/write_tb" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/write_scroll_view"
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent="0.9"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/line1"
+        >
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="20dp">
+            <LinearLayout
+                android:id="@+id/layout_title"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:orientation="horizontal"
+                android:weightSum="100">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="27"
+                    android:text="글 제목"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:gravity="start|center" />
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="75"
+                    android:background="@null"
+                    android:hint="제목을 입력하세요"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/layout_category"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layout_title"
+                android:orientation="horizontal"
+                android:weightSum="100">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="25"
+                    android:text="카테고리"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:gravity="start|center" />
+
+                <Spinner
+                    android:id="@+id/spinner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="40"
+                    android:layout_gravity="center|start"
+                    android:gravity="center"
+                    android:entries="@array/category"
+                    android:spinnerMode="dialog"/>
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/layout_keyword"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_category"
+                android:orientation="horizontal"
+                android:weightSum="100">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="27"
+                    android:text="키워드"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:gravity="start|center" />
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="50"
+                    android:background="@null"
+                    android:hint="최대 3개"
+                    android:textSize="18sp"
+                    />
+                <Button
+                    android:id="@+id/add_hash_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="23"
+                    android:text="추가"
+                    android:textSize="18sp"
+                    app:backgroundTint="#ffd966"
+                    android:background="@drawable/rectangle_black"
+                    />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_keyword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layout_keyword"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:text="#앙기모띠 #앙앙기모띠"
+                android:layout_margin="20sp"/>
+            <View
+                android:id="@+id/line2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintTop_toBottomOf="@+id/tv_keyword"
+                android:layout_marginTop="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <EditText
+                android:id="@+id/content_et"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:gravity="top"
+                android:padding="5dp"
+                android:textSize="18sp"
+                android:hint="내용을 입력하세요."
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/line2"
+                app:layout_constraintBottom_toBottomOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+    <Button
+        android:id="@+id/write_submit_btn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/rectangle_black"
+        app:backgroundTint="#ffd966"
+        android:text="완료"
+        android:textSize="25sp"
+        android:padding="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+

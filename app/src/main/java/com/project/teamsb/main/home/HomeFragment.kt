@@ -14,10 +14,7 @@ class HomeFragment : Fragment(),View.OnClickListener {
     lateinit var binding: FragmentHomeBinding
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         binding.btn1.setOnClickListener(this)
         binding.btn2.setOnClickListener(this)
@@ -28,7 +25,7 @@ class HomeFragment : Fragment(),View.OnClickListener {
     override fun onClick(v: View){
         val intent = Intent(
             activity,
-            CategoryActivity::class.java
+            PostListActivity::class.java
         )
         when(v){
             binding.btn1 ->{
