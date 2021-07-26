@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     >
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/write_tb"
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="?attr/colorPrimary"
@@ -16,7 +16,8 @@
         android:backgroundTint="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/menu_write_toolbar">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -33,40 +34,44 @@
         android:background="?android:attr/listDivider"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/write_tb" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/write_scroll_view"
         android:layout_width="0dp"
-        app:layout_constraintWidth_percent="0.9"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/line1"
-        >
+        app:layout_constraintWidth_percent="0.9">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="20dp">
+
             <LinearLayout
                 android:id="@+id/layout_title"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
 
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 android:orientation="horizontal"
-                android:weightSum="100">
+                android:weightSum="100"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="27"
+                    android:gravity="start|center"
                     android:text="글 제목"
-                    android:textSize="18sp"
                     android:textColor="@color/black"
-                    android:gravity="start|center" />
+                    android:textSize="18sp" />
+
                 <EditText
+                    android:id="@+id/tv_title"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="75"
@@ -75,123 +80,112 @@
                     android:textSize="18sp" />
 
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/layout_category"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layout_title"
                 android:orientation="horizontal"
-                android:weightSum="100">
+                android:weightSum="100"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layout_title">
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="25"
+                    android:gravity="start|center"
                     android:text="카테고리"
-                    android:textSize="18sp"
                     android:textColor="@color/black"
-                    android:gravity="start|center" />
+                    android:textSize="18sp" />
 
                 <Spinner
                     android:id="@+id/spinner"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="40"
                     android:layout_gravity="center|start"
-                    android:gravity="center"
+                    android:layout_weight="40"
                     android:entries="@array/category"
-                    android:spinnerMode="dialog"/>
+                    android:gravity="center"
+                    android:spinnerMode="dialog" />
 
 
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/layout_keyword"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layout_category"
                 android:orientation="horizontal"
-                android:weightSum="100">
+                android:weightSum="100"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_category">
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="27"
+                    android:gravity="start|center"
                     android:text="키워드"
-                    android:textSize="18sp"
                     android:textColor="@color/black"
-                    android:gravity="start|center" />
+                    android:textSize="18sp" />
+
                 <EditText
+                    android:id="@+id/et_keyword"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="50"
                     android:background="@null"
-                    android:hint="최대 3개"
-                    android:textSize="18sp"
-                    />
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
                 <Button
-                    android:id="@+id/add_hash_btn"
+                    android:id="@+id/btn_add_keyword"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="23"
+                    android:backgroundTint="#ffd966"
                     android:text="추가"
-                    android:textSize="18sp"
-                    app:backgroundTint="#ffd966"
-                    android:background="@drawable/rectangle_black"
-                    />
-
+                    android:textSize="18sp" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/tv_keyword"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcv_keyword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layout_keyword"
-                android:textSize="18sp"
-                android:textColor="@color/black"
-                android:text="#앙기모띠 #앙앙기모띠"
-                android:layout_margin="20sp"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_keyword" />
+
             <View
                 android:id="@+id/line2"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                app:layout_constraintTop_toBottomOf="@+id/tv_keyword"
                 android:layout_marginTop="20dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/rcv_keyword" />
 
             <EditText
                 android:id="@+id/content_et"
-                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:background="@null"
                 android:gravity="top"
+                android:hint="내용을 입력하세요."
                 android:padding="5dp"
                 android:textSize="18sp"
-                android:hint="내용을 입력하세요."
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/line2"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/line2" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
-    <Button
-        android:id="@+id/write_submit_btn"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@drawable/rectangle_black"
-        app:backgroundTint="#ffd966"
-        android:text="완료"
-        android:textSize="25sp"
-        android:padding="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 

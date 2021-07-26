@@ -39,25 +39,17 @@ class PostActivity : AppCompatActivity() {
         Log.d(TAG, "MainActivity - onCreate() called")
 
         binding.postScrollView.viewTreeObserver.addOnScrollChangedListener {
-            var view = binding.postScrollView.getChildAt (binding.postScrollView.getChildCount() - 1);
-
-            var diff =(
-                    view.getBottom() - (binding.postScrollView.getHeight() + binding.postScrollView
-                        .getScrollY())
-                    );
+            var view = binding.postScrollView.getChildAt (binding.postScrollView.childCount - 1);
+            var diff =(view.bottom - (binding.postScrollView.height + binding.postScrollView.scrollY));
 
             if (diff == 0) {
                 if(!isLoading){
                     isLoading = true
                     Log.d(TAG, "로딩 리스너 호출!")
-
                     commentLoading()
-
                 }
-                // your pagination code
             }
         };
-
         commentRecyclerAdapter = CommentRecyclerAdapter()
         binding.rcvComment.apply {
             layoutManager = LinearLayoutManager(this@PostActivity, LinearLayoutManager.VERTICAL, false)
@@ -66,12 +58,8 @@ class PostActivity : AppCompatActivity() {
         commentLoading()
 
 
-        /* binding.refreshLayout.setOnRefreshListener {
-             commentLoading()
-             commentRecyclerAdapter.deleteLoading()
-             commentRecyclerAdapter.notifyDataSetChanged()
-             binding.refreshLayout.isRefreshing = false
-         }*/
+
+
     }
 
     private fun commentLoading(){

@@ -1,16 +1,21 @@
 package com.project.teamsb.main.home
 
 import android.content.ContentValues.TAG
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.project.teamsb.R
 import com.project.teamsb.api.ResultPost
 import com.project.teamsb.api.ServerAPI
 import com.project.teamsb.databinding.ActivityCategoryBinding
+import com.project.teamsb.toolbar.write.WriteActivity
 import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -38,7 +43,9 @@ class PostListActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val category = intent.getStringExtra("category")!!
+        setSupportActionBar(binding.toolbar)
+
+
         Log.d(TAG, "MainActivity - onCreate() called")
 
         postRecyclerAdapter = PostRecyclerAdapter()
@@ -47,28 +54,45 @@ class PostListActivity: AppCompatActivity() {
             layoutManager = LinearLayoutManager(this@PostListActivity, LinearLayoutManager.VERTICAL, false)
             adapter = postRecyclerAdapter
         }
-
         postLoading()
 
         binding.rcvPost.addOnScrollListener(object : RecyclerView.OnScrollListener(){
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
-                val lastVisibleItemPosition =
-                    (recyclerView.layoutManager as LinearLayoutManager?)!!.findLastCompletelyVisibleItemPosition()
+                val lastVisibleItemPosition = (recyclerView.layoutManager as LinearLayoutManager?)!!.findLastCompletelyVisibleItemPosition()
                 val itemTotalCount = recyclerView.adapter!!.itemCount-1
-
                 // 스크롤이 끝에 도달했는지 확인
                 if (!binding.rcvPost.canScrollVertically(1) && lastVisibleItemPosition == itemTotalCount) {
                     postRecyclerAdapter.deleteLoading()
                     postLoading()
-
                 }
             }
         })
 
 
+    }
 
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_toolbar,menu)
+        return true
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val category = intent.getStringExtra("category")!!
+        when(item.itemId){
+            R.id.write_tb -> {
+                val intent = Intent(this, WriteActivity::class.java)
+                intent.putExtra("category",category)
+                startActivity(intent)
+            }
+            R.id.search_tb -> {
+                val intent = Intent(this, PostListActivity::class.java)
+                intent.putExtra("category", "all")
+                startActivity(intent)
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     fun postLoading(){

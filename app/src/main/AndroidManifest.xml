@@ -16,7 +16,7 @@
         <activity android:name=".main.home.PostListActivity"/>
         <activity android:name=".toolbar.SearchActivity"/>
         <activity android:name=".toolbar.SettingActivity"/>
-        <activity android:name=".toolbar.WriteActivity"/>
+        <activity android:name=".toolbar.write.WriteActivity"/>
             <activity android:name=".login.LoginActivity"/>
 
         <activity android:name=".main.MainActivity">

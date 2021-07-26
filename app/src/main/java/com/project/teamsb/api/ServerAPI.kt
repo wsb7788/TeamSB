@@ -26,8 +26,7 @@ interface ServerAPI {
 
 
     @GET("/recentPost")
-    fun recentPost(
-    ) : Call<ResultPost>
+    fun recentPost() : Call<ResultPost>
 
     @GET
     fun categoryPost(
@@ -35,7 +34,15 @@ interface ServerAPI {
         @Query("page") page: Int
     ) : Call<ResultPost>
 
-
+    @FormUrlEncoded
+    @POST("/writeArticle/")
+    fun writeArticle(
+        @Field("title") title: String,
+        @Field("category") category: String,
+        @Field("userID") userID: String,
+        @Field("text") text: String,
+        @Field("hash") hash: List<String>
+    ) : Call<ResultWrite>
 
 
 }

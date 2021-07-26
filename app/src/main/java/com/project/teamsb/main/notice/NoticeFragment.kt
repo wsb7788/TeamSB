@@ -1,4 +1,4 @@
-package com.project.teamsb.main
+package com.project.teamsb.main.notice
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

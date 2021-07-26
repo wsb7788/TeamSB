@@ -34,4 +34,9 @@ data class Content(
     var text : String = "",
     var hash: List<String>)
 
+data class ResultWrite(
+    var check: Boolean = false,
+    var code: Int = 0,
+    var message: String = ""
+)
 
