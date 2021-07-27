@@ -1,5 +1,7 @@
 package com.project.teamsb.api
 
+import android.app.ApplicationErrorReport
+
 data class ResultLogin(
     var check: Boolean = false,
     var code: Int = 0,
@@ -30,8 +32,11 @@ data class Content(
     var category: String = "",
     var timeStamp : String = "",
     var mod_timeStamp : String = "",
-    var writeUser : String = "",
+    var userId : String = "",
+    var userNickname : String = "",
     var text : String = "",
+    var viewCount : String = "",
+    var reportCount : String = "",
     var hash: List<String>)
 
 data class ResultWrite(

@@ -25,7 +25,7 @@ interface ServerAPI {
     ) : Call<NicknameSet>
 
 
-    @GET("/recentPost")
+    @GET("recentPost")
     fun recentPost() : Call<ResultPost>
 
     @GET

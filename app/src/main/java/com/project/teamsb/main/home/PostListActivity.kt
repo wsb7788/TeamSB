@@ -29,6 +29,7 @@ class PostListActivity: AppCompatActivity() {
 
     var modelList = ArrayList<PostModel>()
     private lateinit var postRecyclerAdapter: PostRecyclerAdapter
+
     var index = 10
     var page = 1
     var isLoading = false
