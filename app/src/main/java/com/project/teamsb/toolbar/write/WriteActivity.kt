@@ -42,6 +42,8 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener{
     var keyWord = ArrayList<String>()
 
     var keywordIndex = 0
+
+    private lateinit var commentRecyclerAdapter: CommentRecyclerAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -59,7 +61,7 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener{
 
         category = if(intent.hasExtra("category")) {
             intent.getStringExtra("category")!! }else{
-            "" }
+            "delivery" }
 
         when(category){
             "delivery"->binding.spinner.setSelection(0)
@@ -70,7 +72,7 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener{
 
         binding.btnAddKeyword.setOnClickListener(this)
 
-
+        commentRecyclerAdapter = CommentRecyclerAdapter()
 
 
 
@@ -87,6 +89,9 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener{
         when(item.itemId){
             R.id.submit_tb -> {
                 submit()
+                commentRecyclerAdapter.notifyDataSetChanged()
+                finish()
+
             }
         }
         return super.onOptionsItemSelected(item)

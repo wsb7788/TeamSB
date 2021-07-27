@@ -50,10 +50,7 @@ class PostListActivity: AppCompatActivity() {
 
         postRecyclerAdapter = PostRecyclerAdapter()
 
-        binding.rcvPost.apply {
-            layoutManager = LinearLayoutManager(this@PostListActivity, LinearLayoutManager.VERTICAL, false)
-            adapter = postRecyclerAdapter
-        }
+        initRecycler()
         postLoading()
 
         binding.rcvPost.addOnScrollListener(object : RecyclerView.OnScrollListener(){
@@ -69,8 +66,22 @@ class PostListActivity: AppCompatActivity() {
                 }
             }
         })
+        binding.srlCategory.setOnRefreshListener {
+            page = 1
+            initRecycler()
+            postRecyclerAdapter.clearList()
+            postLoading()
+            binding.srlCategory.isRefreshing = false
+        }
 
 
+    }
+
+    private fun initRecycler() {
+        binding.rcvPost.apply {
+            layoutManager = LinearLayoutManager(this@PostListActivity, LinearLayoutManager.VERTICAL, false)
+            adapter = postRecyclerAdapter
+        }
     }
 
 
@@ -112,7 +123,7 @@ class PostListActivity: AppCompatActivity() {
                                             modelList.add(myModel)
                                         }
                                         postRecyclerAdapter.submitList(modelList)
-                                        postRecyclerAdapter.notifyItemRangeChanged((page*index),index+1)
+                                        postRecyclerAdapter.notifyItemRangeChanged((page* index), index)
                                         page++
                                     }
                                     override fun onFailure(call: Call<ResultPost>, t: Throwable) {

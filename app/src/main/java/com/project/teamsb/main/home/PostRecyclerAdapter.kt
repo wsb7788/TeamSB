@@ -56,5 +56,9 @@ class PostRecyclerAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         if(holder is PostViewHolder)
             holder.bind(this.modelList[position])
     }
+
+    fun clearList(){
+        modelList.clear()
+    }
 }
 

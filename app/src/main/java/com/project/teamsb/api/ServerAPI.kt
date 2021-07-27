@@ -39,7 +39,7 @@ interface ServerAPI {
     fun writeArticle(
         @Field("title") title: String,
         @Field("category") category: String,
-        @Field("userID") userID: String,
+        @Field("userId") userID: String,
         @Field("text") text: String,
         @Field("hash") hash: ArrayList<String>
     ) : Call<ResultWrite>
