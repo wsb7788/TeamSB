@@ -1,4 +1,4 @@
-package com.project.teamsb.toolbar.write
+package com.project.teamsb.toolbar
 
 import android.os.Bundle
 import android.view.Menu
@@ -11,8 +11,9 @@ import com.project.teamsb.R
 import com.project.teamsb.api.ResultWrite
 import com.project.teamsb.api.ServerAPI
 import com.project.teamsb.databinding.ActivityWriteBinding
-import com.project.teamsb.post.CommentModel
-import com.project.teamsb.post.CommentRecyclerAdapter
+import com.project.teamsb.recycler.adapter.CommentRecyclerAdapter
+import com.project.teamsb.recycler.adapter.KeywordRecyclerAdapter
+import com.project.teamsb.recycler.model.KeywordModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -61,23 +62,19 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener{
 
         category = if(intent.hasExtra("category")) {
             intent.getStringExtra("category")!! }else{
-            "delivery" }
+            "all" }
 
         when(category){
-            "delivery"->binding.spinner.setSelection(0)
-            "parcel"->binding.spinner.setSelection(1)
-            "taxi"->binding.spinner.setSelection(2)
-            "laundry"->binding.spinner.setSelection(3)
+            "all" -> binding.spinner.setSelection(0)
+            "delivery"->binding.spinner.setSelection(1)
+            "parcel"->binding.spinner.setSelection(2)
+            "taxi"->binding.spinner.setSelection(3)
+            "laundry"->binding.spinner.setSelection(4)
         }
 
         binding.btnAddKeyword.setOnClickListener(this)
 
         commentRecyclerAdapter = CommentRecyclerAdapter()
-
-
-
-
-
 
     }
 
@@ -88,6 +85,10 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener{
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.submit_tb -> {
+                if(binding.spinner.selectedItemPosition == 0){
+                    Toast.makeText(this, "카테고리를 선택해주세요!",Toast.LENGTH_SHORT).show()
+                    return super.onOptionsItemSelected(item)
+                }
                 submit()
                 commentRecyclerAdapter.notifyDataSetChanged()
                 finish()
@@ -105,7 +106,7 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener{
             CoroutineScope(Dispatchers.Default).launch {
                 val title = binding.tvTitle.text.toString()
                 val category = category
-                val userID = "starku2249"
+                val userID = "wsb7788"
                 val text = binding.contentEt.text.toString()
                 val keyword1 = ArrayList<String>(keyWord)
                 writeService.writeArticle(title, category,userID ,text,keyword1).enqueue(object: Callback<ResultWrite> {

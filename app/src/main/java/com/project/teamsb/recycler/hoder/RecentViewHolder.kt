@@ -1,9 +1,9 @@
-package com.project.teamsb.main.home
+package com.project.teamsb.recycler.hoder
 
 import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
-import com.project.teamsb.databinding.LayoutRecyclerPostListBinding
 import com.project.teamsb.databinding.LayoutRecyclerRecentBinding
+import com.project.teamsb.recycler.model.RecentModel
 
 
 class RecentViewHolder(val binding: LayoutRecyclerRecentBinding): RecyclerView.ViewHolder(binding.root) {

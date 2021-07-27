@@ -3,15 +3,12 @@ package com.project.teamsb.post
 
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.view.View.*
-import android.view.ViewTreeObserver
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.project.teamsb.R
 import com.project.teamsb.databinding.ActivityPostBinding
+import com.project.teamsb.recycler.model.CommentModel
+import com.project.teamsb.recycler.adapter.CommentRecyclerAdapter
 import kotlinx.coroutines.*
 import org.w3c.dom.Element
 import java.net.URL

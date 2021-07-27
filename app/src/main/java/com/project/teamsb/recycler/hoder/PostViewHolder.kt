@@ -1,8 +1,9 @@
-package com.project.teamsb.main.home
+package com.project.teamsb.recycler.hoder
 
 import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import com.project.teamsb.databinding.LayoutRecyclerPostListBinding
+import com.project.teamsb.recycler.model.PostModel
 
 
 class PostViewHolder(val binding: LayoutRecyclerPostListBinding): RecyclerView.ViewHolder(binding.root) {
@@ -12,14 +13,9 @@ class PostViewHolder(val binding: LayoutRecyclerPostListBinding): RecyclerView.V
 
 
 
-    init{
 
-        Log.d(TAG, "PostViewHolder - init() called")
-
-    }
 
     fun bind(postModel: PostModel){
-        Log.d(TAG, "PostViewHolder - bind() called")
 
         binding.tvPostTitle.text = postModel.title
         binding.tvPostContent.text = postModel.content

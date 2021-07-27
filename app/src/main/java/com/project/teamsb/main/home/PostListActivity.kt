@@ -15,7 +15,10 @@ import com.project.teamsb.R
 import com.project.teamsb.api.ResultPost
 import com.project.teamsb.api.ServerAPI
 import com.project.teamsb.databinding.ActivityCategoryBinding
-import com.project.teamsb.toolbar.write.WriteActivity
+import com.project.teamsb.recycler.model.PostModel
+import com.project.teamsb.recycler.adapter.PostRecyclerAdapter
+import com.project.teamsb.toolbar.SearchActivity
+import com.project.teamsb.toolbar.WriteActivity
 import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -45,6 +48,8 @@ class PostListActivity: AppCompatActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)
+        setToolBarText()
+
 
 
         Log.d(TAG, "MainActivity - onCreate() called")
@@ -78,6 +83,21 @@ class PostListActivity: AppCompatActivity() {
 
     }
 
+    private fun setToolBarText() {
+        val category = if(intent.hasExtra("category")) {
+            intent.getStringExtra("category")!! }else{
+            "all" }
+
+        when(category){
+            "delivery"->binding.tvToolbar.text = "배달"
+            "parcel"->binding.tvToolbar.text = "택배"
+            "taxi"->binding.tvToolbar.text = "택시"
+            "laundry"->binding.tvToolbar.text = "빨래"
+            "all"->binding.tvToolbar.text = "전체 게시글"
+        }
+
+    }
+
     private fun initRecycler() {
         binding.rcvPost.apply {
             layoutManager = LinearLayoutManager(this@PostListActivity, LinearLayoutManager.VERTICAL, false)
@@ -99,8 +119,8 @@ class PostListActivity: AppCompatActivity() {
                 startActivity(intent)
             }
             R.id.search_tb -> {
-                val intent = Intent(this, PostListActivity::class.java)
-                intent.putExtra("category", "all")
+                val intent = Intent(this, SearchActivity::class.java)
+                intent.putExtra("category", category)
                 startActivity(intent)
             }
         }

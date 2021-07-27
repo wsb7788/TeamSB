@@ -1,13 +1,13 @@
 
-package com.project.teamsb.toolbar.write
+package com.project.teamsb.recycler.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.project.teamsb.databinding.LayoutRecyclerCommentBinding
 import com.project.teamsb.databinding.LayoutRecyclerKeywordBinding
-import com.project.teamsb.databinding.LayoutRecyclerProgressBinding
+import com.project.teamsb.recycler.model.KeywordModel
+import com.project.teamsb.recycler.hoder.KeywordViewHolder
 
 class KeywordRecyclerAdapter: RecyclerView.Adapter<KeywordViewHolder>() {
 

@@ -2,7 +2,6 @@ package com.project.teamsb.main.home
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.teamsb.api.ResultPost
 import com.project.teamsb.api.ServerAPI
 import com.project.teamsb.databinding.FragmentHomeBinding
+import com.project.teamsb.recycler.model.RecentModel
+import com.project.teamsb.recycler.adapter.RecentRecyclerAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -42,14 +43,13 @@ class HomeFragment : Fragment(), View.OnClickListener {
         binding.btn2.setOnClickListener(this)
         binding.btn3.setOnClickListener(this)
         binding.btn4.setOnClickListener(this)
-
+        binding.tvRecentPost.setOnClickListener(this)
         recentRecyclerAdapter = RecentRecyclerAdapter()
 
         binding.rcvRecent5.apply {
             layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
             adapter = recentRecyclerAdapter
         }
-
         postLoading()
 
 
@@ -76,6 +76,10 @@ class HomeFragment : Fragment(), View.OnClickListener {
             }
             binding.btn4 -> {
                 intent.putExtra("category", "laundry")
+                startActivity(intent)
+            }
+            binding.tvRecentPost -> {
+                intent.putExtra("category", "all")
                 startActivity(intent)
             }
         }

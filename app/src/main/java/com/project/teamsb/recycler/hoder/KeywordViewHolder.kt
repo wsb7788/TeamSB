@@ -1,11 +1,8 @@
-package com.project.teamsb.toolbar.write
+package com.project.teamsb.recycler.hoder
 
-import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.project.teamsb.R
-import com.project.teamsb.databinding.LayoutRecyclerCommentBinding
 import com.project.teamsb.databinding.LayoutRecyclerKeywordBinding
+import com.project.teamsb.recycler.model.KeywordModel
 
 class KeywordViewHolder(val binding: LayoutRecyclerKeywordBinding): RecyclerView.ViewHolder(binding.root) {
 

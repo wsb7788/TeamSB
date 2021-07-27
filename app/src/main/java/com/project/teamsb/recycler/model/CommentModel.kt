@@ -1,4 +1,4 @@
-package com.project.teamsb.post
+package com.project.teamsb.recycler.model
 
 import android.util.Log
 

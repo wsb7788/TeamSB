@@ -1,5 +1,5 @@
 
-package com.project.teamsb.post
+package com.project.teamsb.recycler.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,6 +7,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.project.teamsb.databinding.LayoutRecyclerCommentBinding
 import com.project.teamsb.databinding.LayoutRecyclerProgressBinding
+import com.project.teamsb.recycler.model.CommentModel
+import com.project.teamsb.recycler.hoder.CommentViewHolder
+import com.project.teamsb.recycler.hoder.ProgressViewHolder
 
 class CommentRecyclerAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 

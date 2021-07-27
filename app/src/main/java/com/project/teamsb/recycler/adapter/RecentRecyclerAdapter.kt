@@ -1,14 +1,13 @@
 
-package com.project.teamsb.main.home
+package com.project.teamsb.recycler.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.project.teamsb.databinding.LayoutRecyclerPostListBinding
-import com.project.teamsb.databinding.LayoutRecyclerProgressBinding
 import com.project.teamsb.databinding.LayoutRecyclerRecentBinding
-import com.project.teamsb.post.ProgressViewHolder
+import com.project.teamsb.recycler.model.RecentModel
+import com.project.teamsb.recycler.hoder.RecentViewHolder
 
 class RecentRecyclerAdapter: RecyclerView.Adapter<RecentViewHolder>() {
 

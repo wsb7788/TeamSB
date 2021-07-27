@@ -44,5 +44,12 @@ interface ServerAPI {
         @Field("hash") hash: ArrayList<String>
     ) : Call<ResultWrite>
 
+    @FormUrlEncoded
+    @POST("/search/")
+    fun search(
+        @Query("page") page:Int,
+        @Field("category") category: String,
+        @Field("keyword") keyword: String
+    ) : Call<ResultPost>
 
 }

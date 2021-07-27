@@ -1,4 +1,4 @@
-package com.project.teamsb.post
+package com.project.teamsb.recycler.hoder
 
 import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
