@@ -66,8 +66,9 @@ class PostListActivity: AppCompatActivity() {
                 val lastVisibleItemPosition = (recyclerView.layoutManager as LinearLayoutManager?)!!.findLastCompletelyVisibleItemPosition()
                 val itemTotalCount = recyclerView.adapter!!.itemCount-1
                 // 스크롤이 끝에 도달했는지 확인
-                if (!binding.rcvPost.canScrollVertically(1) && lastVisibleItemPosition == itemTotalCount) {
+                if (!binding.rcvPost.canScrollVertically(1) && lastVisibleItemPosition == itemTotalCount && postRecyclerAdapter.itemCount > 9) {
                     postRecyclerAdapter.deleteLoading()
+                    page++
                     postLoading()
                 }
             }
@@ -127,6 +128,7 @@ class PostListActivity: AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+
     fun postLoading(){
                 CoroutineScope(Dispatchers.Main).launch {
                 CoroutineScope(Dispatchers.Default).launch {
@@ -145,7 +147,6 @@ class PostListActivity: AppCompatActivity() {
                                         }
                                         postRecyclerAdapter.submitList(modelList)
                                         postRecyclerAdapter.notifyItemRangeChanged((page* index), index)
-                                        page++
                                     }
                                     override fun onFailure(call: Call<ResultPost>, t: Throwable) {
                                         Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()

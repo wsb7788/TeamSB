@@ -68,8 +68,9 @@ class SearchActivity:AppCompatActivity(),View.OnClickListener {
                 val lastVisibleItemPosition = (recyclerView.layoutManager as LinearLayoutManager?)!!.findLastCompletelyVisibleItemPosition()
                 val itemTotalCount = recyclerView.adapter!!.itemCount-1
                 // 스크롤이 끝에 도달했는지 확인
-                if (!binding.rcvSearch.canScrollVertically(1) && lastVisibleItemPosition == itemTotalCount) {
+                if (!binding.rcvSearch.canScrollVertically(1) && lastVisibleItemPosition == itemTotalCount && postRecyclerAdapter.itemCount > 9) {
                     postRecyclerAdapter.deleteLoading()
+                    page++
                     postLoading()
                 }
             }
@@ -104,7 +105,7 @@ class SearchActivity:AppCompatActivity(),View.OnClickListener {
                             }
                             postRecyclerAdapter.submitList(modelList)
                             postRecyclerAdapter.notifyItemRangeChanged((page* index), index)
-                            page++
+
                         }
                         override fun onFailure(call: Call<ResultPost>, t: Throwable) {
                             Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()
@@ -120,6 +121,7 @@ class SearchActivity:AppCompatActivity(),View.OnClickListener {
     override fun onClick(v: View?) {
         when(v){
             binding.btnSearch ->{
+
                 if (binding.spinner.selectedItemPosition == 0){
                     Toast.makeText(this,"카테고리를 선택해주세요.",Toast.LENGTH_SHORT).show()
                 }else{
@@ -130,6 +132,8 @@ class SearchActivity:AppCompatActivity(),View.OnClickListener {
                         4-> "laundry"
                         else-> ""
                     }
+                    page = 1
+                    postRecyclerAdapter.clearList()
                     postLoading()
                 }
 
