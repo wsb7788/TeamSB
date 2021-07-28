@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.teamsb.api.ResultPost
+import com.project.teamsb.api.ResultReply
 import com.project.teamsb.api.ServerAPI
 import com.project.teamsb.databinding.ActivityPostBinding
 import com.project.teamsb.recycler.model.CommentModel
@@ -32,7 +33,7 @@ class PostActivity : AppCompatActivity() {
 
     var modelList = ArrayList<CommentModel>()
     private lateinit var commentRecyclerAdapter: CommentRecyclerAdapter
-    var index: Int = 10
+    var index: Int = 20
     var page: Int = 1
     var isLoading = false
 
@@ -53,7 +54,8 @@ class PostActivity : AppCompatActivity() {
 
 
         contentLoading()
-        /*binding.rcvComment.apply {
+        commentRecyclerAdapter = CommentRecyclerAdapter()
+        binding.rcvComment.apply {
             layoutManager = LinearLayoutManager(this@PostActivity, LinearLayoutManager.VERTICAL, false)
             adapter = commentRecyclerAdapter
         }
@@ -68,13 +70,12 @@ class PostActivity : AppCompatActivity() {
                 if(!isLoading){
                     isLoading = true
                     Log.d(TAG, "로딩 리스너 호출!")
-                    commentLoading()
+                    replyLoading()
+                    page++
                 }
             }
         };
-        commentRecyclerAdapter = CommentRecyclerAdapter()
 
-*/
 
 
     }
@@ -108,30 +109,39 @@ class PostActivity : AppCompatActivity() {
                         e.printStackTrace()
                     }
                 }.await()
-                isLoading = false
             }
         }
     }
 
     private fun replyLoading() {
-        /*runBlocking{
+        runBlocking{
             CoroutineScope(Dispatchers.Main).launch {
                 CoroutineScope(Dispatchers.Default).async {
-
-                    val no = intent.getStringExtra("no")!!
-
+                    modelList.clear()
+                    var page = page
+                    var article_no =  53
+                    //var article_no =  intent.getIntExtra("no", 0)!!
+                    var curUser = "wsb7788"
                     try {
-                        contentLoadService.(no).enqueue(object :
-                            Callback<ResultPost> {
-                            override fun onResponse(call: Call<ResultPost>, response: Response<ResultPost>) {
-                                binding.tvTitle2.text = response.body()!!.content[0].title
-                                binding.tvCategory2.text = response.body()!!.content[0].category
-                                binding.tvTime2.text = response.body()!!.content[0].timeStamp
-                                binding.tvWriter2.text = response.body()!!.content[0].userNickname
-                                binding.tvKeyword2.text = response.body()!!.content[0].hash[0]
-                                binding.tvContent.text = response.body()!!.content[0].text
+
+                        contentLoadService.replyList(page, article_no,curUser).enqueue(object :
+                            Callback<ResultReply> {
+                            override fun onResponse(call: Call<ResultReply>, response: Response<ResultReply>) {
+                                for (i in response.body()!!.content.indices) {
+                                    val nickname = response.body()!!.content[i].userNickname
+                                    //val img = response.body()!!.content[i].userNickname
+                                    val content = response.body()!!.content[i].content
+
+                                    val myModel = CommentModel(name = nickname, content = content)
+
+                                    modelList.add(myModel)
+                                }
+                                commentRecyclerAdapter.submitList(modelList)
+                                commentRecyclerAdapter.notifyItemRangeChanged((page* index), index)
+
                             }
-                            override fun onFailure(call: Call<ResultPost>, t: Throwable) {
+
+                            override fun onFailure(call: Call<ResultReply>, t: Throwable) {
                                 Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()
                             }
                         })
@@ -139,15 +149,9 @@ class PostActivity : AppCompatActivity() {
                         e.printStackTrace()
                     }
                 }.await()
-
                 isLoading = false
-
-
-
-
             }
         }
 
-    }*/
     }
 }

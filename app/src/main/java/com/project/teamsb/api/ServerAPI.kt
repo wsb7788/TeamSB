@@ -53,16 +53,23 @@ interface ServerAPI {
     ) : Call<ResultPost>
 
     @FormUrlEncoded
-    @POST("/list/")
-    fun replylist(
+    @POST("/reply/list/")
+    fun replyList(
+        @Query("page") page:Int,
         @Field("article_no") article_no: Int,
         @Field("curUser") curUser: String
     ) : Call<ResultReply>
 
     @FormUrlEncoded
-    @POST("/accessArticle/detail")
+    @POST("/accessArticle/detail/")
     fun detail(
         @Field("no") no: Int
     ) : Call<ResultPost>
+
+    @FormUrlEncoded
+    @POST("/accessArticle/")
+    fun accessArticle(
+        @Field("no") no: Int
+    ) : Call<ResultAccess>
 
 }
