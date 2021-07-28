@@ -3,29 +3,27 @@ package com.project.teamsb.post
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.View.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.project.teamsb.api.ResultNoReturn
 import com.project.teamsb.api.ResultPost
 import com.project.teamsb.api.ResultReply
 import com.project.teamsb.api.ServerAPI
 import com.project.teamsb.databinding.ActivityPostBinding
 import com.project.teamsb.recycler.model.CommentModel
 import com.project.teamsb.recycler.adapter.CommentRecyclerAdapter
-import com.project.teamsb.recycler.model.PostModel
 import kotlinx.coroutines.*
-import org.w3c.dom.Element
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.net.URL
-import javax.xml.parsers.DocumentBuilderFactory
 
 
-class PostActivity : AppCompatActivity() {
+class PostActivity : AppCompatActivity(),View.OnClickListener {
 
     var TAG: String = "로그"
 
@@ -42,16 +40,13 @@ class PostActivity : AppCompatActivity() {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    var contentLoadService: ServerAPI = retrofit.create(ServerAPI::class.java)
+    var contentService: ServerAPI = retrofit.create(ServerAPI::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityPostBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        Log.d(TAG, "MainActivity - onCreate() called")
-
 
         contentLoading()
         commentRecyclerAdapter = CommentRecyclerAdapter()
@@ -60,7 +55,6 @@ class PostActivity : AppCompatActivity() {
             adapter = commentRecyclerAdapter
         }
         replyLoading()
-
 
         binding.postScrollView.viewTreeObserver.addOnScrollChangedListener {
             var view = binding.postScrollView.getChildAt (binding.postScrollView.childCount - 1);
@@ -76,7 +70,7 @@ class PostActivity : AppCompatActivity() {
             }
         };
 
-
+        binding.btnComment.setOnClickListener(this)
 
     }
 
@@ -86,7 +80,17 @@ class PostActivity : AppCompatActivity() {
                 CoroutineScope(Dispatchers.Default).async {
                     val no = intent.getIntExtra("no", 0)!!
                     try {
-                        contentLoadService.detail(no).enqueue(object :
+                        contentService.accessArticle(no).enqueue(object :
+                            Callback<ResultNoReturn>{
+                            override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
+                                Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
+
+                            }
+                            override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
+                                Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()
+                            }
+                        })
+                        contentService.detail(no).enqueue(object :
                             Callback<ResultPost> {
                             override fun onResponse(
                                 call: Call<ResultPost>,
@@ -119,12 +123,12 @@ class PostActivity : AppCompatActivity() {
                 CoroutineScope(Dispatchers.Default).async {
                     modelList.clear()
                     var page = page
-                    var article_no =  53
-                    //var article_no =  intent.getIntExtra("no", 0)!!
+                    var article_no =  intent.getIntExtra("no", 0)
+                    //var article_no =
                     var curUser = "wsb7788"
                     try {
 
-                        contentLoadService.replyList(page, article_no,curUser).enqueue(object :
+                        contentService.replyList(page, article_no,curUser).enqueue(object :
                             Callback<ResultReply> {
                             override fun onResponse(call: Call<ResultReply>, response: Response<ResultReply>) {
                                 for (i in response.body()!!.content.indices) {
@@ -138,6 +142,7 @@ class PostActivity : AppCompatActivity() {
                                 }
                                 commentRecyclerAdapter.submitList(modelList)
                                 commentRecyclerAdapter.notifyItemRangeChanged((page* index), index)
+                               // binding.progressBar.visibility = INVISIBLE
 
                             }
 
@@ -149,9 +154,55 @@ class PostActivity : AppCompatActivity() {
                         e.printStackTrace()
                     }
                 }.await()
-                isLoading = false
+
             }
         }
 
+    }
+
+    override fun onClick(v: View?) {
+        when(v){
+            binding.btnComment ->{
+                var text = binding.etComment.text.toString()
+                text.replace(" ", "")
+                if(text.isNullOrBlank()){
+                    Toast.makeText(this,"댓글을 입력하세요.",Toast.LENGTH_SHORT).show()
+                }else{
+                    uploadComment()
+                }
+            }
+
+        }
+    }
+
+    private fun uploadComment() {
+        runBlocking {
+            CoroutineScope(Dispatchers.Main).launch {
+                CoroutineScope(Dispatchers.Default).async {
+                    modelList.clear()
+                    val no = intent.getIntExtra("no",0)
+                    val content = binding.etComment.text.toString()
+                    val curUser = "wsb7788"
+                    try {
+                        contentService.writeComment(no,content,curUser).enqueue(object :
+                            Callback<ResultNoReturn>{
+                            override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
+                                Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
+                                val myModel = CommentModel(name = curUser, content = content)
+                                modelList.add(myModel)
+                                commentRecyclerAdapter.submitList(modelList)
+                                commentRecyclerAdapter.notifyDataSetChanged()
+                                binding.etComment.text.clear()
+                            }
+                            override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
+                                Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()
+                            }
+                        })
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }.await()
+            }
+        }
     }
 }

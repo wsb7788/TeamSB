@@ -70,6 +70,15 @@ interface ServerAPI {
     @POST("/accessArticle/")
     fun accessArticle(
         @Field("no") no: Int
-    ) : Call<ResultAccess>
+    ) : Call<ResultNoReturn>
+
+    @FormUrlEncoded
+    @POST("/reply/write/")
+    fun writeComment(
+        @Field("article_no") article_no: Int,
+        @Field("content") content: String,
+        @Field("curUser") curUser: String
+        ) : Call<ResultNoReturn>
+
 
 }

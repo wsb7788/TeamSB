@@ -61,7 +61,7 @@ data class ReplyContent(
     var mod_timeStamp: String = "",
     var right: Boolean = false)
 
-data class ResultAccess(
+data class ResultNoReturn(
     var check: Boolean = false,
     var code: Int = 0,
     var message: String = "")
