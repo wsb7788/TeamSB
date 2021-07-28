@@ -1,8 +1,9 @@
 package com.project.teamsb.recycler.model
 
 import android.util.Log
+import com.project.teamsb.api.Content
 
-class PostModel(var title: String? = null, var content: String? = null, val time: String? = null) {
+class PostModel(var title: String? = null, var text: String? = null, val time: String? = null, val no: Int = 0) {
     val TAG: String = "로그"
 
 

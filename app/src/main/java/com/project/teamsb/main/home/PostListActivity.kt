@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.view.View.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +16,7 @@ import com.project.teamsb.R
 import com.project.teamsb.api.ResultPost
 import com.project.teamsb.api.ServerAPI
 import com.project.teamsb.databinding.ActivityCategoryBinding
+import com.project.teamsb.post.PostActivity
 import com.project.teamsb.recycler.model.PostModel
 import com.project.teamsb.recycler.adapter.PostRecyclerAdapter
 import com.project.teamsb.toolbar.SearchActivity
@@ -27,7 +29,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
-class PostListActivity: AppCompatActivity() {
+class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListener {
     val binding by lazy {ActivityCategoryBinding.inflate(layoutInflater)}
 
     var modelList = ArrayList<PostModel>()
@@ -80,7 +82,7 @@ class PostListActivity: AppCompatActivity() {
             postLoading()
             binding.srlCategory.isRefreshing = false
         }
-
+        postRecyclerAdapter.setItemClickListener(this)
 
     }
 
@@ -132,17 +134,19 @@ class PostListActivity: AppCompatActivity() {
     fun postLoading(){
                 CoroutineScope(Dispatchers.Main).launch {
                 CoroutineScope(Dispatchers.Default).launch {
-                    modelList.clear()
                     val category = intent.getStringExtra("category")!!
                     Log.d("로그", "코루틴 호출!")
+                    modelList.clear()
                     try {
                                 postService.categoryPost(category, page).enqueue(object : Callback<ResultPost>{
                                     override fun onResponse(call: Call<ResultPost>, response: Response<ResultPost>) {
                                         for (i in response.body()!!.content.indices) {
-                                            val title = response.body()!!.content[i].title.toString()
-                                            val timeStamp = response.body()!!.content[i].timeStamp.toString()
-                                            val text = response.body()!!.content[i].text.toString()
-                                            val myModel = PostModel(title, text, timeStamp)
+                                            val title = response.body()!!.content[i].title
+                                            val text = response.body()!!.content[i].text
+                                            val timeStamp = response.body()!!.content[i].timeStamp
+                                            val no = response.body()!!.content[i].no
+                                            val myModel = PostModel(title, text, timeStamp, no)
+
                                             modelList.add(myModel)
                                         }
                                         postRecyclerAdapter.submitList(modelList)
@@ -158,4 +162,11 @@ class PostListActivity: AppCompatActivity() {
                 }
             }
     }
+
+    override fun onClick(v: View, position: Int) {
+        intent = Intent(this, PostActivity::class.java)
+        intent.putExtra("no", postRecyclerAdapter.getItemContentNo(position))
+        startActivity(intent)
+    }
 }
+

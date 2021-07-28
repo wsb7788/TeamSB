@@ -52,4 +52,17 @@ interface ServerAPI {
         @Field("keyword") keyword: String
     ) : Call<ResultPost>
 
+    @FormUrlEncoded
+    @POST("/list/")
+    fun replylist(
+        @Field("article_no") article_no: Int,
+        @Field("curUser") curUser: String
+    ) : Call<ResultReply>
+
+    @FormUrlEncoded
+    @POST("/accessArticle/detail")
+    fun detail(
+        @Field("no") no: Int
+    ) : Call<ResultPost>
+
 }

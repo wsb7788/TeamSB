@@ -3,6 +3,7 @@ package com.project.teamsb.recycler.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.project.teamsb.databinding.LayoutRecyclerPostListBinding
@@ -21,6 +22,8 @@ class PostRecyclerAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val VIEW_TYPE_RECENT_LIST = 0
     private val VIEW_TYPE_LOADING = 1
 
+    private lateinit var itemClickListener : OnItemClickListener
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         Log.d(TAG, "PostRecyclerAdapter - onCreateViewHolder() called")
         return when(viewType){
@@ -36,6 +39,7 @@ class PostRecyclerAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     }
     override fun getItemCount() = this.modelList.size
+    fun getItemContentNo(position: Int) = this.modelList[position].no
     fun submitList(modelList: ArrayList<PostModel>){
         Log.d(TAG, "submitList called")
         this.modelList.addAll(modelList)
@@ -43,7 +47,7 @@ class PostRecyclerAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
     override fun getItemViewType(position: Int): Int {
         // 게시물과 프로그레스바 아이템뷰를 구분할 기준이 필요하다.
-        return when (modelList[position].content) {
+        return when (modelList[position].text) {
             null -> VIEW_TYPE_LOADING
             else -> VIEW_TYPE_POST_LIST
         }
@@ -57,10 +61,21 @@ class PostRecyclerAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         Log.d(TAG, "CommentRecyclerAdapter - onBindViewHolder() called / position: $position")
         if(holder is PostViewHolder)
             holder.bind(this.modelList[position])
+        holder.itemView.setOnClickListener {
+            itemClickListener.onClick(it, position)
+        }
+
     }
 
+    interface OnItemClickListener {
+        fun onClick(v: View, position: Int)
+    }
+    fun setItemClickListener(onItemClickListener: OnItemClickListener) {
+        this.itemClickListener = onItemClickListener
+    }
     fun clearList(){
         modelList.clear()
     }
+
 }
 

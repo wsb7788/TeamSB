@@ -45,3 +45,19 @@ data class ResultWrite(
     var message: String = ""
 )
 
+data class ResultReply(
+    var check: Boolean = false,
+    var code: Int = 0,
+    var message: String = "",
+    var content: List<ReplyContent>)
+
+data class ReplyContent(
+    var reply_no: Int = 0,
+    var article_no: Int,
+    var content: String = "",
+    var userId: String = "",
+    var userNickname: String = "",
+    var timeStamp: String = "",
+    var mod_timeStamp: String = "",
+    var right: Boolean = false)
+

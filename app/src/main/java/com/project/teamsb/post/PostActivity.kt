@@ -4,13 +4,22 @@ package com.project.teamsb.post
 import android.os.Bundle
 import android.util.Log
 import android.view.View.*
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.project.teamsb.api.ResultPost
+import com.project.teamsb.api.ServerAPI
 import com.project.teamsb.databinding.ActivityPostBinding
 import com.project.teamsb.recycler.model.CommentModel
 import com.project.teamsb.recycler.adapter.CommentRecyclerAdapter
+import com.project.teamsb.recycler.model.PostModel
 import kotlinx.coroutines.*
 import org.w3c.dom.Element
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.net.URL
 import javax.xml.parsers.DocumentBuilderFactory
 
@@ -23,9 +32,16 @@ class PostActivity : AppCompatActivity() {
 
     var modelList = ArrayList<CommentModel>()
     private lateinit var commentRecyclerAdapter: CommentRecyclerAdapter
-    var index:Int = 5
-    var page:Int = 1
+    var index: Int = 10
+    var page: Int = 1
     var isLoading = false
+
+    var retrofit: Retrofit = Retrofit.Builder()
+        .baseUrl("http://13.209.10.30:3000/")
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+
+    var contentLoadService: ServerAPI = retrofit.create(ServerAPI::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +50,15 @@ class PostActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         Log.d(TAG, "MainActivity - onCreate() called")
+
+
+        contentLoading()
+        /*binding.rcvComment.apply {
+            layoutManager = LinearLayoutManager(this@PostActivity, LinearLayoutManager.VERTICAL, false)
+            adapter = commentRecyclerAdapter
+        }
+        replyLoading()
+
 
         binding.postScrollView.viewTreeObserver.addOnScrollChangedListener {
             var view = binding.postScrollView.getChildAt (binding.postScrollView.childCount - 1);
@@ -48,84 +73,81 @@ class PostActivity : AppCompatActivity() {
             }
         };
         commentRecyclerAdapter = CommentRecyclerAdapter()
-        binding.rcvComment.apply {
-            layoutManager = LinearLayoutManager(this@PostActivity, LinearLayoutManager.VERTICAL, false)
-            adapter = commentRecyclerAdapter
-        }
-        commentLoading()
 
-
+*/
 
 
     }
 
-    private fun commentLoading(){
-        runBlocking{
+    private fun contentLoading() {
+        runBlocking {
             CoroutineScope(Dispatchers.Main).launch {
                 CoroutineScope(Dispatchers.Default).async {
-
+                    val no = intent.getIntExtra("no", 0)!!
                     try {
+                        contentLoadService.detail(no).enqueue(object :
+                            Callback<ResultPost> {
+                            override fun onResponse(
+                                call: Call<ResultPost>,
+                                response: Response<ResultPost>
+                            ) {
+                                binding.tvTitle2.text = response.body()!!.content[0].title
+                                binding.tvCategory2.text = response.body()!!.content[0].category
+                                binding.tvTime2.text = response.body()!!.content[0].timeStamp
+                                binding.tvWriter2.text = response.body()!!.content[0].userNickname
+                                binding.tvKeyword2.text = response.body()!!.content[0].hash[0]
+                                binding.tvContent.text = response.body()!!.content[0].text
+                            }
 
-                        var site =
-                            "https://www.aladin.co.kr/ttb/api/ItemList.aspx?ttbkey=ttbstarku22490125001&QueryType=ItemNewAll&MaxResults=$index&SearchTarget=Book&start=$page&output=xml&version=20131101"
-                        var url = URL(site)
-                        var conn = url.openConnection()
-                        var input = conn.getInputStream()
-                        var factory = DocumentBuilderFactory.newInstance()
-                        var builder = factory.newDocumentBuilder()
-                        var doc = builder.parse(input)
-
-                        var root = doc.documentElement
-
-                        var item_node_list = root.getElementsByTagName("item")
-                        Log.d("로그", "${item_node_list.length}")
-                        modelList.clear()
-                        for (i in 0 until item_node_list.length) {
-                            var itemelement = item_node_list.item(i) as Element
-                            var data1nodelist = itemelement.getElementsByTagName("author")
-                            var data2nodelist = itemelement.getElementsByTagName("title")
-                            var data3nodelist = itemelement.getElementsByTagName("cover")
-
-                            var data1node = data1nodelist.item(0) as Element
-                            var data2node = data2nodelist.item(0) as Element
-                            var data3node = data3nodelist.item(0) as Element
-
-                            var data1 = data1node.textContent
-                            var data2 = data2node.textContent
-                            var data3 = data3node.textContent
-
-
-                            val myModel =
-                                CommentModel(name = data1, profileImage = data3, content = data2)
-
-                            modelList.add(myModel)
-                            page++
-
-                        }
-
+                            override fun onFailure(call: Call<ResultPost>, t: Throwable) {
+                                Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT)
+                                    .show()
+                            }
+                        })
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
-
-
                 }.await()
-                binding.progressBar.visibility = VISIBLE
-                delay(500)
-                commentRecyclerAdapter.submitList(modelList)
-//                commentRecyclerAdapter.deleteLoading()
-                commentRecyclerAdapter.notifyItemRangeChanged(page,index)
-//                commentRecyclerAdapter.notifyDataSetChanged()
-//                binding.rcvComment.scrollTo(0,0)
                 isLoading = false
-                binding.progressBar.visibility = INVISIBLE
+            }
+        }
+    }
 
+    private fun replyLoading() {
+        /*runBlocking{
+            CoroutineScope(Dispatchers.Main).launch {
+                CoroutineScope(Dispatchers.Default).async {
 
-//                commentRecyclerAdapter.deleteLoading()
+                    val no = intent.getStringExtra("no")!!
+
+                    try {
+                        contentLoadService.(no).enqueue(object :
+                            Callback<ResultPost> {
+                            override fun onResponse(call: Call<ResultPost>, response: Response<ResultPost>) {
+                                binding.tvTitle2.text = response.body()!!.content[0].title
+                                binding.tvCategory2.text = response.body()!!.content[0].category
+                                binding.tvTime2.text = response.body()!!.content[0].timeStamp
+                                binding.tvWriter2.text = response.body()!!.content[0].userNickname
+                                binding.tvKeyword2.text = response.body()!!.content[0].hash[0]
+                                binding.tvContent.text = response.body()!!.content[0].text
+                            }
+                            override fun onFailure(call: Call<ResultPost>, t: Throwable) {
+                                Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()
+                            }
+                        })
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }.await()
+
+                isLoading = false
+
 
 
 
             }
         }
 
+    }*/
     }
 }
