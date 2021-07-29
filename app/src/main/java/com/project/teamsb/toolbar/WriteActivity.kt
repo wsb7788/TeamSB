@@ -88,20 +88,23 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener{
                 if(binding.spinner.selectedItemPosition == 0){
                     Toast.makeText(this, "카테고리를 선택해주세요!",Toast.LENGTH_SHORT).show()
                     return super.onOptionsItemSelected(item)
+                }else{
+                    category = when(binding.spinner.selectedItemPosition){
+                        1-> "delivery"
+                        2-> "parcel"
+                        3-> "taxi"
+                        4-> "laundry"
+                        else-> ""
+                    }
+                    submit()
+                    finish()
                 }
-                submit()
-                commentRecyclerAdapter.notifyDataSetChanged()
-                finish()
-
             }
         }
         return super.onOptionsItemSelected(item)
-
-
     }
 
     fun submit(){
-        CoroutineScope(Dispatchers.Main).launch {
 
             CoroutineScope(Dispatchers.Default).launch {
                 val title = binding.tvTitle.text.toString()
@@ -117,17 +120,11 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener{
                             Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
                         }
                     }
-
                     override fun onFailure(call: Call<ResultWrite>, t: Throwable) {
                         Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()
                     }
                 })
-
             }
-        }
-
-
-
     }
 
     override fun onClick(v: View?) {

@@ -35,6 +35,7 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
     var modelList = ArrayList<PostModel>()
     private lateinit var postRecyclerAdapter: PostRecyclerAdapter
 
+    lateinit var category: String
     var index = 10
     var page = 1
     var isLoading = false
@@ -53,7 +54,7 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
         setToolBarText()
 
 
-
+        category = intent.getStringExtra("category")!!
         Log.d(TAG, "MainActivity - onCreate() called")
 
         postRecyclerAdapter = PostRecyclerAdapter()
@@ -77,7 +78,6 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
         })
         binding.srlCategory.setOnRefreshListener {
             page = 1
-            initRecycler()
             postRecyclerAdapter.clearList()
             postLoading()
             binding.srlCategory.isRefreshing = false
@@ -132,9 +132,8 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
 
 
     fun postLoading(){
-                CoroutineScope(Dispatchers.Main).launch {
-                CoroutineScope(Dispatchers.Default).launch {
-                    val category = intent.getStringExtra("category")!!
+
+                CoroutineScope(Dispatchers.IO).launch {
                     Log.d("로그", "코루틴 호출!")
                     modelList.clear()
                     try {
@@ -160,7 +159,7 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
                         e.printStackTrace()
                     }
                 }
-            }
+
     }
 
     override fun onClick(v: View, position: Int) {

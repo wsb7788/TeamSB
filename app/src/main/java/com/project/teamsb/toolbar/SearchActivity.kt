@@ -85,7 +85,6 @@ class SearchActivity:AppCompatActivity(),View.OnClickListener {
         }
     }
     fun postLoading(){
-        CoroutineScope(Dispatchers.Main).launch {
             CoroutineScope(Dispatchers.Default).launch {
                 modelList.clear()
 
@@ -115,7 +114,6 @@ class SearchActivity:AppCompatActivity(),View.OnClickListener {
                     e.printStackTrace()
                 }
             }
-        }
     }
 
     override fun onClick(v: View?) {

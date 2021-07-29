@@ -75,8 +75,7 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
     }
 
     private fun contentLoading() {
-        runBlocking {
-            CoroutineScope(Dispatchers.Main).launch {
+
                 CoroutineScope(Dispatchers.Default).async {
                     val no = intent.getIntExtra("no", 0)!!
                     try {
@@ -112,9 +111,9 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
-                }.await()
-            }
-        }
+                }
+
+
     }
 
     private fun replyLoading() {
@@ -141,7 +140,8 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
                                     modelList.add(myModel)
                                 }
                                 commentRecyclerAdapter.submitList(modelList)
-                                commentRecyclerAdapter.notifyItemRangeChanged((page* index), index)
+                                //commentRecyclerAdapter.notifyItemRangeChanged((page* index), index)
+                                commentRecyclerAdapter.notifyDataSetChanged()
                                // binding.progressBar.visibility = INVISIBLE
 
                             }
@@ -169,6 +169,7 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
                     Toast.makeText(this,"댓글을 입력하세요.",Toast.LENGTH_SHORT).show()
                 }else{
                     uploadComment()
+
                 }
             }
 
@@ -177,7 +178,7 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
 
     private fun uploadComment() {
         runBlocking {
-            CoroutineScope(Dispatchers.Main).launch {
+
                 CoroutineScope(Dispatchers.Default).async {
                     modelList.clear()
                     val no = intent.getIntExtra("no",0)
@@ -188,10 +189,11 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
                             Callback<ResultNoReturn>{
                             override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
                                 Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
-                                val myModel = CommentModel(name = curUser, content = content)
+                                /*val myModel = CommentModel(name = curUser, content = content)
                                 modelList.add(myModel)
                                 commentRecyclerAdapter.submitList(modelList)
-                                commentRecyclerAdapter.notifyDataSetChanged()
+                                commentRecyclerAdapter.notifyDataSetChanged()*/
+                                replyLoading()
                                 binding.etComment.text.clear()
                             }
                             override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
@@ -204,5 +206,5 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
                 }.await()
             }
         }
-    }
+
 }

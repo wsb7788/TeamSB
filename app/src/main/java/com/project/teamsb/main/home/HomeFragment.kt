@@ -86,7 +86,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
     }
 
     fun postLoading() {
-        CoroutineScope(Dispatchers.Main).launch {
+
             CoroutineScope(Dispatchers.Default).launch {
 
                 try {
@@ -120,5 +120,5 @@ class HomeFragment : Fragment(), View.OnClickListener {
                 }
             }
         }
-    }
+
 }

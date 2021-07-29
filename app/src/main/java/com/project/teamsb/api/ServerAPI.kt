@@ -7,7 +7,7 @@ interface ServerAPI {
     @FormUrlEncoded
     @POST("/login/")
     fun requestLogin(
-        @Field("id") id:String,
+        @Field("userId") userId:String,
         @Field("password") password:String
     ) : Call<ResultLogin>
 

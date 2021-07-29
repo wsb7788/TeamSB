@@ -2,11 +2,16 @@ package com.project.teamsb.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.project.teamsb.R
 import com.project.teamsb.api.ResultLogin
 import com.project.teamsb.api.ServerAPI
 import com.project.teamsb.databinding.ActivityLoginBinding
+import com.project.teamsb.main.MainActivity
+import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -32,132 +37,77 @@ class LoginActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
-        val pref = getSharedPreferences("loginCheck",MODE_PRIVATE)
+        val pref = getSharedPreferences("loginCheck", MODE_PRIVATE)
+        val editor = pref.edit()
 
+        if (pref.getBoolean("autoLoginCheck", false)) {
+            val id = pref.getString("id", "")!!
+            val pw = pref.getString("pw", "")!!
 
+            login(id, pw)
 
+        }
 
+        binding.autoLoginCb.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                editor.putBoolean("autoLoginCheck", true)
+                editor.apply()
+            }else{
+                editor.putBoolean("autoLoginCheck", false)
+                editor.apply()
+            }
+        }
+        binding.loginBtn.setOnClickListener {
+            val id = binding.idEt.text.toString()
+            val pw = binding.passwordEt.text.toString()
+            login(id, pw)
+        }
+    }
 
-        if(pref.getBoolean("autoLoginCheck",false)){
-            val id = pref.getString("id","")!!
-            val pw = pref.getString("pw","")!!
+    private fun login(id: String, pw: String) {
 
+        CoroutineScope(Dispatchers.Default).launch {
+            binding.progressBar.visibility = VISIBLE
+            val id= id
+            val pw = pw
+
+            val prefAuto = getSharedPreferences("autoLoginCheck", MODE_PRIVATE)
+            val editorAuto = prefAuto.edit()
+
+            val prefId = getSharedPreferences("userId", MODE_PRIVATE)
+            val editorId = prefId.edit()
+
+            try{
                 loginService.requestLogin(id, pw).enqueue(object : Callback<ResultLogin> {
                     override fun onFailure(call: Call<ResultLogin>, t: Throwable) {
                         Toast.makeText(applicationContext, "로그인 실패", Toast.LENGTH_SHORT).show()
                     }
 
-                    override fun onResponse(
-                        call: Call<ResultLogin>,
-                        response: Response<ResultLogin>
-                    ) {
-                        val intent = Intent(
-                            applicationContext,
-                            FirstNicknameSetActivity::class.java
-                        )
-                        intent.putExtra("아이디", id)
-                        intent.putExtra("비밀번호", pw)
-                        startActivity(intent)
+                    override fun onResponse(call: Call<ResultLogin>, response: Response<ResultLogin>) {
+                        if(response.body()!!.check){
+                            editorId.putString("id", id)
+                            editorId.apply()
+                            if(prefAuto.getBoolean("autoLoginCheck",false)){
+                                editorAuto.putString("id",id)
+                                editorAuto.putString("pw",pw)
+                            }
+                            if(response.body()!!.nickname){
+                                val intent = Intent(applicationContext, MainActivity::class.java)
+                                startActivity(intent)
+                            }else{
+                                val intent = Intent(applicationContext, FirstNicknameSetActivity::class.java)
+                                intent.putExtra("아이디", id)
+                                startActivity(intent)
+                            }
+                        }else{
+                            Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 })
-
-        }
-
-        binding.loginBtn.setOnClickListener {
-            val id = binding.idEt.text.toString()
-            val pw = binding.passwordEt.text.toString()
-            val pref = getSharedPreferences("loginCheck",MODE_PRIVATE)
-            val editor = pref.edit()
-
-            loginService.requestLogin(id,pw).enqueue(object: Callback<ResultLogin>{
-                override fun onFailure(call: Call<ResultLogin>, t: Throwable) {
-                    Toast.makeText(applicationContext,"로그인 실패",Toast.LENGTH_SHORT).show()
-                }
-
-                override fun onResponse(call: Call<ResultLogin>, response: Response<ResultLogin>) {
-                    val intent = Intent(
-                        applicationContext,
-                        FirstNicknameSetActivity::class.java
-                    )                                               // 서버 연결 후 로그인 여부 판별
-                    intent.putExtra("아이디",id)
-                    intent.putExtra("비밀번호",pw)
-
-                    if(binding.autoLoginCb.isChecked){
-                        editor.putBoolean("autoLoginCheck",true)
-                        editor.putString("id",id)
-                        editor.putString("pw",pw)
-                    } else{
-                        editor.clear()
-                    }
-
-
-                    editor.apply()
-                    startActivity(intent)
-                }
-
-        })
+            }catch(e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
+}
 
-    /*private fun login(id: String?, pw: String?){
-
-        val pref = getSharedPreferences("loginCheck",MODE_PRIVATE)
-        val editor = pref.edit()
-
-        loginService.requestLogin(id,pw).enqueue(object: Callback<ResultLogin>{
-            override fun onFailure(call: Call<ResultLogin>, t: Throwable) {
-                Toast.makeText(applicationContext,"로그인 실패",Toast.LENGTH_SHORT).show()
-            }
-
-            override fun onResponse(call: Call<ResultLogin>, response: Response<ResultLogin>) {
-                val intent = Intent(
-                    applicationContext,
-                    FirstNicknameSetActivity::class.java
-                )                                               // 서버 연결 후 로그인 여부 판별
-                intent.putExtra("아이디",id)
-                intent.putExtra("비밀번호",pw)
-
-                if(binding.autoLoginCb.isChecked){
-                    editor.putBoolean("autoLoginCheck",true)
-                    editor.putString("id",id)
-                    editor.putString("pw",pw)
-                } else{
-                    editor.clear()
-                }
-
-                editor.apply()
-                startActivity(intent)
-            }
-
-        })*/
-
-
-
-        /*if (id == "wsb7788" && pw == "1234") {
-            val intent = Intent(
-                applicationContext,
-                FirstNicknameSetActivity::class.java
-            )                                               // 서버 연결 후 로그인 여부 판별
-            intent.putExtra("아이디",id)
-            intent.putExtra("비밀번호",pw)
-
-            if(binding.autoLoginCb.isChecked){
-                editor.putBoolean("autoLoginCheck",true)
-                editor.putString("id",id)
-                editor.putString("pw",pw)
-            } else{
-                editor.clear()
-            }
-
-            editor.apply()
-            startActivity(intent)
-
-        } else {
-            val builder = AlertDialog.Builder(this)
-            builder.setTitle("로그인 실패")
-                .setMessage("아이디 또는 비밀번호가 틀립니다.")
-                .setPositiveButton("확인", null)
-            builder.show()
-        }*/
-
-    }
