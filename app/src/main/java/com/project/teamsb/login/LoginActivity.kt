@@ -64,10 +64,11 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun login(id: String, pw: String) {
 
-        CoroutineScope(Dispatchers.Default).launch {
-            binding.progressBar.visibility = VISIBLE
+
+    private fun login(id: String, pw: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+
             val id= id
             val pw = pw
 
@@ -96,7 +97,6 @@ class LoginActivity : AppCompatActivity() {
                                 startActivity(intent)
                             }else{
                                 val intent = Intent(applicationContext, FirstNicknameSetActivity::class.java)
-                                intent.putExtra("아이디", id)
                                 startActivity(intent)
                             }
                         }else{

@@ -20,7 +20,7 @@ interface ServerAPI {
     @FormUrlEncoded
     @POST("/nicknameSet/")
     fun nicknameSet(
-        @Field("id") id:String,
+        @Field("curId") curId:String,
         @Field("nickname") nickname:String
     ) : Call<NicknameSet>
 
