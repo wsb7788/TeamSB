@@ -91,7 +91,8 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
 
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_toolbar,menu)
+        menuInflater.inflate(R.menu.menu_search,menu)
+        menuInflater.inflate(R.menu.menu_write,menu)
         return true
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

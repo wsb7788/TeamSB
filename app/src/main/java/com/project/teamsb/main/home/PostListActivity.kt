@@ -110,7 +110,8 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
 
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_toolbar,menu)
+        menuInflater.inflate(R.menu.menu_search,menu)
+        menuInflater.inflate(R.menu.menu_write,menu)
         return true
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

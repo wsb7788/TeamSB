@@ -3,6 +3,7 @@ package com.project.teamsb.toolbar
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -10,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.project.teamsb.R
 import com.project.teamsb.api.ResultPost
 import com.project.teamsb.api.ServerAPI
 import com.project.teamsb.databinding.ActivitySearchBinding
@@ -52,10 +54,10 @@ class SearchActivity:AppCompatActivity(),View.OnClickListener {
         postRecyclerAdapter = PostRecyclerAdapter()
         initRecycler()
         binding.btnSearch.setOnClickListener(this)
-
+        setSupportActionBar(binding.toolbar)
         category = if(intent.hasExtra("category")) {
             intent.getStringExtra("category")!! }else{
-            "" }
+            "all" }
 
         when(category){
             "all" -> binding.spinner.setSelection(0)
@@ -82,6 +84,8 @@ class SearchActivity:AppCompatActivity(),View.OnClickListener {
 
 
     }
+
+
     private fun initRecycler() {
         binding.rcvSearch.apply {
             layoutManager = LinearLayoutManager(this@SearchActivity, LinearLayoutManager.VERTICAL, false)
@@ -141,5 +145,20 @@ class SearchActivity:AppCompatActivity(),View.OnClickListener {
 
             }
         }
+    }
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_write,menu)
+        return true
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val category = intent.getStringExtra("category")!!
+        when(item.itemId){
+            R.id.write_tb -> {
+                val intent = Intent(this, WriteActivity::class.java)
+                intent.putExtra("category",category)
+                startActivity(intent)
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

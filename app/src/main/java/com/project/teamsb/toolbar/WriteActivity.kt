@@ -60,6 +60,7 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener{
 
         setSupportActionBar(binding.toolbar)
 
+
         category = if(intent.hasExtra("category")) {
             intent.getStringExtra("category")!! }else{
             "all" }
@@ -80,6 +81,7 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener{
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_write_toolbar,menu)
+
         return true
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
