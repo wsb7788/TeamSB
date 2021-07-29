@@ -63,4 +63,9 @@ data class ResultNoReturn(
     var check: Boolean = false,
     var code: Int = 0,
     var message: String = "")
+data class ResultNickname(
+    var check: Boolean = false,
+    var code: Int = 0,
+    var message: String = "",
+    var content: String = "")
 

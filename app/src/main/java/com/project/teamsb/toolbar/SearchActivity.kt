@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,6 +36,8 @@ class SearchActivity:AppCompatActivity(),View.OnClickListener {
 
     lateinit var category:String
 
+    lateinit var imm: InputMethodManager
+
     var retrofit: Retrofit = Retrofit.Builder()
         .baseUrl("http://13.209.10.30:3000/")
         .addConverterFactory(GsonConverterFactory.create())
@@ -45,6 +48,7 @@ class SearchActivity:AppCompatActivity(),View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        imm = getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as InputMethodManager
         postRecyclerAdapter = PostRecyclerAdapter()
         initRecycler()
         binding.btnSearch.setOnClickListener(this)
@@ -119,7 +123,7 @@ class SearchActivity:AppCompatActivity(),View.OnClickListener {
     override fun onClick(v: View?) {
         when(v){
             binding.btnSearch ->{
-
+                imm.hideSoftInputFromWindow(v.windowToken,0)
                 if (binding.spinner.selectedItemPosition == 0){
                     Toast.makeText(this,"카테고리를 선택해주세요.",Toast.LENGTH_SHORT).show()
                 }else{

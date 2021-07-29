@@ -2,8 +2,10 @@ package com.project.teamsb.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.project.teamsb.R
@@ -19,7 +21,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityLoginBinding
 
@@ -29,15 +31,16 @@ class LoginActivity : AppCompatActivity() {
         .build()
     var loginService: ServerAPI = retrofit.create(ServerAPI::class.java)
 
+    lateinit var imm: InputMethodManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
-
         setContentView(binding.root)
 
-        val pref = getSharedPreferences("loginCheck", MODE_PRIVATE)
+        imm = getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val pref = getSharedPreferences("autoLogin", MODE_PRIVATE)
         val editor = pref.edit()
 
         if (pref.getBoolean("autoLoginCheck", false)) {
@@ -47,21 +50,18 @@ class LoginActivity : AppCompatActivity() {
             login(id, pw)
 
         }
+        binding.loginBtn.setOnClickListener(this)
 
         binding.autoLoginCb.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
                 editor.putBoolean("autoLoginCheck", true)
                 editor.apply()
             }else{
-                editor.putBoolean("autoLoginCheck", false)
+                editor.clear()
                 editor.apply()
             }
         }
-        binding.loginBtn.setOnClickListener {
-            val id = binding.idEt.text.toString()
-            val pw = binding.passwordEt.text.toString()
-            login(id, pw)
-        }
+
     }
 
 
@@ -72,11 +72,11 @@ class LoginActivity : AppCompatActivity() {
             val id= id
             val pw = pw
 
-            val prefAuto = getSharedPreferences("autoLoginCheck", MODE_PRIVATE)
+            val prefAuto = getSharedPreferences("autoLogin", MODE_PRIVATE)
             val editorAuto = prefAuto.edit()
 
-            val prefId = getSharedPreferences("userId", MODE_PRIVATE)
-            val editorId = prefId.edit()
+            val prefInfo = getSharedPreferences("userInfo", MODE_PRIVATE)
+            val editorInfo = prefInfo.edit()
 
             try{
                 loginService.requestLogin(id, pw).enqueue(object : Callback<ResultLogin> {
@@ -86,11 +86,12 @@ class LoginActivity : AppCompatActivity() {
 
                     override fun onResponse(call: Call<ResultLogin>, response: Response<ResultLogin>) {
                         if(response.body()!!.check){
-                            editorId.putString("id", id)
-                            editorId.apply()
-                            if(prefAuto.getBoolean("autoLoginCheck",false)){
+                            editorInfo.putString("id", id)
+                            editorInfo.apply()
+                            if(binding.autoLoginCb.isChecked){
                                 editorAuto.putString("id",id)
                                 editorAuto.putString("pw",pw)
+                                editorAuto.apply()
                             }
                             if(response.body()!!.nickname){
                                 val intent = Intent(applicationContext, MainActivity::class.java)
@@ -106,6 +107,18 @@ class LoginActivity : AppCompatActivity() {
                 })
             }catch(e: Exception) {
                 e.printStackTrace()
+            }
+        }
+    }
+
+    override fun onClick(v: View?) {
+
+        when(v){
+            binding.loginBtn -> {
+                imm.hideSoftInputFromWindow(v.windowToken,0)
+                val id = binding.idEt.text.toString()
+                val pw = binding.passwordEt.text.toString()
+                login(id, pw)
             }
         }
     }

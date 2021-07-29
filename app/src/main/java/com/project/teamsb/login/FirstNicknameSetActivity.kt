@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.project.teamsb.api.NicknameCheck
@@ -27,6 +28,7 @@ class FirstNicknameSetActivity : AppCompatActivity(),View.OnClickListener {
     private val binding by lazy { ActivityFirstnicknamesetBinding.inflate(layoutInflater) }
 
     lateinit var id:String
+    lateinit var imm:InputMethodManager
     var retrofit: Retrofit = Retrofit.Builder()
         .baseUrl("http://13.209.10.30:3000/")
         .addConverterFactory(GsonConverterFactory.create())
@@ -39,7 +41,8 @@ class FirstNicknameSetActivity : AppCompatActivity(),View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val prefId = getSharedPreferences("userId", MODE_PRIVATE)
+        imm = getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val prefId = getSharedPreferences("userInfo", MODE_PRIVATE)
         val id = prefId.getString("id", "")
 
         binding.checkBtn.setOnClickListener(this)
@@ -47,6 +50,7 @@ class FirstNicknameSetActivity : AppCompatActivity(),View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
+        imm.hideSoftInputFromWindow(v!!.windowToken,0)
         val nickName = binding.nicknameEt.text.toString()
         when (v) {
             binding.checkBtn -> {

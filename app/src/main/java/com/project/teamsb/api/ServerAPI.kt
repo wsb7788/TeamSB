@@ -80,5 +80,10 @@ interface ServerAPI {
         @Field("curUser") curUser: String
         ) : Call<ResultNoReturn>
 
+    @FormUrlEncoded
+    @POST("/getUser/nickname/")
+    fun getUserNickname(
+        @Field("id") id: String,
+    ) : Call<ResultNickname>
 
 }
