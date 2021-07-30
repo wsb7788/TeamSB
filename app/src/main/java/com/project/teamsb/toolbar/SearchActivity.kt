@@ -15,7 +15,6 @@ import com.project.teamsb.R
 import com.project.teamsb.api.ResultPost
 import com.project.teamsb.api.ServerAPI
 import com.project.teamsb.databinding.ActivitySearchBinding
-import com.project.teamsb.databinding.ActivitySettingBinding
 import com.project.teamsb.recycler.adapter.PostRecyclerAdapter
 import com.project.teamsb.recycler.model.PostModel
 import kotlinx.coroutines.CoroutineScope
@@ -45,7 +44,7 @@ class SearchActivity:AppCompatActivity(),View.OnClickListener {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    var searchService: ServerAPI = retrofit.create(ServerAPI::class.java)
+    var serverAPI: ServerAPI = retrofit.create(ServerAPI::class.java)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -101,7 +100,7 @@ class SearchActivity:AppCompatActivity(),View.OnClickListener {
                     val keyword = binding.etSearch.text.toString()
                     val category1 = category
                     val page1 = page
-                    searchService.search(page1,category1,keyword ).enqueue(object : Callback<ResultPost> {
+                    serverAPI.search(page1,category1,keyword ).enqueue(object : Callback<ResultPost> {
                         override fun onResponse(call: Call<ResultPost>, response: Response<ResultPost>) {
                             for (i in response.body()!!.content.indices) {
                                 val title = response.body()!!.content[i].title.toString()

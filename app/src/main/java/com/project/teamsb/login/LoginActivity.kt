@@ -3,12 +3,9 @@ package com.project.teamsb.login
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.view.View.INVISIBLE
-import android.view.View.VISIBLE
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.project.teamsb.R
 import com.project.teamsb.api.ResultLogin
 import com.project.teamsb.api.ServerAPI
 import com.project.teamsb.databinding.ActivityLoginBinding
@@ -29,7 +26,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         .baseUrl("http://13.209.10.30:3000/")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
-    var loginService: ServerAPI = retrofit.create(ServerAPI::class.java)
+    var serverAPI: ServerAPI = retrofit.create(ServerAPI::class.java)
 
     lateinit var imm: InputMethodManager
 
@@ -79,7 +76,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             val editorInfo = prefInfo.edit()
 
             try{
-                loginService.requestLogin(id, pw).enqueue(object : Callback<ResultLogin> {
+                serverAPI.requestLogin(id, pw).enqueue(object : Callback<ResultLogin> {
                     override fun onFailure(call: Call<ResultLogin>, t: Throwable) {
                         Toast.makeText(applicationContext, "로그인 실패", Toast.LENGTH_SHORT).show()
                     }

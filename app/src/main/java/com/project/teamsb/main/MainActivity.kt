@@ -18,7 +18,6 @@ import com.project.teamsb.toolbar.SettingActivity
 import com.project.teamsb.toolbar.WriteActivity
 import com.project.teamsb.databinding.ActivityMainBinding
 import com.project.teamsb.main.calendar.CalendarFragment
-import com.project.teamsb.main.home.PostListActivity
 import com.project.teamsb.main.home.HomeFragment
 import com.project.teamsb.main.notice.NoticeFragment
 import com.project.teamsb.toolbar.SearchActivity
@@ -44,7 +43,7 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    var getNicknameService: ServerAPI = retrofit.create(ServerAPI::class.java)
+    var serverAPI: ServerAPI = retrofit.create(ServerAPI::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +69,7 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
             val id = prefInfo.getString("id","")!!
 
             try{
-                getNicknameService.getUserNickname(id).enqueue(object :Callback<ResultNickname>{
+                serverAPI.getUserNickname(id).enqueue(object :Callback<ResultNickname>{
                     override fun onResponse(call: Call<ResultNickname>, response: Response<ResultNickname>) {
                         if (response.body()!!.check){
                             editorInfo.putString("nickname",response.body()!!.content)

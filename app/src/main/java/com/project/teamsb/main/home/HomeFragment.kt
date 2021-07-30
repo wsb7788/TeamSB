@@ -36,7 +36,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    var postService: ServerAPI = retrofit.create(ServerAPI::class.java)
+    var serverAPI: ServerAPI = retrofit.create(ServerAPI::class.java)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         binding.btn1.setOnClickListener(this)
@@ -90,7 +90,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
             CoroutineScope(Dispatchers.Default).launch {
 
                 try {
-                    postService.recentPost().enqueue(object : Callback<ResultPost> {
+                    serverAPI.recentPost().enqueue(object : Callback<ResultPost> {
                         override fun onResponse(
                             call: Call<ResultPost>,
                             response: Response<ResultPost>

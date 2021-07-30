@@ -44,7 +44,7 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    var postService: ServerAPI = retrofit.create(ServerAPI::class.java)
+    var serverAPI: ServerAPI = retrofit.create(ServerAPI::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -138,7 +138,7 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
                     Log.d("로그", "코루틴 호출!")
                     modelList.clear()
                     try {
-                                postService.categoryPost(category, page).enqueue(object : Callback<ResultPost>{
+                                serverAPI.categoryPost(category, page).enqueue(object : Callback<ResultPost>{
                                     override fun onResponse(call: Call<ResultPost>, response: Response<ResultPost>) {
                                         for (i in response.body()!!.content.indices) {
                                             val title = response.body()!!.content[i].title

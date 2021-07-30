@@ -1,13 +1,17 @@
 package com.project.teamsb.post
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.View.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.project.teamsb.R
 import com.project.teamsb.api.ResultNoReturn
 import com.project.teamsb.api.ResultPost
 import com.project.teamsb.api.ResultReply
@@ -15,6 +19,8 @@ import com.project.teamsb.api.ServerAPI
 import com.project.teamsb.databinding.ActivityPostBinding
 import com.project.teamsb.recycler.model.CommentModel
 import com.project.teamsb.recycler.adapter.CommentRecyclerAdapter
+import com.project.teamsb.toolbar.SearchActivity
+import com.project.teamsb.toolbar.WriteActivity
 import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -34,20 +40,22 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
     var index: Int = 20
     var page: Int = 1
     var isLoading = false
-
+    var isUserPost = false
     var retrofit: Retrofit = Retrofit.Builder()
         .baseUrl("http://13.209.10.30:3000/")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    var contentService: ServerAPI = retrofit.create(ServerAPI::class.java)
+    var serverAPI: ServerAPI = retrofit.create(ServerAPI::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityPostBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
 
+        checkMod()
         contentLoading()
         commentRecyclerAdapter = CommentRecyclerAdapter()
         binding.rcvComment.apply {
@@ -59,7 +67,6 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
         binding.postScrollView.viewTreeObserver.addOnScrollChangedListener {
             var view = binding.postScrollView.getChildAt (binding.postScrollView.childCount - 1);
             var diff =(view.bottom - (binding.postScrollView.height + binding.postScrollView.scrollY));
-
             if (diff == 0) {
                 if(!isLoading){
                     isLoading = true
@@ -74,12 +81,44 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
 
     }
 
+    private fun checkMod() {
+        CoroutineScope(Dispatchers.Default).async {
+            val no = intent.getIntExtra("no", 0)!!
+            val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
+            val curUser = pref.getString("id","")!!
+            try {
+                serverAPI.checkMod(curUser, no).enqueue(object :
+                    Callback<ResultNoReturn>{
+                    override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
+                        if(response.body()!!.check){
+                            isUserPost = true
+                            invalidateOptionsMenu()
+                        }else if(response.body()!!.code == 303){
+                            isUserPost = false
+                            invalidateOptionsMenu()
+
+                        }else{
+                            Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
+                        }
+
+                    }
+                    override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
+                        Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()
+                    }
+                })
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
+    }
+
     private fun contentLoading() {
 
                 CoroutineScope(Dispatchers.Default).async {
                     val no = intent.getIntExtra("no", 0)!!
                     try {
-                        contentService.accessArticle(no).enqueue(object :
+                        serverAPI.accessArticle(no).enqueue(object :
                             Callback<ResultNoReturn>{
                             override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
                                 Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
@@ -89,7 +128,7 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
                                 Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()
                             }
                         })
-                        contentService.detail(no).enqueue(object :
+                        serverAPI.detail(no).enqueue(object :
                             Callback<ResultPost> {
                             override fun onResponse(
                                 call: Call<ResultPost>,
@@ -127,7 +166,7 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
                     var curUser = "wsb7788"
                     try {
 
-                        contentService.replyList(page, article_no,curUser).enqueue(object :
+                        serverAPI.replyList(page, article_no,curUser).enqueue(object :
                             Callback<ResultReply> {
                             override fun onResponse(call: Call<ResultReply>, response: Response<ResultReply>) {
                                 for (i in response.body()!!.content.indices) {
@@ -185,7 +224,7 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
                     val content = binding.etComment.text.toString()
                     val curUser = "wsb7788"
                     try {
-                        contentService.writeComment(no,content,curUser).enqueue(object :
+                        serverAPI.writeComment(no,content,curUser).enqueue(object :
                             Callback<ResultNoReturn>{
                             override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
                                 Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
@@ -206,5 +245,24 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
                 }.await()
             }
         }
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        if (isUserPost){
+            menuInflater.inflate(R.menu.menu_edit,menu)
+        }else{
+            menuInflater.inflate(R.menu.menu_report,menu)
+        }
+        return super.onCreateOptionsMenu(menu)
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.write_tb -> {
+
+            }
+            R.id.search_tb -> {
+
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
 }

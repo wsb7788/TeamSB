@@ -86,4 +86,10 @@ interface ServerAPI {
         @Field("id") id: String,
     ) : Call<ResultNickname>
 
+    @FormUrlEncoded
+    @POST("/check_mod/")
+    fun checkMod(
+        @Field("curUser") curUser: String,
+        @Field("no") no: Int,
+    ) : Call<ResultNoReturn>
 }

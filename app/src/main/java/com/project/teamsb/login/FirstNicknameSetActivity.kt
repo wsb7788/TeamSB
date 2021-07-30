@@ -2,7 +2,6 @@ package com.project.teamsb.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -14,7 +13,6 @@ import com.project.teamsb.main.MainActivity
 import com.project.teamsb.databinding.ActivityFirstnicknamesetBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -34,7 +32,7 @@ class FirstNicknameSetActivity : AppCompatActivity(),View.OnClickListener {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    var loginService: ServerAPI = retrofit.create(ServerAPI::class.java)
+    var serverAPI: ServerAPI = retrofit.create(ServerAPI::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -65,7 +63,7 @@ class FirstNicknameSetActivity : AppCompatActivity(),View.OnClickListener {
     private fun nicknameCheck(nickName: String) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                loginService.nicknameCheck(nickName).enqueue(object : Callback<NicknameCheck> {
+                serverAPI.nicknameCheck(nickName).enqueue(object : Callback<NicknameCheck> {
                     override fun onFailure(call: Call<NicknameCheck>, t: Throwable) {
                         Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()
                     }
@@ -87,7 +85,7 @@ class FirstNicknameSetActivity : AppCompatActivity(),View.OnClickListener {
     private fun nicknameSet(nickName: String, id: String) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                loginService.nicknameSet(id, nickName).enqueue(object : Callback<NicknameSet> {
+                serverAPI.nicknameSet(id, nickName).enqueue(object : Callback<NicknameSet> {
                     override fun onResponse(call: Call<NicknameSet>, response: Response<NicknameSet>) {
                         if (response.body()!!.check) {
                             Toast.makeText(applicationContext, "${response.body()}", Toast.LENGTH_SHORT).show()

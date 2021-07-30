@@ -38,11 +38,12 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener{
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    var writeService: ServerAPI = retrofit.create(ServerAPI::class.java)
+    var serverAPI: ServerAPI = retrofit.create(ServerAPI::class.java)
 
     var keyWord = ArrayList<String>()
 
     var keywordIndex = 0
+
 
     private lateinit var commentRecyclerAdapter: CommentRecyclerAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,6 +81,7 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener{
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+
         menuInflater.inflate(R.menu.menu_write_toolbar,menu)
 
         return true
@@ -114,7 +116,7 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener{
                 val userID = "wsb7788"
                 val text = binding.contentEt.text.toString()
                 val keyword1 = ArrayList<String>(keyWord)
-                writeService.writeArticle(title, category,userID ,text,keyword1).enqueue(object: Callback<ResultWrite> {
+                serverAPI.writeArticle(title, category,userID ,text,keyword1).enqueue(object: Callback<ResultWrite> {
                     override fun onResponse(call: Call<ResultWrite>, response: Response<ResultWrite>) {
                         if (response.body()!!.check){
                             Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
