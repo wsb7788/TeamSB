@@ -45,6 +45,17 @@ interface ServerAPI {
     ) : Call<ResultWrite>
 
     @FormUrlEncoded
+    @POST("/modifyArticle/")
+    fun modifyArticle(
+        @Field("curUser") curUser: String,
+        @Field("title") title: String,
+        @Field("category") category: String,
+        @Field("text") text: String,
+        @Field("hash") hash: ArrayList<String>,
+        @Field("no") no: Int
+    ) : Call<ResultWrite>
+
+    @FormUrlEncoded
     @POST("/search/")
     fun search(
         @Query("page") page:Int,

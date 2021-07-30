@@ -48,6 +48,8 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener{
 
     lateinit var id:String
 
+    var no=0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -80,7 +82,8 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener{
             else -> "그럴리가업썽"
         }
         if(intent.hasExtra("edit")){
-            setEdit(intent.getIntExtra("no",0))
+            no =intent.getIntExtra("no",0)
+            setEdit(no)
         }
 
         binding.btnAddKeyword.setOnClickListener(this)
@@ -134,8 +137,12 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener{
 
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        if(intent.hasExtra("edit")){
+            menuInflater.inflate(R.menu.menu_check,menu)
+        }else{
+            menuInflater.inflate(R.menu.menu_write_toolbar,menu)
 
-        menuInflater.inflate(R.menu.menu_write_toolbar,menu)
+        }
 
         return true
     }
@@ -157,17 +164,32 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener{
                     finish()
                 }
             }
+            R.id.check_tb -> {
+                if(binding.spinner.selectedItemPosition == 0){
+                    Toast.makeText(this, "카테고리를 선택해주세요!",Toast.LENGTH_SHORT).show()
+                    return super.onOptionsItemSelected(item)
+                }else{
+                    category = when(binding.spinner.selectedItemPosition){
+                        1-> "delivery"
+                        2-> "parcel"
+                        3-> "taxi"
+                        4-> "laundry"
+                        else-> ""
+                    }
+                    modify(id,category,no)
+                    finish()
+                }
+            }
         }
         return super.onOptionsItemSelected(item)
     }
-
-    fun submit(userID: String, category: String){
-
-            CoroutineScope(Dispatchers.Default).launch {
+    private fun modify(id: String, category: String, no: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try{
                 val title = binding.tvTitle.text.toString()
                 val text = binding.contentEt.text.toString()
                 val keyword1 = ArrayList<String>(keyWord)
-                serverAPI.writeArticle(title, category,userID ,text,keyword1).enqueue(object: Callback<ResultWrite> {
+                serverAPI.modifyArticle(id,title,category,text,keyword1,no).enqueue(object: Callback<ResultWrite> {
                     override fun onResponse(call: Call<ResultWrite>, response: Response<ResultWrite>) {
                         if (response.body()!!.check){
                             Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
@@ -179,18 +201,53 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener{
                         Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()
                     }
                 })
+            }catch (e: Exception){
+                Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()
+            }
+
+        }
+
+    }
+
+    fun submit(userID: String, category: String){
+
+            CoroutineScope(Dispatchers.IO).launch {
+                try{
+                    val title = binding.tvTitle.text.toString()
+                    val text = binding.contentEt.text.toString()
+                    val keyword1 = ArrayList<String>(keyWord)
+                    serverAPI.writeArticle(title,category,userID,text,keyword1).enqueue(object: Callback<ResultWrite> {
+                        override fun onResponse(call: Call<ResultWrite>, response: Response<ResultWrite>) {
+                            if (response.body()!!.check){
+                                Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
+                            }else{
+                                Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                        override fun onFailure(call: Call<ResultWrite>, t: Throwable) {
+                            Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()
+                        }
+                    })
+                }catch (e: Exception){
+                    Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()
+                }
+
             }
     }
 
     override fun onClick(v: View?) {
         when(v){
             binding.btnAddKeyword -> {
-                val text = binding.etKeyword.text.toString()
-                keyWord.add(text)
-                modelList.clear()
-                modelList.add(KeywordModel(text))
-                keywordRecyclerAdapter.submitList(modelList)
-                keywordRecyclerAdapter.notifyItemRangeChanged(keywordIndex++,1)
+                if(keyWord.size > 2){
+                    Toast.makeText(applicationContext, "키워드는 3개까지 입력이 가능합니다.", Toast.LENGTH_SHORT).show()
+                }else{
+                    val text = binding.etKeyword.text.toString()
+                    keyWord.add(text)
+                    modelList.clear()
+                    modelList.add(KeywordModel(text))
+                    keywordRecyclerAdapter.submitList(modelList)
+                    keywordRecyclerAdapter.notifyDataSetChanged()
+                }
             }
 
         }
