@@ -1,6 +1,9 @@
 package com.project.teamsb.post
 
 
+import android.app.AlertDialog
+import android.app.Dialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -196,27 +199,26 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
         }
     }
     private fun uploadComment(no:Int, curUser:String) {
-        runBlocking {
-                CoroutineScope(Dispatchers.Default).async {
-                    modelList.clear()
-                    val content = binding.etComment.text.toString()
-                    try {
-                        serverAPI.writeComment(no,content,curUser).enqueue(object :
-                            Callback<ResultNoReturn>{
-                            override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
-                                Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
-                                binding.etComment.text.clear()
-                            }
-                            override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
-                                Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()
-                            }
-                        })
-                    } catch (e: Exception) {
-                        e.printStackTrace()
+        modelList.clear()
+        CoroutineScope(Dispatchers.IO).launch {
+            val content = binding.etComment.text.toString()
+            try {
+                serverAPI.writeComment(no, content, curUser).enqueue(object :
+                    Callback<ResultNoReturn> {
+                    override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
+                        Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
+                        binding.etComment.text.clear()
                     }
-                }.await()
+                    override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
+                        Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()
+                    }
+                })
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
+
+    }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         if (isUserPost){
             menuInflater.inflate(R.menu.menu_edit,menu)
@@ -239,11 +241,48 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
 
             }
             R.id.delete_tb -> {
-
+                var builder = AlertDialog.Builder(this)
+                builder.setTitle("삭제하시겠습니까")
+                //builder.setMessage("기본 다이얼로그")
+                //builder.setIcon(R.mipmap.ic_launcher)
+                var listener = DialogInterface.OnClickListener { p0, p1 ->
+                    when (p1) {
+                        DialogInterface.BUTTON_POSITIVE ->{
+                            deleteArticle(id, no)
+                            finish()
+                        }
+                    }
+                }
+                builder.setPositiveButton("확인", listener)
+                builder.setNegativeButton("취소", listener)
+                builder.show()
             }
         }
         return super.onOptionsItemSelected(item)
     }
+
+    private fun deleteArticle(id: String, no: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                serverAPI.deleteArticle(id,no).enqueue(object :
+                    Callback<ResultNoReturn> {
+                    override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
+                        if(response.body()!!.check){
+                            Toast.makeText(applicationContext, "삭제완료", Toast.LENGTH_SHORT).show()
+                        }else{
+                            Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
+                        Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()
+                    }
+                })
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
     fun setContent(content: Content){
         binding.tvTitle2.text = content.title
         binding.tvCategory2.text = when(content.category){

@@ -103,4 +103,11 @@ interface ServerAPI {
         @Field("curUser") curUser: String,
         @Field("no") no: Int,
     ) : Call<ResultNoReturn>
+
+    @FormUrlEncoded
+    @POST("/deleteArticle/")
+    fun deleteArticle(
+        @Field("curUser") curUser: String,
+        @Field("no") no: Int,
+    ) : Call<ResultNoReturn>
 }

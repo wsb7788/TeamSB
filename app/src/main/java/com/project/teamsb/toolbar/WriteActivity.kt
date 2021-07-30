@@ -141,7 +141,6 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener{
             menuInflater.inflate(R.menu.menu_check,menu)
         }else{
             menuInflater.inflate(R.menu.menu_write_toolbar,menu)
-
         }
 
         return true
