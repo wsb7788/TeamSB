@@ -3,6 +3,8 @@ package com.project.teamsb.login
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -64,6 +66,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
 
     private fun login(id: String, pw: String) {
+        binding.progressBar.visibility = VISIBLE
         CoroutineScope(Dispatchers.IO).launch {
 
             val id= id
@@ -78,10 +81,13 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             try{
                 serverAPI.requestLogin(id, pw).enqueue(object : Callback<ResultLogin> {
                     override fun onFailure(call: Call<ResultLogin>, t: Throwable) {
+                        //메인스레드
                         Toast.makeText(applicationContext, "로그인 실패", Toast.LENGTH_SHORT).show()
+                        binding.progressBar.visibility = INVISIBLE
                     }
 
                     override fun onResponse(call: Call<ResultLogin>, response: Response<ResultLogin>) {
+                        binding.progressBar.visibility = INVISIBLE
                         if(response.body()!!.check){
                             editorInfo.putString("id", id)
                             editorInfo.apply()
@@ -103,8 +109,10 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                     }
                 })
             }catch(e: Exception) {
+                binding.progressBar.visibility = INVISIBLE
                 e.printStackTrace()
             }
+
         }
     }
 

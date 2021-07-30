@@ -115,7 +115,6 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
         return true
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val category = intent.getStringExtra("category")!!
         when(item.itemId){
             R.id.write_tb -> {
                 val intent = Intent(this, WriteActivity::class.java)
@@ -146,7 +145,6 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
                                             val timeStamp = response.body()!!.content[i].timeStamp
                                             val no = response.body()!!.content[i].no
                                             val myModel = PostModel(title, text, timeStamp, no)
-
                                             modelList.add(myModel)
                                         }
                                         postRecyclerAdapter.submitList(modelList)
@@ -168,5 +166,7 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
         intent.putExtra("no", postRecyclerAdapter.getItemContentNo(position))
         startActivity(intent)
     }
+
+
 }
 

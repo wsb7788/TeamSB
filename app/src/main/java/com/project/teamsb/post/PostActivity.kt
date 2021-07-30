@@ -12,10 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.teamsb.R
-import com.project.teamsb.api.ResultNoReturn
-import com.project.teamsb.api.ResultPost
-import com.project.teamsb.api.ResultReply
-import com.project.teamsb.api.ServerAPI
+import com.project.teamsb.api.*
 import com.project.teamsb.databinding.ActivityPostBinding
 import com.project.teamsb.recycler.model.CommentModel
 import com.project.teamsb.recycler.adapter.CommentRecyclerAdapter
@@ -37,10 +34,12 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
 
     var modelList = ArrayList<CommentModel>()
     private lateinit var commentRecyclerAdapter: CommentRecyclerAdapter
-    var index: Int = 20
     var page: Int = 1
-    var isLoading = false
     var isUserPost = false
+    var LoadLock = false
+    var NoMoreItem = false
+    lateinit var id:String
+    var no: Int = 0
     var retrofit: Retrofit = Retrofit.Builder()
         .baseUrl("http://13.209.10.30:3000/")
         .addConverterFactory(GsonConverterFactory.create())
@@ -55,37 +54,35 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
-        checkMod()
-        contentLoading()
+        no = intent.getIntExtra("no", 0)
+        val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
+        id = pref.getString("id","")!!
+
+        checkMod(id, no)
+        accessArticle(no)
         commentRecyclerAdapter = CommentRecyclerAdapter()
         binding.rcvComment.apply {
             layoutManager = LinearLayoutManager(this@PostActivity, LinearLayoutManager.VERTICAL, false)
             adapter = commentRecyclerAdapter
         }
-        replyLoading()
+        replyLoading(id,page,no)
 
         binding.postScrollView.viewTreeObserver.addOnScrollChangedListener {
             var view = binding.postScrollView.getChildAt (binding.postScrollView.childCount - 1);
             var diff =(view.bottom - (binding.postScrollView.height + binding.postScrollView.scrollY));
             if (diff == 0) {
-                if(!isLoading){
-                    isLoading = true
-                    Log.d(TAG, "로딩 리스너 호출!")
-                    replyLoading()
-                    page++
+                if (!LoadLock) {
+                    LoadLock = true
+                    if (!NoMoreItem) {
+                        replyLoading(id,++page,no)
+                    }
                 }
             }
         };
-
         binding.btnComment.setOnClickListener(this)
-
     }
-
-    private fun checkMod() {
-        CoroutineScope(Dispatchers.Default).async {
-            val no = intent.getIntExtra("no", 0)!!
-            val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
-            val curUser = pref.getString("id","")!!
+    private fun checkMod(curUser: String, no: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
             try {
                 serverAPI.checkMod(curUser, no).enqueue(object :
                     Callback<ResultNoReturn>{
@@ -96,11 +93,7 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
                         }else if(response.body()!!.code == 303){
                             isUserPost = false
                             invalidateOptionsMenu()
-
-                        }else{
-                            Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
                         }
-
                     }
                     override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
                         Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()
@@ -110,41 +103,76 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
                 e.printStackTrace()
             }
         }
-
+    }
+    private fun contentLoading(no:Int) {
+        CoroutineScope(Dispatchers.Default).async {
+            try {
+                serverAPI.detail(no).enqueue(object :
+                    Callback<ResultPost> {
+                    override fun onResponse(call: Call<ResultPost>, response: Response<ResultPost>) {
+                        if(response.body()!!.check){
+                            setContent(response.body()!!.content[0])
+                        }
+                    }
+                    override fun onFailure(call: Call<ResultPost>, t: Throwable) {
+                        Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()
+                    }
+                })
+            } catch (e: Exception) {
+                Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()
+                e.printStackTrace()
+            }
+        }
     }
 
-    private fun contentLoading() {
-
-                CoroutineScope(Dispatchers.Default).async {
-                    val no = intent.getIntExtra("no", 0)!!
+    private fun accessArticle(no:Int) {
+        CoroutineScope(Dispatchers.Default).async {
+            try {
+                serverAPI.accessArticle(no).enqueue(object : Callback<ResultNoReturn>{
+                    override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
+                        if(response.body()!!.check){
+                            Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
+                            contentLoading(no)
+                        }else{
+                            Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
+                        Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()
+                    }
+                })
+            } catch (e: Exception) {
+                Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()
+                e.printStackTrace()
+            }
+        }
+    }
+    private fun replyLoading(id:String, page: Int, no:Int) {
+        binding.progressBar.visibility = VISIBLE
+        modelList.clear()
+                CoroutineScope(Dispatchers.IO).launch {
                     try {
-                        serverAPI.accessArticle(no).enqueue(object :
-                            Callback<ResultNoReturn>{
-                            override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
-                                Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
-
+                        serverAPI.replyList(page, no,id).enqueue(object :
+                            Callback<ResultReply> {
+                            override fun onResponse(call: Call<ResultReply>, response: Response<ResultReply>) {
+                                for (i in response.body()!!.content.indices) {
+                                    if (response.body()!!.content.size % 20 != 0 || response.body()!!.content.isEmpty()) {
+                                        NoMoreItem = true;
+                                    }
+                                    val nickname = response.body()!!.content[i].userNickname
+                                    val content = response.body()!!.content[i].content
+                                    val myModel = CommentModel(name = nickname, content = content)
+                                    modelList.add(myModel)
+                                }
+                                commentRecyclerAdapter.submitList(modelList)
+                                commentRecyclerAdapter.notifyDataSetChanged()
+                                LoadLock = false
+                                binding.progressBar.visibility = INVISIBLE
                             }
-                            override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
+                            override fun onFailure(call: Call<ResultReply>, t: Throwable) {
                                 Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()
-                            }
-                        })
-                        serverAPI.detail(no).enqueue(object :
-                            Callback<ResultPost> {
-                            override fun onResponse(
-                                call: Call<ResultPost>,
-                                response: Response<ResultPost>
-                            ) {
-                                binding.tvTitle2.text = response.body()!!.content[0].title
-                                binding.tvCategory2.text = response.body()!!.content[0].category
-                                binding.tvTime2.text = response.body()!!.content[0].timeStamp
-                                binding.tvWriter2.text = response.body()!!.content[0].userNickname
-                                binding.tvKeyword2.text = response.body()!!.content[0].hash[0]
-                                binding.tvContent.text = response.body()!!.content[0].text
-                            }
-
-                            override fun onFailure(call: Call<ResultPost>, t: Throwable) {
-                                Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT)
-                                    .show()
+                                LoadLock = false
+                                binding.progressBar.visibility = INVISIBLE
                             }
                         })
                     } catch (e: Exception) {
@@ -152,53 +180,7 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
                     }
                 }
 
-
     }
-
-    private fun replyLoading() {
-        runBlocking{
-            CoroutineScope(Dispatchers.Main).launch {
-                CoroutineScope(Dispatchers.Default).async {
-                    modelList.clear()
-                    var page = page
-                    var article_no =  intent.getIntExtra("no", 0)
-                    //var article_no =
-                    var curUser = "wsb7788"
-                    try {
-
-                        serverAPI.replyList(page, article_no,curUser).enqueue(object :
-                            Callback<ResultReply> {
-                            override fun onResponse(call: Call<ResultReply>, response: Response<ResultReply>) {
-                                for (i in response.body()!!.content.indices) {
-                                    val nickname = response.body()!!.content[i].userNickname
-                                    //val img = response.body()!!.content[i].userNickname
-                                    val content = response.body()!!.content[i].content
-
-                                    val myModel = CommentModel(name = nickname, content = content)
-
-                                    modelList.add(myModel)
-                                }
-                                commentRecyclerAdapter.submitList(modelList)
-                                //commentRecyclerAdapter.notifyItemRangeChanged((page* index), index)
-                                commentRecyclerAdapter.notifyDataSetChanged()
-                               // binding.progressBar.visibility = INVISIBLE
-
-                            }
-
-                            override fun onFailure(call: Call<ResultReply>, t: Throwable) {
-                                Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()
-                            }
-                        })
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                }.await()
-
-            }
-        }
-
-    }
-
     override fun onClick(v: View?) {
         when(v){
             binding.btnComment ->{
@@ -207,32 +189,22 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
                 if(text.isNullOrBlank()){
                     Toast.makeText(this,"댓글을 입력하세요.",Toast.LENGTH_SHORT).show()
                 }else{
-                    uploadComment()
-
+                    uploadComment(no,id)
                 }
             }
 
         }
     }
-
-    private fun uploadComment() {
+    private fun uploadComment(no:Int, curUser:String) {
         runBlocking {
-
                 CoroutineScope(Dispatchers.Default).async {
                     modelList.clear()
-                    val no = intent.getIntExtra("no",0)
                     val content = binding.etComment.text.toString()
-                    val curUser = "wsb7788"
                     try {
                         serverAPI.writeComment(no,content,curUser).enqueue(object :
                             Callback<ResultNoReturn>{
                             override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
                                 Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
-                                /*val myModel = CommentModel(name = curUser, content = content)
-                                modelList.add(myModel)
-                                commentRecyclerAdapter.submitList(modelList)
-                                commentRecyclerAdapter.notifyDataSetChanged()*/
-                                replyLoading()
                                 binding.etComment.text.clear()
                             }
                             override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
@@ -248,6 +220,7 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         if (isUserPost){
             menuInflater.inflate(R.menu.menu_edit,menu)
+            menuInflater.inflate(R.menu.menu_delete,menu)
         }else{
             menuInflater.inflate(R.menu.menu_report,menu)
         }
@@ -255,14 +228,42 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
-            R.id.write_tb -> {
+            R.id.edit_tb -> {
+                intent = Intent(this, WriteActivity::class.java)
+                intent.putExtra("no",no)
+                intent.putExtra("edit",true)
+                intent.putExtra("category",binding.tvCategory2.text)
+                startActivity(intent)
+            }
+            R.id.report_tb -> {
 
             }
-            R.id.search_tb -> {
+            R.id.delete_tb -> {
 
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+    fun setContent(content: Content){
+        binding.tvTitle2.text = content.title
+        binding.tvCategory2.text = when(content.category){
+            "delivery"->"배달"
+            "parcel"->"택배"
+            "taxi"->"택시"
+            "laundry"->"빨래"
+            else -> "그럴리가업썽"
+        }
+        binding.tvTime2.text = content.timeStamp
+        binding.tvWriter2.text = content.userNickname
+        var hash = ""
+        if(content.hash.isNotEmpty()){
+            for(i in content.hash){
+                hash += " #"
+                hash += i
+            }
+        }
+        binding.tvKeyword2.text = hash
+        binding.tvContent.text = content.text
     }
 
 }

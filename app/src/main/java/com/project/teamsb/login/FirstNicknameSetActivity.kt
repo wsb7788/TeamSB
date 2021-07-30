@@ -45,6 +45,8 @@ class FirstNicknameSetActivity : AppCompatActivity(),View.OnClickListener {
 
         binding.checkBtn.setOnClickListener(this)
         binding.setBtn.setOnClickListener(this)
+
+
     }
 
     override fun onClick(v: View?) {
@@ -85,9 +87,11 @@ class FirstNicknameSetActivity : AppCompatActivity(),View.OnClickListener {
     private fun nicknameSet(nickName: String, id: String) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
+
                 serverAPI.nicknameSet(id, nickName).enqueue(object : Callback<NicknameSet> {
                     override fun onResponse(call: Call<NicknameSet>, response: Response<NicknameSet>) {
                         if (response.body()!!.check) {
+
                             Toast.makeText(applicationContext, "${response.body()}", Toast.LENGTH_SHORT).show()
                             val intent = Intent(applicationContext, MainActivity::class.java)
                             startActivity(intent)
