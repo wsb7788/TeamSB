@@ -111,10 +111,11 @@ interface ServerAPI {
         @Field("no") no: Int,
     ) : Call<ResultNoReturn>
 
+    @FormUrlEncoded
     @POST("/report/")
     fun report(
         @Field("curUser") curUser: String,
         @Field("article_no") no: Int,
-        @Field("content") content: String,
+        @Field("content") content: String
     ) : Call<ResultNoReturn>
 }

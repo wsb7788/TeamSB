@@ -3,9 +3,9 @@
     <TextView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="기본으로보여지는이미지셈"
+        android:layout_height="70dp"
+        android:gravity="center"
+        android:text="선택하세용"
         android:id="@+id/TextView1"
-        android:textSize="18sp"
-        android:textColor="@color/black"
-        />
+        android:textSize="20sp"
+        android:textColor="@color/black"/>

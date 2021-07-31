@@ -6,6 +6,7 @@ import android.text.SpannableStringBuilder
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -65,6 +66,10 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener{
 
         setSupportActionBar(binding.toolbar)
 
+
+        val adapter = ArrayAdapter.createFromResource(this, R.array.category,R.layout.spinner_custom_list)
+        adapter.setDropDownViewResource(R.layout.spinner_custom_list2)
+        binding.spinner.adapter = adapter
 
         val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
         id = pref.getString("id","")!!

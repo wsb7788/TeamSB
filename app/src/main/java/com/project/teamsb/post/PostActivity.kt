@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.teamsb.R
 import com.project.teamsb.api.*
 import com.project.teamsb.databinding.ActivityPostBinding
+import com.project.teamsb.databinding.DialogReportBinding
 import com.project.teamsb.recycler.model.CommentModel
 import com.project.teamsb.recycler.adapter.CommentRecyclerAdapter
 import com.project.teamsb.toolbar.SearchActivity
@@ -240,13 +241,11 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
                 startActivity(intent)
             }
             R.id.report_tb -> {
-                reportDialog()
+                reportDialog(id,no)
             }
             R.id.delete_tb -> {
                 var builder = AlertDialog.Builder(this)
                 builder.setTitle("삭제하시겠습니까")
-                //builder.setMessage("기본 다이얼로그")
-                //builder.setIcon(R.mipmap.ic_launcher)
                 var listener = DialogInterface.OnClickListener { p0, p1 ->
                     when (p1) {
                         DialogInterface.BUTTON_POSITIVE ->{
@@ -263,29 +262,37 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
         return super.onOptionsItemSelected(item)
     }
 
-    fun reportDialog() {
+    fun reportDialog(id:String, no:Int) {
 
 
         val dialogBuilder = AlertDialog.Builder(this)
-        dialogBuilder.setTitle("앙기모띠")
-        val view = layoutInflater.inflate(R.layout.dialog_report,null)
-        dialogBuilder.setView(view)
+        val view = DialogReportBinding.inflate(layoutInflater)
+        dialogBuilder.setView(view.root)
         val alertDialog = dialogBuilder.create()
         alertDialog.show()
-
-
+        view.btnReportPositive.setOnClickListener {
+            var text = when(view.spinnerReport.selectedItemPosition){
+                0 -> view.spinnerReport.getItemAtPosition(0).toString()
+                1 -> view.spinnerReport.getItemAtPosition(1).toString()
+                2 -> view.spinnerReport.getItemAtPosition(2).toString()
+                else -> "그럴리가없다잉"
+            }
+            reportArticle(id,no,text)
+            alertDialog.onBackPressed()
+        }
+        view.btnReportNegative.setOnClickListener {
+            alertDialog.onBackPressed()
+        }
     }
 
+    private fun reportArticle(id: String, no:Int, content:String) {
 
-fun reportArticle(id: String, no:Int, content:String) {
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(Dispatchers.Default).launch {
             try {
-
                 serverAPI.report(id,no,content).enqueue(object : Callback<ResultNoReturn>{
                     override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
                         if(response.body()!!.check){
                             Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
-                            contentLoading(no)
                         }else{
                             Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
                         }
@@ -295,7 +302,7 @@ fun reportArticle(id: String, no:Int, content:String) {
                     }
                 })
             } catch (e: Exception) {
-                Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, "syntax 에러", Toast.LENGTH_SHORT).show()
                 e.printStackTrace()
             }
         }
