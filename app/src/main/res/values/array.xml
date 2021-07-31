@@ -7,6 +7,11 @@
         <item id="taxi">택시</item>
         <item id="laundry">빨래</item>
     </string-array>
+    <string-array name="report" >
+        <item id="all">욕설 및 비방</item>
+        <item id="delivery">불쾌한 게시글</item>
+        <item id="parcel">불쾌한 닉네임</item>
+    </string-array>
 
 
 

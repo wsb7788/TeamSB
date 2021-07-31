@@ -1,17 +1,18 @@
 package com.project.teamsb.post
 
 
-import android.app.AlertDialog
+
 import android.app.Dialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.view.View.*
+import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.teamsb.R
@@ -129,7 +130,7 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
     }
 
     private fun accessArticle(no:Int) {
-        CoroutineScope(Dispatchers.Default).async {
+        CoroutineScope(Dispatchers.IO).launch {
             try {
                 serverAPI.accessArticle(no).enqueue(object : Callback<ResultNoReturn>{
                     override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
@@ -196,6 +197,7 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
                 }
             }
 
+
         }
     }
     private fun uploadComment(no:Int, curUser:String) {
@@ -238,7 +240,7 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
                 startActivity(intent)
             }
             R.id.report_tb -> {
-
+                reportDialog()
             }
             R.id.delete_tb -> {
                 var builder = AlertDialog.Builder(this)
@@ -259,6 +261,44 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    fun reportDialog() {
+
+
+        val dialogBuilder = AlertDialog.Builder(this)
+        dialogBuilder.setTitle("앙기모띠")
+        val view = layoutInflater.inflate(R.layout.dialog_report,null)
+        dialogBuilder.setView(view)
+        val alertDialog = dialogBuilder.create()
+        alertDialog.show()
+
+
+    }
+
+
+fun reportArticle(id: String, no:Int, content:String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+
+                serverAPI.report(id,no,content).enqueue(object : Callback<ResultNoReturn>{
+                    override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
+                        if(response.body()!!.check){
+                            Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
+                            contentLoading(no)
+                        }else{
+                            Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
+                        Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()
+                    }
+                })
+            } catch (e: Exception) {
+                Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()
+                e.printStackTrace()
+            }
+        }
     }
 
     private fun deleteArticle(id: String, no: Int) {
