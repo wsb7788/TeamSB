@@ -15,4 +15,8 @@
         <item name="windowNoTitle">true</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="CalendarViewTheme">
+        <item name="colorAccent">#F9DA78</item>
+    </style>
 </resources>

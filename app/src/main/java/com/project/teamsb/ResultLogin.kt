@@ -7,5 +7,3 @@ data class ResultLogin(
     var password: String = "",
     var nickname: Boolean = false,
     var message: String = "")
-
-
