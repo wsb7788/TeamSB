@@ -8,115 +8,212 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+
+
+        <ImageButton
+            android:id="@+id/btn1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="5dp"
+            android:backgroundTint="#fff"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/food"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintEnd_toStartOf="@+id/btn2"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.20" />
+
+        <ImageButton
+            android:id="@+id/btn2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="5dp"
+            android:backgroundTint="#fff"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/delivery"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintEnd_toStartOf="@+id/btn3"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btn1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.20" />
+
+        <ImageButton
+            android:id="@+id/btn3"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="4dp"
+            android:backgroundTint="#fff"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/taxi"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintEnd_toStartOf="@+id/btn4"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btn2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.20" />
+
+        <ImageButton
+            android:id="@+id/btn4"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="5dp"
+            android:backgroundTint="#fff"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/laundry"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btn3"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.20" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="배달"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toStartOf="@+id/textView2"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn1"
+            app:layout_constraintWidth_percent="0.2" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="택배"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toStartOf="@+id/textView3"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textView1"
+            app:layout_constraintTop_toBottomOf="@+id/btn1"
+            app:layout_constraintWidth_percent="0.2" />
+
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="택시"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toStartOf="@+id/textView4"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textView2"
+            app:layout_constraintTop_toBottomOf="@+id/btn1"
+            app:layout_constraintWidth_percent="0.2" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="빨래"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textView3"
+            app:layout_constraintTop_toBottomOf="@+id/btn1"
+            app:layout_constraintWidth_percent="0.2" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <EditText
-                android:id="@+id/editText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:hint="검색어를 입력하세요"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-            <ImageButton
-                android:id="@+id/btn1"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintDimensionRatio="1"
-                app:layout_constraintWidth_percent="0.25"
-                android:layout_marginTop="5dp"
-                android:src="@mipmap/food"
-                android:backgroundTint="#fff"
-                app:layout_constraintStart_toStartOf="parent"
-                android:scaleType="fitCenter"
-
-                app:layout_constraintTop_toBottomOf="@+id/editText" />
-            <ImageButton
-                android:id="@+id/btn2"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintDimensionRatio="1"
-                app:layout_constraintWidth_percent="0.25"
-                android:layout_marginTop="5dp"
-                android:src="@mipmap/delivery"
-                android:backgroundTint="#fff"
-                android:scaleType="fitCenter"
-                app:layout_constraintStart_toEndOf="@id/btn1"
-                app:layout_constraintTop_toBottomOf="@+id/editText" />
-            <ImageButton
-                android:id="@+id/btn3"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintDimensionRatio="1"
-                app:layout_constraintWidth_percent="0.25"
-                android:layout_marginTop="5dp"
-                android:src="@mipmap/taxi"
-                android:backgroundTint="#fff"
-                android:scaleType="fitCenter"
-                app:layout_constraintStart_toEndOf="@id/btn2"
-                app:layout_constraintTop_toBottomOf="@+id/editText" />
-            <ImageButton
-                android:id="@+id/btn4"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintDimensionRatio="1"
-                app:layout_constraintWidth_percent="0.25"
-                android:layout_marginTop="5dp"
-                android:src="@mipmap/laundry"
-                android:backgroundTint="#fff"
-                android:scaleType="fitCenter"
-                app:layout_constraintStart_toEndOf="@id/btn3"
-                app:layout_constraintTop_toBottomOf="@+id/editText" />
+            android:id="@+id/layout_recent"
+            android:layout_width="0dp"
+            android:layout_height="250dp"
+            android:padding="20sp"
+            android:background="@drawable/home_rectangle"
+            android:gravity="center"
+            android:text="12312321"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="20dp"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView1"
+            app:layout_constraintWidth_percent="0.9" >
 
             <TextView
-                android:id="@+id/recycletv"
-                android:layout_width="0dp"
-                android:layout_height="250dp"
-                android:gravity="center"
-                android:text="12312321"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
+                android:id="@+id/tv_recent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="최근 게시물"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                android:textSize="18sp"
+                android:textColor="@color/black"/>
+            <TextView
+                android:id="@+id/tv_recent_post"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/tv_recent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textSize="18sp"
+                android:text="더보기"
+                android:clickable="true"
+                app:layout_constraintHorizontal_bias="1"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcv_recent5"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:nestedScrollingEnabled="false"
                 app:layout_constraintWidth_percent="0.9"
-                android:background="@drawable/home_rectangle"/>
-            <TextView
-                android:id="@+id/foodtv"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:text="     점심 (11:50~13:30)"
-                android:textSize="25sp"
-                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="20dp"
-                app:layout_constraintTop_toBottomOf="@+id/recycletv"
-                />
-
-            <TextView
-                android:id="@+id/tvt1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="A코너 \n 육개장\n 육개장\n 육개장\n 육개장\n 육개장\n 육개장"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/foodtv"
-                app:layout_constraintWidth_percent="0.5" />
-
-            <TextView
-                android:id="@+id/tvt2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-
-                android:text="A코너 \n 육개장\n 육개장\n 육개장\n 육개장\n 육개장\n 육개장"
-                app:layout_constraintStart_toEndOf="@+id/tvt1"
-                app:layout_constraintTop_toBottomOf="@+id/foodtv"
-                app:layout_constraintWidth_percent="0.5" />
-
+                app:layout_constraintTop_toBottomOf="@+id/tv_recent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/foodtv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            android:text="점심 (11:50~13:30)"
+            android:paddingLeft="20sp"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_recent"/>
+
+        <TextView
+            android:id="@+id/tvt1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="A코너 \n 육개장\n 육개장\n 육개장\n 육개장\n 육개장\n 육개장"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/foodtv"
+            app:layout_constraintWidth_percent="0.5" />
+
+        <TextView
+            android:id="@+id/tvt2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:text="A코너 \n 육개장\n 육개장\n 육개장\n 육개장\n 육개장\n 육개장"
+            app:layout_constraintStart_toEndOf="@+id/tvt1"
+            app:layout_constraintTop_toBottomOf="@+id/foodtv"
+            app:layout_constraintWidth_percent="0.5" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 <!--
         <LinearLayout
             android:layout_width="match_parent"
