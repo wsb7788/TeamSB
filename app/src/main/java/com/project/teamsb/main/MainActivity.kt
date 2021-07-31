@@ -11,13 +11,13 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
+import com.project.teamsb.CalendarFragment
 import com.project.teamsb.R
 import com.project.teamsb.api.ResultNickname
 import com.project.teamsb.api.ServerAPI
 import com.project.teamsb.toolbar.SettingActivity
 import com.project.teamsb.toolbar.WriteActivity
 import com.project.teamsb.databinding.ActivityMainBinding
-import com.project.teamsb.main.calendar.CalendarFragment
 import com.project.teamsb.main.home.HomeFragment
 import com.project.teamsb.main.notice.NoticeFragment
 import com.project.teamsb.toolbar.SearchActivity
