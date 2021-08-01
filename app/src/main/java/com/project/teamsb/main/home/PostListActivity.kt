@@ -97,7 +97,6 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
         postRecyclerAdapter.setItemClickListener(this)
 
     }
-
     override fun onResume() {
         super.onResume()
         if(returnWrite){

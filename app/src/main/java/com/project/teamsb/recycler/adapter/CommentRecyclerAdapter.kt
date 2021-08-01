@@ -43,7 +43,7 @@ class CommentRecyclerAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
     override fun getItemViewType(position: Int): Int {
         // 게시물과 프로그레스바 아이템뷰를 구분할 기준이 필요하다.
-        return when (modelList[position].name) {
+        return when (modelList[position].nickname) {
             null -> VIEW_TYPE_LOADING
             else -> VIEW_TYPE_ITEM
         }

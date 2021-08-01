@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.view.View.*
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -17,7 +18,6 @@ import com.project.teamsb.databinding.ActivityPostBinding
 import com.project.teamsb.databinding.DialogReportBinding
 import com.project.teamsb.recycler.model.CommentModel
 import com.project.teamsb.recycler.adapter.CommentRecyclerAdapter
-import com.project.teamsb.recycler.model.PostModel
 import com.project.teamsb.toolbar.WriteActivity
 import kotlinx.coroutines.*
 import retrofit2.Call
@@ -35,6 +35,7 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
 
     var modelList = ArrayList<CommentModel>()
     private lateinit var commentRecyclerAdapter: CommentRecyclerAdapter
+    lateinit var imm: InputMethodManager
     var page: Int = 1
     val index = 20
     var isUserPost = false
@@ -57,6 +58,8 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
         binding = ActivityPostBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
+
+        imm = getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
         no = intent.getIntExtra("no", 0)
         val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
@@ -175,7 +178,8 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
                                     }
                                     val nickname = response.body()!!.content[i].userNickname
                                     val content = response.body()!!.content[i].content
-                                    val myModel = CommentModel(name = nickname, content = content)
+                                    val id = id == response.body()!!.content[i].userId
+                                    val myModel = CommentModel(nickname = nickname,id= id, content = content)
                                     modelList.add(myModel)
                                 }
                                 commentRecyclerAdapter.submitList(modelList)
@@ -207,7 +211,10 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
                 if(text.isNullOrBlank()){
                     Toast.makeText(this,"댓글을 입력하세요.",Toast.LENGTH_SHORT).show()
                 }else{
+                    binding.postScrollView.scrollTo(0,0)
+                    imm.hideSoftInputFromWindow(v.windowToken,0)
                     uploadComment(no,id)
+
                 }
             }
 
@@ -224,10 +231,12 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
                     override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
                         if(response.body()!!.check){
                             binding.etComment.text.clear()
-                            var comment = CommentModel(name= nickname,content = content)
-                            modelList.add(comment)
-                            commentRecyclerAdapter.submitList(modelList)
-                            commentRecyclerAdapter.notifyItemInserted(commentRecyclerAdapter.itemCount - 1)
+                            page = 1
+                            commentRecyclerAdapter.clearList()
+                            isRefresh = true
+                            noMoreItem = false
+                            replyLoading(id, page, no)
+
                         }else{
                             Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
 
