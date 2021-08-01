@@ -202,7 +202,5 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
         intent.putExtra("no", postRecyclerAdapter.getItemContentNo(position))
         startActivity(intent)
     }
-
-
 }
 
