@@ -90,6 +90,7 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
             postRecyclerAdapter.clearList()
             isRefresh = true
             postLoading()
+            noMoreItem = false
             binding.srlCategory.isRefreshing = false
         }
         postRecyclerAdapter.setItemClickListener(this)

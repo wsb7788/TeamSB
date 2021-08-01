@@ -144,8 +144,10 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener{
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         if(intent.hasExtra("edit")){
             menuInflater.inflate(R.menu.menu_check,menu)
+            binding.tvToolbar.text = "수정"
         }else{
             menuInflater.inflate(R.menu.menu_write_toolbar,menu)
+            binding.tvToolbar.text = "글쓰기"
         }
 
         return true
