@@ -97,6 +97,15 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        page = 1
+        postRecyclerAdapter.clearList()
+        isRefresh = true
+        postLoading()
+        noMoreItem = false
+    }
+
     private fun setToolBarText() {
         category = if(intent.hasExtra("category")) {
             intent.getStringExtra("category")!! }else{
@@ -106,7 +115,7 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
             "배달"->"delivery"
             "택시"->"taxi"
             "빨래"->"laundry"
-            else ->"ㄴㄴ"
+            else ->"all"
         }
 
         binding.tvToolbar.text = category

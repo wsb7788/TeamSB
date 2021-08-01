@@ -79,7 +79,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
                 startActivity(intent)
             }
             binding.tvRecentPost -> {
-                intent.putExtra("category", "all")
+                intent.putExtra("category", "전체 게시물")
                 startActivity(intent)
             }
         }
