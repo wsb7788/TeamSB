@@ -80,10 +80,10 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener{
 
         when(category){
             "all" -> binding.spinner.setSelection(0)
-            "delivery", "배달"->binding.spinner.setSelection(1)
-            "parcel", "택배"->binding.spinner.setSelection(2)
-            "taxi","택시"->binding.spinner.setSelection(3)
-            "laundry","빨래"->binding.spinner.setSelection(4)
+            "배달"->binding.spinner.setSelection(1)
+            "택배"->binding.spinner.setSelection(2)
+            "택시"->binding.spinner.setSelection(3)
+            "빨래"->binding.spinner.setSelection(4)
             else -> "그럴리가업썽"
         }
         if(intent.hasExtra("edit")){
@@ -121,10 +121,10 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener{
         var editable: Editable = SpannableStringBuilder(content.title)
         binding.tvTitle.text = editable
         binding.spinner.setSelection(when(category){
-            "delivery","배달"->1
-            "parcel","택배"->2
-            "taxi","택시"->3
-            "laundry","빨래"->4
+            "배달"->1
+            "택배"->2
+            "택시"->3
+            "빨래"->4
             else -> 0
         })
         editable = SpannableStringBuilder(content.text)
@@ -158,10 +158,10 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener{
                     return super.onOptionsItemSelected(item)
                 }else{
                     category = when(binding.spinner.selectedItemPosition){
-                        1-> "delivery"
-                        2-> "parcel"
-                        3-> "taxi"
-                        4-> "laundry"
+                        1-> "배달"
+                        2-> "택배"
+                        3-> "택시"
+                        4-> "빨래"
                         else-> ""
                     }
                     submit(id, category)
@@ -174,10 +174,10 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener{
                     return super.onOptionsItemSelected(item)
                 }else{
                     category = when(binding.spinner.selectedItemPosition){
-                        1-> "delivery"
-                        2-> "parcel"
-                        3-> "taxi"
-                        4-> "laundry"
+                        1-> "배달"
+                        2-> "택배"
+                        3-> "택시"
+                        4-> "빨래"
                         else-> ""
                     }
                     modify(id,category,no)

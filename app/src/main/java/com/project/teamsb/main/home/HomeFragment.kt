@@ -63,19 +63,19 @@ class HomeFragment : Fragment(), View.OnClickListener {
         )
         when (v) {
             binding.btn1 -> {
-                intent.putExtra("category", "delivery")
+                intent.putExtra("category", "배달")
                 startActivity(intent)
             }
             binding.btn2 -> {
-                intent.putExtra("category", "parcel")
+                intent.putExtra("category", "택배")
                 startActivity(intent)
             }
             binding.btn3 -> {
-                intent.putExtra("category", "taxi")
+                intent.putExtra("category", "택시")
                 startActivity(intent)
             }
             binding.btn4 -> {
-                intent.putExtra("category", "laundry")
+                intent.putExtra("category", "빨래")
                 startActivity(intent)
             }
             binding.tvRecentPost -> {
@@ -96,13 +96,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
                             response: Response<ResultPost>
                         ) {
                             for (i in response.body()!!.content.indices) {
-                                val category = when(response.body()!!.content[i].category){
-                                    "laundry" -> "빨래"
-                                    "parcel" -> "택배"
-                                    "taxi" -> "택시"
-                                    "delivery" -> "배달"
-                                    else -> "그럴리가.."
-                                }
+                                val category = response.body()!!.content[i].text
                                 val text = response.body()!!.content[i].text.toString()
                                 val myModel = RecentModel(category, text)
                                 modelList.add(myModel)

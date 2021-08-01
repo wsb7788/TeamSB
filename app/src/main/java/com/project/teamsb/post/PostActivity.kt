@@ -332,13 +332,7 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
 
     fun setContent(content: Content){
         binding.tvTitle2.text = content.title
-        binding.tvCategory2.text = when(content.category){
-            "delivery"->"배달"
-            "parcel"->"택배"
-            "taxi"->"택시"
-            "laundry"->"빨래"
-            else -> "그럴리가업썽"
-        }
+        binding.tvCategory2.text = content.category
         binding.tvTime2.text = content.timeStamp
         binding.tvWriter2.text = content.userNickname
         var hash = ""

@@ -60,10 +60,10 @@ class SearchActivity:AppCompatActivity(),View.OnClickListener {
 
         when(category){
             "all" -> binding.spinner.setSelection(0)
-            "delivery"->binding.spinner.setSelection(1)
-            "parcel"->binding.spinner.setSelection(2)
-            "taxi"->binding.spinner.setSelection(3)
-            "laundry"->binding.spinner.setSelection(4)
+            "배달"->binding.spinner.setSelection(1)
+            "택배"->binding.spinner.setSelection(2)
+            "택시"->binding.spinner.setSelection(3)
+            "빨래"->binding.spinner.setSelection(4)
         }
 
         binding.rcvSearch.addOnScrollListener(object : RecyclerView.OnScrollListener(){
@@ -131,10 +131,10 @@ class SearchActivity:AppCompatActivity(),View.OnClickListener {
                     Toast.makeText(this,"카테고리를 선택해주세요.",Toast.LENGTH_SHORT).show()
                 }else{
                     category = when(binding.spinner.selectedItemPosition){
-                        1-> "delivery"
-                        2-> "parcel"
-                        3-> "taxi"
-                        4-> "laundry"
+                        1-> "배달"
+                        2-> "택배"
+                        3-> "택시"
+                        4-> "빨래"
                         else-> ""
                     }
                     page = 1

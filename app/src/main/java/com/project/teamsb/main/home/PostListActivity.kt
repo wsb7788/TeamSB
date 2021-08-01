@@ -36,6 +36,7 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
     private lateinit var postRecyclerAdapter: PostRecyclerAdapter
 
     lateinit var category: String
+    lateinit var categoryQuery: String
     var index = 10
     var page = 1
     var isLoading = false
@@ -87,18 +88,18 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
     }
 
     private fun setToolBarText() {
-        val category = if(intent.hasExtra("category")) {
+        category = if(intent.hasExtra("category")) {
             intent.getStringExtra("category")!! }else{
             "all" }
-
-        when(category){
-            "delivery"->binding.tvToolbar.text = "배달"
-            "parcel"->binding.tvToolbar.text = "택배"
-            "taxi"->binding.tvToolbar.text = "택시"
-            "laundry"->binding.tvToolbar.text = "빨래"
-            "all"->binding.tvToolbar.text = "전체 게시글"
+        categoryQuery = when(category){
+            "택배"->"parcel"
+            "배달"->"delivery"
+            "택시"->"taxi"
+            "빨래"->"laundry"
+            else ->"ㄴㄴ"
         }
 
+        binding.tvToolbar.text = category
     }
 
     private fun initRecycler() {
@@ -137,7 +138,7 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
                     Log.d("로그", "코루틴 호출!")
                     modelList.clear()
                     try {
-                                serverAPI.categoryPost(category, page).enqueue(object : Callback<ResultPost>{
+                                serverAPI.categoryPost(categoryQuery, page).enqueue(object : Callback<ResultPost>{
                                     override fun onResponse(call: Call<ResultPost>, response: Response<ResultPost>) {
                                         for (i in response.body()!!.content.indices) {
                                             val title = response.body()!!.content[i].title
