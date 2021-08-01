@@ -39,7 +39,9 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
     lateinit var categoryQuery: String
     var index = 10
     var page = 1
-    var isLoading = false
+    var loadLock = false
+    var noMoreItem = false
+    var isRefresh = false
     var retrofit: Retrofit = Retrofit.Builder()
         .baseUrl("http://13.209.10.30:3000/home/")
         .addConverterFactory(GsonConverterFactory.create())
@@ -70,16 +72,23 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
                 val lastVisibleItemPosition = (recyclerView.layoutManager as LinearLayoutManager?)!!.findLastCompletelyVisibleItemPosition()
                 val itemTotalCount = recyclerView.adapter!!.itemCount-1
                 // 스크롤이 끝에 도달했는지 확인
-                if (!binding.rcvPost.canScrollVertically(1) && lastVisibleItemPosition == itemTotalCount && postRecyclerAdapter.itemCount > 9) {
-                    postRecyclerAdapter.deleteLoading()
-                    page++
-                    postLoading()
+                if (lastVisibleItemPosition > itemTotalCount * 0.7) {
+                    if (!loadLock) {
+                        loadLock = true
+                        if (!noMoreItem) {
+                            postRecyclerAdapter.deleteLoading()
+                            page++
+                            postLoading()
+                        }
+                    }
+
                 }
             }
         })
         binding.srlCategory.setOnRefreshListener {
             page = 1
             postRecyclerAdapter.clearList()
+            isRefresh = true
             postLoading()
             binding.srlCategory.isRefreshing = false
         }
@@ -140,6 +149,9 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
                     try {
                                 serverAPI.categoryPost(categoryQuery, page).enqueue(object : Callback<ResultPost>{
                                     override fun onResponse(call: Call<ResultPost>, response: Response<ResultPost>) {
+                                        if (response.body()!!.content.size % 20 != 0 || response.body()!!.content.isEmpty()) {
+                                            noMoreItem = true
+                                        }
                                         for (i in response.body()!!.content.indices) {
                                             val title = response.body()!!.content[i].title
                                             val text = response.body()!!.content[i].text
@@ -149,10 +161,17 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
                                             modelList.add(myModel)
                                         }
                                         postRecyclerAdapter.submitList(modelList)
-                                        postRecyclerAdapter.notifyItemRangeChanged((page* index), index)
+                                        if(isRefresh){
+                                            postRecyclerAdapter.notifyDataSetChanged()
+                                            isRefresh = false
+                                        }else{
+                                            postRecyclerAdapter.notifyItemRangeInserted(((page-1)* index), index)
+                                        }
+                                        loadLock = false
                                     }
                                     override fun onFailure(call: Call<ResultPost>, t: Throwable) {
                                         Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()
+                                        loadLock = false
                                     }
                                 })
                     } catch (e: Exception) {
