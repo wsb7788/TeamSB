@@ -42,6 +42,7 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
     var loadLock = false
     var noMoreItem = false
     var isRefresh = false
+    var returnWrite = false
     var retrofit: Retrofit = Retrofit.Builder()
         .baseUrl("http://13.209.10.30:3000/home/")
         .addConverterFactory(GsonConverterFactory.create())
@@ -99,11 +100,15 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
 
     override fun onResume() {
         super.onResume()
-        page = 1
-        postRecyclerAdapter.clearList()
-        isRefresh = true
-        postLoading()
-        noMoreItem = false
+        if(returnWrite){
+            page = 1
+            postRecyclerAdapter.clearList()
+            isRefresh = true
+            postLoading()
+            noMoreItem = false
+            returnWrite = false
+        }
+
     }
 
     private fun setToolBarText() {
@@ -140,6 +145,7 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
                 val intent = Intent(this, WriteActivity::class.java)
                 intent.putExtra("category",category)
                 startActivity(intent)
+                returnWrite = true
             }
             R.id.search_tb -> {
                 val intent = Intent(this, SearchActivity::class.java)
