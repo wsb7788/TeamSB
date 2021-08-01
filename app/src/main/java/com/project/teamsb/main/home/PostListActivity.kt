@@ -36,9 +36,13 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
     private lateinit var postRecyclerAdapter: PostRecyclerAdapter
 
     lateinit var category: String
+    lateinit var categoryQuery: String
     var index = 10
     var page = 1
-    var isLoading = false
+    var loadLock = false
+    var noMoreItem = false
+    var isRefresh = false
+    var returnWrite = false
     var retrofit: Retrofit = Retrofit.Builder()
         .baseUrl("http://13.209.10.30:3000/home/")
         .addConverterFactory(GsonConverterFactory.create())
@@ -69,36 +73,57 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
                 val lastVisibleItemPosition = (recyclerView.layoutManager as LinearLayoutManager?)!!.findLastCompletelyVisibleItemPosition()
                 val itemTotalCount = recyclerView.adapter!!.itemCount-1
                 // 스크롤이 끝에 도달했는지 확인
-                if (!binding.rcvPost.canScrollVertically(1) && lastVisibleItemPosition == itemTotalCount && postRecyclerAdapter.itemCount > 9) {
-                    postRecyclerAdapter.deleteLoading()
-                    page++
-                    postLoading()
+                if (lastVisibleItemPosition > itemTotalCount * 0.7) {
+                    if (!loadLock) {
+                        loadLock = true
+                        if (!noMoreItem) {
+                            postRecyclerAdapter.deleteLoading()
+                            page++
+                            postLoading()
+                        }
+                    }
+
                 }
             }
         })
         binding.srlCategory.setOnRefreshListener {
             page = 1
             postRecyclerAdapter.clearList()
+            isRefresh = true
             postLoading()
+            noMoreItem = false
             binding.srlCategory.isRefreshing = false
         }
         postRecyclerAdapter.setItemClickListener(this)
 
     }
 
-    private fun setToolBarText() {
-        val category = if(intent.hasExtra("category")) {
-            intent.getStringExtra("category")!! }else{
-            "all" }
-
-        when(category){
-            "delivery"->binding.tvToolbar.text = "배달"
-            "parcel"->binding.tvToolbar.text = "택배"
-            "taxi"->binding.tvToolbar.text = "택시"
-            "laundry"->binding.tvToolbar.text = "빨래"
-            "all"->binding.tvToolbar.text = "전체 게시글"
+    override fun onResume() {
+        super.onResume()
+        if(returnWrite){
+            page = 1
+            postRecyclerAdapter.clearList()
+            isRefresh = true
+            postLoading()
+            noMoreItem = false
+            returnWrite = false
         }
 
+    }
+
+    private fun setToolBarText() {
+        category = if(intent.hasExtra("category")) {
+            intent.getStringExtra("category")!! }else{
+            "all" }
+        categoryQuery = when(category){
+            "택배"->"parcel"
+            "배달"->"delivery"
+            "택시"->"taxi"
+            "빨래"->"laundry"
+            else ->"all"
+        }
+
+        binding.tvToolbar.text = category
     }
 
     private fun initRecycler() {
@@ -120,6 +145,7 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
                 val intent = Intent(this, WriteActivity::class.java)
                 intent.putExtra("category",category)
                 startActivity(intent)
+                returnWrite = true
             }
             R.id.search_tb -> {
                 val intent = Intent(this, SearchActivity::class.java)
@@ -137,8 +163,11 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
                     Log.d("로그", "코루틴 호출!")
                     modelList.clear()
                     try {
-                                serverAPI.categoryPost(category, page).enqueue(object : Callback<ResultPost>{
+                                serverAPI.categoryPost(categoryQuery, page).enqueue(object : Callback<ResultPost>{
                                     override fun onResponse(call: Call<ResultPost>, response: Response<ResultPost>) {
+                                        if (response.body()!!.content.size % 20 != 0 || response.body()!!.content.isEmpty()) {
+                                            noMoreItem = true
+                                        }
                                         for (i in response.body()!!.content.indices) {
                                             val title = response.body()!!.content[i].title
                                             val text = response.body()!!.content[i].text
@@ -148,10 +177,17 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
                                             modelList.add(myModel)
                                         }
                                         postRecyclerAdapter.submitList(modelList)
-                                        postRecyclerAdapter.notifyItemRangeChanged((page* index), index)
+                                        if(isRefresh){
+                                            postRecyclerAdapter.notifyDataSetChanged()
+                                            isRefresh = false
+                                        }else{
+                                            postRecyclerAdapter.notifyItemRangeInserted(((page-1)* index), index)
+                                        }
+                                        loadLock = false
                                     }
                                     override fun onFailure(call: Call<ResultPost>, t: Throwable) {
                                         Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()
+                                        loadLock = false
                                     }
                                 })
                     } catch (e: Exception) {

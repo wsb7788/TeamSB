@@ -60,5 +60,8 @@ class CommentRecyclerAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
 
     }
+    fun clearList(){
+        modelList.clear()
+    }
 }
 

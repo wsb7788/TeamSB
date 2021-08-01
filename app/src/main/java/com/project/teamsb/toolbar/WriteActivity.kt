@@ -6,6 +6,7 @@ import android.text.SpannableStringBuilder
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -66,6 +67,10 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener{
         setSupportActionBar(binding.toolbar)
 
 
+        val adapter = ArrayAdapter.createFromResource(this, R.array.category,R.layout.spinner_custom_list)
+        adapter.setDropDownViewResource(R.layout.spinner_custom_list2)
+        binding.spinner.adapter = adapter
+
         val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
         id = pref.getString("id","")!!
 
@@ -75,10 +80,10 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener{
 
         when(category){
             "all" -> binding.spinner.setSelection(0)
-            "delivery", "배달"->binding.spinner.setSelection(1)
-            "parcel", "택배"->binding.spinner.setSelection(2)
-            "taxi","택시"->binding.spinner.setSelection(3)
-            "laundry","빨래"->binding.spinner.setSelection(4)
+            "배달"->binding.spinner.setSelection(1)
+            "택배"->binding.spinner.setSelection(2)
+            "택시"->binding.spinner.setSelection(3)
+            "빨래"->binding.spinner.setSelection(4)
             else -> "그럴리가업썽"
         }
         if(intent.hasExtra("edit")){
@@ -116,10 +121,10 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener{
         var editable: Editable = SpannableStringBuilder(content.title)
         binding.tvTitle.text = editable
         binding.spinner.setSelection(when(category){
-            "delivery","배달"->1
-            "parcel","택배"->2
-            "taxi","택시"->3
-            "laundry","빨래"->4
+            "배달"->1
+            "택배"->2
+            "택시"->3
+            "빨래"->4
             else -> 0
         })
         editable = SpannableStringBuilder(content.text)
@@ -139,8 +144,10 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener{
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         if(intent.hasExtra("edit")){
             menuInflater.inflate(R.menu.menu_check,menu)
+            binding.tvToolbar.text = "수정"
         }else{
             menuInflater.inflate(R.menu.menu_write_toolbar,menu)
+            binding.tvToolbar.text = "글쓰기"
         }
 
         return true
@@ -153,10 +160,10 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener{
                     return super.onOptionsItemSelected(item)
                 }else{
                     category = when(binding.spinner.selectedItemPosition){
-                        1-> "delivery"
-                        2-> "parcel"
-                        3-> "taxi"
-                        4-> "laundry"
+                        1-> "배달"
+                        2-> "택배"
+                        3-> "택시"
+                        4-> "빨래"
                         else-> ""
                     }
                     submit(id, category)
@@ -169,10 +176,10 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener{
                     return super.onOptionsItemSelected(item)
                 }else{
                     category = when(binding.spinner.selectedItemPosition){
-                        1-> "delivery"
-                        2-> "parcel"
-                        3-> "taxi"
-                        4-> "laundry"
+                        1-> "배달"
+                        2-> "택배"
+                        3-> "택시"
+                        4-> "빨래"
                         else-> ""
                     }
                     modify(id,category,no)

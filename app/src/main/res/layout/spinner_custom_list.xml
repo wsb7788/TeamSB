@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <TextView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="기본으로보여지는이미지셈"
+        android:id="@+id/TextView1"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        />
