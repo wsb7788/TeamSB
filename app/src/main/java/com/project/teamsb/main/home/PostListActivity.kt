@@ -73,16 +73,14 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
                 val lastVisibleItemPosition = (recyclerView.layoutManager as LinearLayoutManager?)!!.findLastCompletelyVisibleItemPosition()
                 val itemTotalCount = recyclerView.adapter!!.itemCount-1
                 // 스크롤이 끝에 도달했는지 확인
-                if (lastVisibleItemPosition > itemTotalCount * 0.7) {
+                if (lastVisibleItemPosition > itemTotalCount*0.7) {
                     if (!loadLock) {
                         loadLock = true
                         if (!noMoreItem) {
-                            postRecyclerAdapter.deleteLoading()
                             page++
                             postLoading()
                         }
                     }
-
                 }
             }
         })
@@ -157,14 +155,15 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
 
 
     fun postLoading(){
-
+        binding.progressBar.visibility = VISIBLE
                 CoroutineScope(Dispatchers.IO).launch {
                     Log.d("로그", "코루틴 호출!")
                     modelList.clear()
                     try {
                                 serverAPI.categoryPost(categoryQuery, page).enqueue(object : Callback<ResultPost>{
                                     override fun onResponse(call: Call<ResultPost>, response: Response<ResultPost>) {
-                                        if (response.body()!!.content.size % 20 != 0 || response.body()!!.content.isEmpty()) {
+
+                                        if (response.body()!!.content.size % 10 != 0 || response.body()!!.content.isEmpty()) {
                                             noMoreItem = true
                                         }
                                         for (i in response.body()!!.content.indices) {
@@ -180,9 +179,12 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
                                             postRecyclerAdapter.notifyDataSetChanged()
                                             isRefresh = false
                                         }else{
-                                            postRecyclerAdapter.notifyItemRangeInserted(((page-1)* index), index)
+                                            postRecyclerAdapter.notifyItemRangeInserted(((page-1)* index), index+1)
                                         }
+                                        Log.d("로그", "${postRecyclerAdapter.itemCount}")
                                         loadLock = false
+                                        binding.progressBar.visibility = INVISIBLE
+
                                     }
                                     override fun onFailure(call: Call<ResultPost>, t: Throwable) {
                                         Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()

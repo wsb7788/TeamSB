@@ -43,7 +43,6 @@ class PostRecyclerAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     fun submitList(modelList: ArrayList<PostModel>){
         Log.d(TAG, "submitList called")
         this.modelList.addAll(modelList)
-        this.modelList.add(PostModel())
     }
     override fun getItemViewType(position: Int): Int {
         // 게시물과 프로그레스바 아이템뷰를 구분할 기준이 필요하다.
@@ -76,6 +75,7 @@ class PostRecyclerAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     fun clearList(){
         modelList.clear()
     }
+
 
 }
 

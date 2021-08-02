@@ -235,6 +235,8 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
                             commentRecyclerAdapter.clearList()
                             isRefresh = true
                             noMoreItem = false
+                            Toast.makeText(applicationContext, "댓글 입력 완료.", Toast.LENGTH_SHORT).show()
+
                             replyLoading(id, page, no)
 
                         }else{
