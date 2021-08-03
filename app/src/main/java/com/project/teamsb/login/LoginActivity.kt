@@ -1,13 +1,16 @@
 package com.project.teamsb.login
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.snackbar.Snackbar
 import com.project.teamsb.api.ResultLogin
 import com.project.teamsb.api.ServerAPI
 import com.project.teamsb.databinding.ActivityLoginBinding
@@ -23,6 +26,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityLoginBinding
+
+    var mBackWait:Long = 0
 
     var retrofit: Retrofit = Retrofit.Builder()
         .baseUrl("http://13.209.10.30:3000/")
@@ -40,24 +45,26 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
         imm = getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as InputMethodManager
         val pref = getSharedPreferences("autoLogin", MODE_PRIVATE)
-        val editor = pref.edit()
-
+        val editorAuto = pref.edit()
         if (pref.getBoolean("autoLoginCheck", false)) {
+            binding.autoLoginCb.isChecked = true
             val id = pref.getString("id", "")!!
             val pw = pref.getString("pw", "")!!
+            if(id.isNotBlank() || id.isNotEmpty()){
+                login(id, pw)
+            }
 
-            login(id, pw)
 
         }
         binding.loginBtn.setOnClickListener(this)
 
         binding.autoLoginCb.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                editor.putBoolean("autoLoginCheck", true)
-                editor.apply()
+                editorAuto.putBoolean("autoLoginCheck", true)
+                editorAuto.apply()
             }else{
-                editor.clear()
-                editor.apply()
+                editorAuto.clear()
+                editorAuto.apply()
             }
         }
 
@@ -88,6 +95,8 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
                     override fun onResponse(call: Call<ResultLogin>, response: Response<ResultLogin>) {
                         binding.progressBar.visibility = INVISIBLE
+
+
                         if(response.body()!!.check){
                             editorInfo.putString("id", id)
                             editorInfo.apply()
@@ -125,6 +134,23 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                 val pw = binding.passwordEt.text.toString()
                 login(id, pw)
             }
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    override fun onBackPressed() {
+        // 뒤로가기 버튼 클릭
+        if(System.currentTimeMillis() - mBackWait >=2000 ) {
+            mBackWait = System.currentTimeMillis()
+            Snackbar.make(binding.root,"뒤로가기 버튼을 한번 더 누르면 종료됩니다.", Snackbar.LENGTH_LONG).show()
+        } else {
+            val pref = getSharedPreferences("autoLogin", MODE_PRIVATE)
+            val editorAuto = pref.edit()
+            editorAuto.clear()
+            editorAuto.apply()
+            moveTaskToBack(true);						// 태스크를 백그라운드로 이동
+            finishAndRemoveTask();						// 액티비티 종료 + 태스크 리스트에서 지우기
+            android.os.Process.killProcess(android.os.Process.myPid());
         }
     }
 }

@@ -11,7 +11,9 @@ import com.project.teamsb.api.NicknameSet
 import com.project.teamsb.api.ServerAPI
 import com.project.teamsb.databinding.ActivitySettingBinding
 import com.project.teamsb.databinding.DialogEditNicknameBinding
+import com.project.teamsb.databinding.DialogLogoutBinding
 import com.project.teamsb.databinding.DialogReportBinding
+import com.project.teamsb.login.LoginActivity
 import com.project.teamsb.main.MainActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -42,7 +44,7 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
 
 
         binding.btnEditNickname.setOnClickListener(this)
-
+        binding.btnLogout.setOnClickListener(this)
 
     }
 
@@ -51,8 +53,31 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
             binding.btnEditNickname ->{
                 nicknameDialog()
             }
+            binding.btnLogout ->{
+                logoutDialog()
+            }
         }
 
+    }
+
+    private fun logoutDialog() {
+        val dialogBuilder = AlertDialog.Builder(this)
+        val view = DialogLogoutBinding.inflate(layoutInflater)
+        dialogBuilder.setView(view.root)
+        val alertDialog = dialogBuilder.create()
+        alertDialog.show()
+        view.btnPositive.setOnClickListener {
+            val pref = getSharedPreferences("autoLogin", MODE_PRIVATE)
+            val editor = pref.edit()
+            editor.clear()
+            editor.apply()
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+        }
+        view.btnNegative.setOnClickListener {
+            alertDialog.onBackPressed()
+        }
     }
 
     private fun nicknameDialog() {
