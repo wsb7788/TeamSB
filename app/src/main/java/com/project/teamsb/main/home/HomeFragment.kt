@@ -1,16 +1,21 @@
 package com.project.teamsb.main.home
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.project.teamsb.api.GetCalendar
 import com.project.teamsb.api.ResultPost
 import com.project.teamsb.api.ServerAPI
 import com.project.teamsb.databinding.FragmentHomeBinding
+import com.project.teamsb.main.calendar.CalendarObj
 import com.project.teamsb.recycler.model.RecentModel
 import com.project.teamsb.recycler.adapter.RecentRecyclerAdapter
 import kotlinx.coroutines.CoroutineScope
@@ -21,6 +26,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 class HomeFragment : Fragment(), View.OnClickListener {
@@ -37,6 +44,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
         .build()
 
     var serverAPI: ServerAPI = retrofit.create(ServerAPI::class.java)
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         binding.btn1.setOnClickListener(this)
@@ -52,8 +60,47 @@ class HomeFragment : Fragment(), View.OnClickListener {
         }
         postLoading()
 
+        calendarLoading()
 
         return binding.root
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun calendarLoading() {
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val current = LocalDateTime.now()
+            var formatter = DateTimeFormatter.ISO_DATE
+            var formatted = current.format(formatter)
+            try{
+                CalendarObj.api.getCalendar().enqueue(object :Callback<GetCalendar>{
+                    override fun onResponse(call: Call<GetCalendar>, response: Response<GetCalendar>) {
+                        for(i in response.body()!!.menu){
+                            if(i.일자 == formatted){
+                                formatter = DateTimeFormatter.ofPattern("M월 d일 식단표")
+                                formatted = current.format(formatter)
+                                binding.foodtv.text = formatted
+                                binding.tvBreakfast.text  = "[아침]\n" + i.아침[0].joinToString("\n")
+                                binding.tvLunch1.text  = "[점심1]\n" + i.점심[0].joinToString("\n")
+                                binding.tvLunch2.text  = "[점심2]\n" + i.점심[1].joinToString("\n")
+                                binding.tvDinner.text  = "[저녁]\n" + i.저녁[0].joinToString("\n")
+
+                            }
+                        }
+                    }
+
+                    override fun onFailure(call: Call<GetCalendar>, t: Throwable) {
+                    }
+
+                })
+
+            }catch(e: Exception){
+
+            }
+
+        }
+
+
     }
 
     override fun onClick(v: View) {

@@ -1,7 +1,5 @@
 package com.project.teamsb.api
 
-import android.app.ApplicationErrorReport
-
 data class ResultLogin(
     var check: Boolean = false,
     var code: Int = 0,
@@ -68,4 +66,15 @@ data class ResultNickname(
     var code: Int = 0,
     var message: String = "",
     var content: String = "")
+
+data class GetCalendar(
+    var check: Boolean,
+    var code: Int,
+    var menu: ArrayList<GetMenu>)
+
+data class GetMenu(
+    var 일자: String,
+    var 아침: ArrayList<ArrayList<String>>,
+    var 점심: ArrayList<ArrayList<String>>,
+    var 저녁: ArrayList<ArrayList<String>>)
 

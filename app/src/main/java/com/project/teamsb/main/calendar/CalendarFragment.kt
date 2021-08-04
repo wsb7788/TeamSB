@@ -6,10 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.project.teamsb.api.GetCalendar
 import com.project.teamsb.databinding.FragmentCalendarBinding
 import com.project.teamsb.main.calendar.CalendarObj
 import com.project.teamsb.main.calendar.DayDecorator
-import com.project.teamsb.main.calendar.GetCalendar
 import com.prolificinteractive.materialcalendarview.*
 import retrofit2.Call
 import retrofit2.Callback

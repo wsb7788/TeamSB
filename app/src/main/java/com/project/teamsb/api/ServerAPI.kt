@@ -118,4 +118,8 @@ interface ServerAPI {
         @Field("article_no") no: Int,
         @Field("content") content: String
     ) : Call<ResultNoReturn>
+
+    @GET("/calmenu/")
+    fun getCalendar(): Call<GetCalendar>
+
 }
