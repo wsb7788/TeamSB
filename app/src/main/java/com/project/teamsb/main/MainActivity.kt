@@ -20,6 +20,8 @@ import com.project.teamsb.toolbar.WriteActivity
 import com.project.teamsb.databinding.ActivityMainBinding
 import com.project.teamsb.main.home.HomeFragment
 import com.project.teamsb.main.notice.NoticeFragment
+import com.project.teamsb.main.user.UserFragment
+import com.project.teamsb.toolbar.AlertActivity
 import com.project.teamsb.toolbar.SearchActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -91,15 +93,14 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_search,menu)
-        menuInflater.inflate(R.menu.menu_write,menu)
+        menuInflater.inflate(R.menu.menu_notification,menu)
         return true
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
-            R.id.write_tb -> {
+            R.id.notification_tb -> {
 
-                val intent = Intent(this, WriteActivity::class.java)
-                intent.putExtra("category", "all")
+                val intent = Intent(this, AlertActivity::class.java)
                 startActivity(intent)
             }
             R.id.search_tb -> {
@@ -139,7 +140,13 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
         transaction.addToBackStack(null)
         transaction.commit()
     }
-
+    fun ShowTabUser(){
+        val transaction = manager.beginTransaction()
+        val fragment = UserFragment()
+        transaction.replace(binding.fragment.id, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
 
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -152,6 +159,9 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
             }
             R.id.navigation_notice ->{
                 ShowTabNotice()
+            }
+            R.id.navigation_user ->{
+                ShowTabUser()
             }
         }
         return true

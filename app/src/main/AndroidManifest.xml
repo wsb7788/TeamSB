@@ -6,9 +6,9 @@
         android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:name=".post.App"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:icon="@drawable/logo"
+        android:label="가천기숙사"
+        android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.TeamSB">
         <activity android:name=".login.FirstNicknameSetActivity"/>
@@ -17,6 +17,7 @@
         <activity android:name=".toolbar.SearchActivity"/>
         <activity android:name=".toolbar.SettingActivity"/>
         <activity android:name=".toolbar.WriteActivity"/>
+        <activity android:name=".toolbar.AlertActivity"/>
             <activity android:name=".main.MainActivity"/>
 
         <activity android:name=".login.LoginActivity">
@@ -26,6 +27,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
+
 
 </manifest>

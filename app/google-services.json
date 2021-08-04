@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "376572509015",
+    "project_id": "teamsb-68280",
+    "storage_bucket": "teamsb-68280.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:376572509015:android:64a800904f7d71c3121c12",
+        "android_client_info": {
+          "package_name": "com.project.teamsb"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "376572509015-llcgol9ievedhq21ldq261n359pblt9r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBM7PJ3q4fsbD9JNHq3zcE2VSSBm-skt1w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "376572509015-llcgol9ievedhq21ldq261n359pblt9r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
