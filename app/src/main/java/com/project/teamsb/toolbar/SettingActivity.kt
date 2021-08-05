@@ -8,11 +8,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.project.teamsb.api.NicknameSet
+import com.project.teamsb.api.ResultNoReturn
 import com.project.teamsb.api.ServerAPI
-import com.project.teamsb.databinding.ActivitySettingBinding
-import com.project.teamsb.databinding.DialogEditNicknameBinding
-import com.project.teamsb.databinding.DialogLogoutBinding
-import com.project.teamsb.databinding.DialogReportBinding
+import com.project.teamsb.databinding.*
 import com.project.teamsb.login.LoginActivity
 import com.project.teamsb.main.MainActivity
 import kotlinx.coroutines.CoroutineScope
@@ -45,6 +43,7 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
 
         binding.btnEditNickname.setOnClickListener(this)
         binding.btnLogout.setOnClickListener(this)
+        binding.btnSettingFeedback.setOnClickListener(this)
 
     }
 
@@ -56,8 +55,56 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
             binding.btnLogout ->{
                 logoutDialog()
             }
+            binding.btnSettingFeedback ->{
+                feedbackDialog()
+            }
         }
 
+    }
+
+    private fun feedbackDialog() {
+        val dialogBuilder = AlertDialog.Builder(this)
+        val view = DialogFeedbackBinding.inflate(layoutInflater)
+        dialogBuilder.setView(view.root)
+        val alertDialog = dialogBuilder.create()
+        alertDialog.show()
+        view.btnPositive.setOnClickListener {
+            var text = view.tvFeedback.text.toString()
+            text.replace(" ", "")
+            if(text.isNullOrBlank()){
+                Toast.makeText(this,"댓글을 입력하세요.",Toast.LENGTH_SHORT).show()
+            }else{
+                feedback(view.tvFeedback.text.toString())
+                alertDialog.onBackPressed()
+            }
+        }
+        view.btnNegative.setOnClickListener {
+            alertDialog.onBackPressed()
+        }
+    }
+
+    private fun feedback(content: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
+                val id = pref.getString("id","")!!
+                serverAPI.feedback(id, content).enqueue(object : Callback<ResultNoReturn> {
+                    override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
+                        if (response.body()!!.check) {
+                            Toast.makeText(applicationContext, "피드백 감사합니다.", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(applicationContext, "${response.body()}", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
+                        Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()
+                    }
+                })
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 
     private fun logoutDialog() {

@@ -122,4 +122,11 @@ interface ServerAPI {
     @GET("/calmenu/")
     fun getCalendar(): Call<GetCalendar>
 
+    @FormUrlEncoded
+    @POST("/feedback/")
+    fun feedback(
+        @Field("curUser") curUser: String,
+        @Field("text") text: String,
+
+    ) : Call<ResultNoReturn>
 }

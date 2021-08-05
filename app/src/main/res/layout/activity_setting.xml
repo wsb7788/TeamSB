@@ -49,6 +49,8 @@
                          >
 
                          <ImageView
+                             android:id="@+id/iv_setting_profile_image"
+                             android:clickable="true"
                              android:layout_width="0dp"
                              android:layout_weight="40"
                              android:src="@drawable/profile_image"
@@ -258,7 +260,7 @@
                     </LinearLayout>
                 </LinearLayout>>
                 <LinearLayout
-                    android:id="@+id/setting6"
+                    android:id="@+id/setting_feedback"
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_marginTop="10dp"
@@ -269,7 +271,7 @@
                     android:background="@drawable/rectangle_black"
                     android:weightSum="100">
                     <TextView
-                        android:text="만든 사람들"
+                        android:text="피드백 보내기"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="80"
@@ -282,6 +284,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="20">
                         <ImageButton
+                            android:id="@+id/btn_setting_feedback"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_margin="10dp"
@@ -296,7 +299,7 @@
                     android:layout_width="0dp"
                     android:layout_height="1dp"
                     android:background="?android:attr/listDivider"
-                    app:layout_constraintTop_toBottomOf="@+id/setting6"
+                    app:layout_constraintTop_toBottomOf="@+id/setting_feedback"
                     app:layout_constraintWidth_percent="0.8"
                     android:layout_marginTop="10dp"
                     app:layout_constraintStart_toStartOf="parent"
