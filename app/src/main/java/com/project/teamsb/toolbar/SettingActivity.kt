@@ -1,18 +1,30 @@
 package com.project.teamsb.toolbar
 
+import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ShareCompat
+import androidx.core.net.toUri
+import com.bumptech.glide.Glide
+import com.bumptech.glide.GlideBuilder
+import com.project.teamsb.R
 import com.project.teamsb.api.NicknameSet
 import com.project.teamsb.api.ResultNoReturn
 import com.project.teamsb.api.ServerAPI
 import com.project.teamsb.databinding.*
 import com.project.teamsb.login.LoginActivity
 import com.project.teamsb.main.MainActivity
+import com.project.teamsb.post.App
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -44,19 +56,22 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
         binding.btnEditNickname.setOnClickListener(this)
         binding.btnLogout.setOnClickListener(this)
         binding.btnSettingFeedback.setOnClickListener(this)
-
+        binding.ivSettingProfileImage.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
-        when(v){
-            binding.btnEditNickname ->{
+        when (v) {
+            binding.btnEditNickname -> {
                 nicknameDialog()
             }
-            binding.btnLogout ->{
+            binding.btnLogout -> {
                 logoutDialog()
             }
-            binding.btnSettingFeedback ->{
+            binding.btnSettingFeedback -> {
                 feedbackDialog()
+            }
+            binding.ivSettingProfileImage -> {
+                profileImageDialog()
             }
         }
 
@@ -82,6 +97,51 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
             alertDialog.onBackPressed()
         }
     }
+
+
+    private fun profileImageDialog() {
+        val dialogBuilder = AlertDialog.Builder(this)
+        val view = DialogEditProfileImageBinding.inflate(layoutInflater)
+        dialogBuilder.setView(view.root)
+        val alertDialog = dialogBuilder.create()
+        alertDialog.show()
+        view.btnGallery.setOnClickListener {
+            takeAlbum()
+        }
+        view.btnPositive.setOnClickListener {
+        }
+        view.btnNegative.setOnClickListener {
+            alertDialog.onBackPressed()
+        }
+    }
+
+    private fun takeAlbum() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = android.provider.MediaStore.Images.Media.CONTENT_TYPE
+        startForResult.launch(intent)
+
+    }
+
+    val startForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                result: ActivityResult ->
+            if(result.resultCode == Activity.RESULT_OK) {
+                val data = result.data!!.data
+
+                Glide
+                    .with(App.instance)
+                    .load(data)
+                    .centerCrop()
+                    .placeholder(R.mipmap.ic_launcher)
+                    .into(binding.ivSettingProfileImage)
+
+            }
+            }
+
+
+
+
+
 
     private fun feedback(content: String) {
         CoroutineScope(Dispatchers.IO).launch {
