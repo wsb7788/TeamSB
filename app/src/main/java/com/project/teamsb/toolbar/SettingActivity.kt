@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
@@ -127,6 +128,24 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
                 result: ActivityResult ->
             if(result.resultCode == Activity.RESULT_OK) {
                 val data = result.data!!.data
+                var intent = Intent("com.android.camera.action.CROP");
+                intent.data = data
+                intent.putExtra("outputX", 200) // CROP한 이미지의 x축 크기
+                intent.putExtra("outputY", 200) // CROP한 이미지의 y축 크기
+                intent.putExtra("aspectX", 1) // CROP 박스의 X축 비율
+                intent.putExtra("aspectY", 1) // CROP 박스의 Y축 비율
+                intent.putExtra("scale", true)
+                intent.putExtra("return-data", true)
+
+                startForCrop.launch(intent)
+            }
+            }
+    val startForCrop =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                result: ActivityResult ->
+            if(result.resultCode == Activity.RESULT_OK) {
+                val data = result.data!!.data
+                Toast.makeText(this,"$data",Toast.LENGTH_LONG).show()
 
                 Glide
                     .with(App.instance)
@@ -136,7 +155,7 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
                     .into(binding.ivSettingProfileImage)
 
             }
-            }
+        }
 
 
 
