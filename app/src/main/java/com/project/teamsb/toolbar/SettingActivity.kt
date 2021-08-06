@@ -18,6 +18,7 @@ import androidx.core.app.ShareCompat
 import androidx.core.net.toUri
 import com.bumptech.glide.Glide
 import com.bumptech.glide.GlideBuilder
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.project.teamsb.R
 import com.project.teamsb.api.NicknameSet
 import com.project.teamsb.api.ResultNoReturn
@@ -37,6 +38,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class SettingActivity:AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivitySettingBinding
+    private lateinit var view: DialogEditProfileImageBinding
 
     var retrofit: Retrofit = Retrofit.Builder()
         .baseUrl("http://13.209.10.30:3000/")
@@ -47,7 +49,7 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        view = DialogEditProfileImageBinding.inflate(layoutInflater)
         binding = ActivitySettingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -102,7 +104,6 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
 
     private fun profileImageDialog() {
         val dialogBuilder = AlertDialog.Builder(this)
-        val view = DialogEditProfileImageBinding.inflate(layoutInflater)
         dialogBuilder.setView(view.root)
         val alertDialog = dialogBuilder.create()
         alertDialog.show()
@@ -128,16 +129,14 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
                 result: ActivityResult ->
             if(result.resultCode == Activity.RESULT_OK) {
                 val data = result.data!!.data
-                var intent = Intent("com.android.camera.action.CROP");
-                intent.data = data
-                intent.putExtra("outputX", 200) // CROP한 이미지의 x축 크기
-                intent.putExtra("outputY", 200) // CROP한 이미지의 y축 크기
-                intent.putExtra("aspectX", 1) // CROP 박스의 X축 비율
-                intent.putExtra("aspectY", 1) // CROP 박스의 Y축 비율
-                intent.putExtra("scale", true)
-                intent.putExtra("return-data", true)
 
-                startForCrop.launch(intent)
+                Glide
+                    .with(App.instance)
+                    .load(data)
+                    .circleCrop()
+                    .placeholder(R.mipmap.ic_launcher)
+                    .into(binding.ivSettingProfileImage)
+
             }
             }
     val startForCrop =
@@ -147,12 +146,7 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
                 val data = result.data!!.data
                 Toast.makeText(this,"$data",Toast.LENGTH_LONG).show()
 
-                Glide
-                    .with(App.instance)
-                    .load(data)
-                    .centerCrop()
-                    .placeholder(R.mipmap.ic_launcher)
-                    .into(binding.ivSettingProfileImage)
+
 
             }
         }

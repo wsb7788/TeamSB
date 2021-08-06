@@ -1,7 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-//    id 'com.google.gms.google-services'
+    id 'com.google.gms.google-services'
 
 }
 
@@ -18,7 +18,7 @@ android {
 
     defaultConfig {
         applicationId "com.project.teamsb"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -78,12 +78,16 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
 
     //파이어베이스
-//    implementation platform('com.google.firebase:firebase-bom:28.3.0')
+    implementation platform('com.google.firebase:firebase-bom:28.3.0')
+    implementation 'com.google.firebase:firebase-messaging-ktx'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
   //  implementation 'com.google.firebase:firebase-analytics-ktx'
     // Firebase SDK
 //    implementation 'com.google.firebase:firebase-core:16.0.1'
   //  implementation 'com.google.firebase:firebase-messaging:17.3.4'
     //implementation 'com.google.firebase:firebase-analytics'
+
+
 
 
 }
