@@ -15,6 +15,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.project.teamsb.R
+import com.project.teamsb.login.LoginActivity
 import com.project.teamsb.main.MainActivity
 
 class MyFirebaseMessagingService:FirebaseMessagingService() {
@@ -22,10 +23,16 @@ class MyFirebaseMessagingService:FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage)
     {
-        super.onMessageReceived(remoteMessage)
+
+
+        if(remoteMessage.data.isNotEmpty()){
+            sendNotification(remoteMessage.data!!["title"]!!, remoteMessage.data["body"]!!)
+
+        }
         if (remoteMessage.notification != null)
         {
-            sendNotification(remoteMessage.notification?.title, remoteMessage.notification!!.body!!)
+
+            sendNotification(remoteMessage.notification!!.title!!, remoteMessage.notification!!.body!!)
         }
     }
 
@@ -33,14 +40,19 @@ class MyFirebaseMessagingService:FirebaseMessagingService() {
     {
         Log.d(TAG, "Refreshed token : $token")
         super.onNewToken(token)
+        val pref = this.getSharedPreferences("token", Context.MODE_PRIVATE)
+        val editor = pref.edit()
+        editor.putString("token", token).apply()
+        editor.commit()
     }
 
     // 받은 알림을 기기에 표시하는 메서드
-    private fun sendNotification(title: String?, body: String)
+    private fun sendNotification(title:String, body:String)
     {
-        val intent = Intent(this, MainActivity::class.java)
+
+        val intent = Intent(this, LoginActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        val pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+        val pendingIntent = PendingIntent.getActivity(this, 0  , intent,
             PendingIntent.FLAG_ONE_SHOT)
 
         val channelId = "my_channel"

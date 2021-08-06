@@ -3,6 +3,7 @@ package com.project.teamsb.login
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
@@ -10,7 +11,10 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.RemoteMessage
 import com.project.teamsb.api.ResultLogin
 import com.project.teamsb.api.ServerAPI
 import com.project.teamsb.databinding.ActivityLoginBinding
@@ -43,6 +47,20 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w("로그", "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+
+            // Log and toast
+            Log.d("로그", token!!)
+            Toast.makeText(this, token, Toast.LENGTH_SHORT).show()
+        })
+
         imm = getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as InputMethodManager
         val pref = getSharedPreferences("autoLogin", MODE_PRIVATE)
         val editorAuto = pref.edit()
@@ -69,6 +87,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         }
 
     }
+
 
 
 
