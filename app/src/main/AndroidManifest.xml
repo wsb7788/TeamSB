@@ -30,18 +30,13 @@
             </intent-filter>
         </activity>
         <service
-            android:name=".api.MyFirebaseMessagingService">
+            android:name=".api.MyFirebaseMessagingService"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service
-            android:name=".api.MyJobService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.firebase.jobdispatcher.ACTION_EXCUTE" />
-            </intent-filter>
-        </service>
+
 
     </application>
 
