@@ -13,9 +13,11 @@
         android:layout_height="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginBottom="10dp"
+        android:background="@color/white"
+        android:elevation="10dp">
 
         <TextView
             android:id="@+id/tv_toolbar"
@@ -52,7 +54,8 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcv_post"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
+                app:layout_constraintWidth_percent="0.95"
                 android:layout_height="match_parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

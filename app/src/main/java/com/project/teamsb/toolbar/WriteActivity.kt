@@ -83,7 +83,7 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener{
             "배달"->binding.spinner.setSelection(1)
             "택배"->binding.spinner.setSelection(2)
             "택시"->binding.spinner.setSelection(3)
-            "빨래"->binding.spinner.setSelection(4)
+            "룸메이트"->binding.spinner.setSelection(4)
             else -> "그럴리가업썽"
         }
         if(intent.hasExtra("edit")){
@@ -119,16 +119,16 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener{
     }
     fun setContent(content: Content){
         var editable: Editable = SpannableStringBuilder(content.title)
-        binding.tvTitle.text = editable
+        binding.etTitle.text = editable
         binding.spinner.setSelection(when(category){
             "배달"->1
             "택배"->2
             "택시"->3
-            "빨래"->4
+            "룸메이트"->4
             else -> 0
         })
         editable = SpannableStringBuilder(content.text)
-        binding.contentEt.text = editable
+        binding.etContent.text = editable
         if(content.hash.isNotEmpty()){
             for(i in content.hash){
                 keyWord.add(i)
@@ -155,35 +155,57 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener{
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.submit_tb -> {
-                if(binding.spinner.selectedItemPosition == 0){
-                    Toast.makeText(this, "카테고리를 선택해주세요!",Toast.LENGTH_SHORT).show()
-                    return super.onOptionsItemSelected(item)
-                }else{
-                    category = when(binding.spinner.selectedItemPosition){
-                        1-> "배달"
-                        2-> "택배"
-                        3-> "택시"
-                        4-> "빨래"
-                        else-> ""
+                when {
+                    binding.spinner.selectedItemPosition == 0 -> {
+                        Toast.makeText(this, "카테고리를 선택해주세요!",Toast.LENGTH_SHORT).show()
+                        return super.onOptionsItemSelected(item)
                     }
-                    submit(id, category)
-                    finish()
+                    binding.etTitle.text.isBlank() -> {
+                        Toast.makeText(this, "제목을 입력해주세요!",Toast.LENGTH_SHORT).show()
+                        return super.onOptionsItemSelected(item)
+                    }
+                    binding.etContent.text.isBlank() -> {
+                        Toast.makeText(this, "내용을 입력해주세요!",Toast.LENGTH_SHORT).show()
+                        return super.onOptionsItemSelected(item)
+                    }
+                    else -> {
+                        category = when(binding.spinner.selectedItemPosition){
+                            1-> "배달"
+                            2-> "택배"
+                            3-> "택시"
+                            4-> "룸메"
+                            else-> ""
+                        }
+                        submit(id, category)
+                        finish()
+                    }
                 }
             }
             R.id.check_tb -> {
-                if(binding.spinner.selectedItemPosition == 0){
-                    Toast.makeText(this, "카테고리를 선택해주세요!",Toast.LENGTH_SHORT).show()
-                    return super.onOptionsItemSelected(item)
-                }else{
+                when {
+                    binding.spinner.selectedItemPosition == 0 -> {
+                        Toast.makeText(this, "카테고리를 선택해주세요!",Toast.LENGTH_SHORT).show()
+                        return super.onOptionsItemSelected(item)
+                    }
+                    binding.etTitle.text.isBlank() -> {
+                        Toast.makeText(this, "제목을 입력해주세요!",Toast.LENGTH_SHORT).show()
+                        return super.onOptionsItemSelected(item)
+                    }
+                    binding.etContent.text.isBlank() -> {
+                        Toast.makeText(this, "내용을 입력해주세요!",Toast.LENGTH_SHORT).show()
+                        return super.onOptionsItemSelected(item)
+                    }else -> {
                     category = when(binding.spinner.selectedItemPosition){
                         1-> "배달"
                         2-> "택배"
                         3-> "택시"
-                        4-> "빨래"
+                        4-> "룸메"
                         else-> ""
                     }
                     modify(id,category,no)
                     finish()
+                    }
+
                 }
             }
         }
@@ -192,8 +214,8 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener{
     private fun modify(id: String, category: String, no: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             try{
-                val title = binding.tvTitle.text.toString()
-                val text = binding.contentEt.text.toString()
+                val title = binding.etTitle.text.toString()
+                val text = binding.etContent.text.toString()
                 val keyword1 = ArrayList<String>(keyWord)
                 serverAPI.modifyArticle(id,title,category,text,keyword1,no).enqueue(object: Callback<ResultWrite> {
                     override fun onResponse(call: Call<ResultWrite>, response: Response<ResultWrite>) {
@@ -219,8 +241,8 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener{
 
             CoroutineScope(Dispatchers.IO).launch {
                 try{
-                    val title = binding.tvTitle.text.toString()
-                    val text = binding.contentEt.text.toString()
+                    val title = binding.etTitle.text.toString()
+                    val text = binding.etContent.text.toString()
                     val keyword1 = ArrayList<String>(keyWord)
                     serverAPI.writeArticle(title,category,userID,text,keyword1).enqueue(object: Callback<ResultWrite> {
                         override fun onResponse(call: Call<ResultWrite>, response: Response<ResultWrite>) {

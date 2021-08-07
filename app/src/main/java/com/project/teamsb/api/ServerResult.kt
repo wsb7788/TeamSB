@@ -33,6 +33,7 @@ data class Content(
     var text : String = "",
     var viewCount : String = "",
     var reportCount : String = "",
+    var replyCount : String = "",
     var hash: List<String>)
 
 data class ResultWrite(

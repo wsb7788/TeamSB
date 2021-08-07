@@ -5,7 +5,7 @@
         <item id="delivery">배달</item>
         <item id="parcel">택배</item>
         <item id="taxi">택시</item>
-        <item id="laundry">빨래</item>
+        <item id="room-mate">룸메이트</item>
     </string-array>
     <string-array name="report" >
         <item id="all">욕설 및 비방</item>

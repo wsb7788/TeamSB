@@ -10,6 +10,7 @@ import android.view.View
 import android.view.View.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.project.teamsb.R
@@ -116,7 +117,7 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
             "택배"->"parcel"
             "배달"->"delivery"
             "택시"->"taxi"
-            "빨래"->"laundry"
+            "룸메이트"->"room-mate"
             else ->"all"
         }
 
@@ -125,7 +126,7 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
 
     private fun initRecycler() {
         binding.rcvPost.apply {
-            layoutManager = LinearLayoutManager(this@PostListActivity, LinearLayoutManager.VERTICAL, false)
+            layoutManager = GridLayoutManager(this@PostListActivity, 2)
             adapter = postRecyclerAdapter
         }
     }
@@ -167,11 +168,14 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
                                             noMoreItem = true
                                         }
                                         for (i in response.body()!!.content.indices) {
+                                            val nickname = response.body()!!.content[i].userNickname
+                                            val category = response.body()!!.content[i].category
                                             val title = response.body()!!.content[i].title
                                             val text = response.body()!!.content[i].text
                                             val timeStamp = response.body()!!.content[i].timeStamp
+                                            val comment = response.body()!!.content[i].replyCount
                                             val no = response.body()!!.content[i].no
-                                            val myModel = PostModel(title, text, timeStamp, no)
+                                            val myModel = PostModel(title,text,timeStamp,nickname,comment,category,no)
                                             modelList.add(myModel)
                                         }
                                         postRecyclerAdapter.submitList(modelList)
