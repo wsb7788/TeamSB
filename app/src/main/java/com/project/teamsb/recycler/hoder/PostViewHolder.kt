@@ -23,6 +23,7 @@ class PostViewHolder(val binding: LayoutRecyclerPostListBinding): RecyclerView.V
         binding.tvTitle.text = postModel.title
         binding.tvContent.text = postModel.text
         binding.tvComment.text = postModel.comment
+        binding.tvTimeStamp.text = postModel.time
 
     }
 

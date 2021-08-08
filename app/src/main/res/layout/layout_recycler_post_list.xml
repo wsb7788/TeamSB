@@ -79,11 +79,19 @@
             app:layout_constraintTop_toBottomOf="@id/tv_title" />
 
         <TextView
+            android:id="@+id/tv_time_stamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_content"
+            android:text="00:00"
+            android:layout_marginTop="10dp"/>
+        <TextView
             android:id="@+id/tv_comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="012346"
+            android:text="0"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_content" />
 

@@ -2,6 +2,7 @@ package com.project.teamsb.main.home
 
 import android.content.ContentValues.TAG
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -9,6 +10,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.View.*
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,6 +30,14 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.Period
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListener {
@@ -162,6 +172,7 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
                     modelList.clear()
                     try {
                                 serverAPI.categoryPost(categoryQuery, page).enqueue(object : Callback<ResultPost>{
+                                    @RequiresApi(Build.VERSION_CODES.O)
                                     override fun onResponse(call: Call<ResultPost>, response: Response<ResultPost>) {
 
                                         if (response.body()!!.content.size % 10 != 0 || response.body()!!.content.isEmpty()) {
@@ -172,7 +183,27 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
                                             val category = response.body()!!.content[i].category
                                             val title = response.body()!!.content[i].title
                                             val text = response.body()!!.content[i].text
-                                            val timeStamp = response.body()!!.content[i].timeStamp
+                                            val timeCreated = response.body()!!.content[i].timeStamp        // yyyy-MM-dd hh:mm:ss
+                                            var timeStamp = ""
+                                            val y = timeCreated.substring(0,4).toInt()
+                                            val M = timeCreated.substring(5,7).toInt()
+                                            val d = timeCreated.substring(8,10).toInt()
+                                            val h = timeCreated.substring(11,13).toInt()
+                                            val m = timeCreated.substring(14,16).toInt()
+                                            val s = timeCreated.substring(17,19).toInt()
+                                            var timeCreatedParsedDateTime = LocalDateTime.of(y,M,d,h,m,s)
+                                            var timeCreatedParsedDate = LocalDate.of(y,M,d)
+
+                                            if(ChronoUnit.HOURS.between(LocalDateTime.now(),timeCreatedParsedDateTime).toInt() ==0){
+                                                timeStamp =  (ChronoUnit.SECONDS.between(timeCreatedParsedDateTime,LocalDateTime.now()).toInt() / 60).toString() +"분 전"
+                                            }else if(ChronoUnit.DAYS.between(timeCreatedParsedDate,LocalDate.now()).toInt() == 0)
+                                                timeStamp = timeCreated.substring(11,16)
+                                            else
+                                                timeStamp = timeCreated.substring(5,10)
+
+
+
+
                                             val comment = response.body()!!.content[i].replyCount
                                             val no = response.body()!!.content[i].no
                                             val myModel = PostModel(title,text,timeStamp,nickname,comment,category,no)
