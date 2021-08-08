@@ -201,9 +201,6 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
                                             else
                                                 timeStamp = timeCreated.substring(5,10)
 
-
-
-
                                             val comment = response.body()!!.content[i].replyCount
                                             val no = response.body()!!.content[i].no
                                             val myModel = PostModel(title,text,timeStamp,nickname,comment,category,no)

@@ -28,7 +28,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
-class WriteActivity:AppCompatActivity(),View.OnClickListener{
+class WriteActivity:AppCompatActivity(),View.OnClickListener,KeywordRecyclerAdapter.OnItemClickListener{
 
     private lateinit var binding: ActivityWriteBinding
     lateinit var category:String
@@ -92,7 +92,7 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener{
         }
 
         binding.btnAddKeyword.setOnClickListener(this)
-
+        keywordRecyclerAdapter.setItemClickListener(this)
 
 
     }
@@ -268,17 +268,31 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener{
             binding.btnAddKeyword -> {
                 if(keyWord.size > 2){
                     Toast.makeText(applicationContext, "키워드는 3개까지 입력이 가능합니다.", Toast.LENGTH_SHORT).show()
-                }else{
+                }else if (binding.etKeyword.text.isBlank()) {
+                    Toast.makeText(applicationContext, "키워드를 입력해주세요.", Toast.LENGTH_SHORT).show()
+                }
+                else{
                     val text = binding.etKeyword.text.toString()
                     keyWord.add(text)
                     modelList.clear()
                     modelList.add(KeywordModel(text))
                     keywordRecyclerAdapter.submitList(modelList)
                     keywordRecyclerAdapter.notifyDataSetChanged()
+                    binding.etKeyword.text = null
                 }
-            }
 
+
+
+            }
         }
+
+    }
+
+
+    override fun onClick(v: View, position: Int) {
+        keyWord.removeAt(position)
+        keywordRecyclerAdapter.deleteItem(position)
+        keywordRecyclerAdapter.notifyDataSetChanged()
     }
 
 
