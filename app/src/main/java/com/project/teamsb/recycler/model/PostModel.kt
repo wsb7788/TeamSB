@@ -1,10 +1,11 @@
 package com.project.teamsb.recycler.model
 
+import android.graphics.Bitmap
 import android.util.Log
 import com.project.teamsb.api.Content
 
 class PostModel(var title: String? = null, var text: String? = null, val time: String? = null,val nickname: String? =  null,
-                val comment:String? = null,val category: String? = null,  val no: Int = 0) {
+                val comment:String? = null,val category: String? = null,  val no: Int = 0,val profileImage: Bitmap? = null) {
     val TAG: String = "로그"
 
 

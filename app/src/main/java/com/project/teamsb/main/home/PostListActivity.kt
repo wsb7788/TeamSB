@@ -2,8 +2,10 @@ package com.project.teamsb.main.home
 
 import android.content.ContentValues.TAG
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -30,6 +32,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.ByteArrayInputStream
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -182,41 +185,7 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
                                         if (response.body()!!.content.size % 10 != 0 || response.body()!!.content.isEmpty()) {
                                             noMoreItem = true
                                         }
-                                        for (i in response.body()!!.content.indices) {
-                                            val nickname = response.body()!!.content[i].userNickname
-                                            val category = response.body()!!.content[i].category
-                                            val title = response.body()!!.content[i].title
-                                            val text = response.body()!!.content[i].text
-                                            val timeCreated = response.body()!!.content[i].timeStamp        // yyyy-MM-dd hh:mm:ss
-                                            var timeStamp = ""
-                                            val y = timeCreated.substring(0,4).toInt()
-                                            val M = timeCreated.substring(5,7).toInt()
-                                            val d = timeCreated.substring(8,10).toInt()
-                                            val h = timeCreated.substring(11,13).toInt()
-                                            val m = timeCreated.substring(14,16).toInt()
-                                            val s = timeCreated.substring(17,19).toInt()
-                                            var timeCreatedParsedDateTime = LocalDateTime.of(y,M,d,h,m,s)
-                                            var timeCreatedParsedDate = LocalDate.of(y,M,d)
-
-                                            if(ChronoUnit.HOURS.between(LocalDateTime.now(),timeCreatedParsedDateTime).toInt() ==0){
-                                                timeStamp =  (ChronoUnit.SECONDS.between(timeCreatedParsedDateTime,LocalDateTime.now()).toInt() / 60).toString() +"분 전"
-                                            }else if(ChronoUnit.DAYS.between(timeCreatedParsedDate,LocalDate.now()).toInt() == 0)
-                                                timeStamp = timeCreated.substring(11,16)
-                                            else
-                                                timeStamp = timeCreated.substring(5,10)
-
-                                            val comment = response.body()!!.content[i].replyCount
-                                            val no = response.body()!!.content[i].no
-                                            val myModel = PostModel(title,text,timeStamp,nickname,comment,category,no)
-                                            modelList.add(myModel)
-                                        }
-                                        postRecyclerAdapter.submitList(modelList)
-                                        if(isRefresh){
-                                            postRecyclerAdapter.notifyDataSetChanged()
-                                            isRefresh = false
-                                        }else{
-                                            postRecyclerAdapter.notifyItemRangeInserted(((page-1)* index), response.body()!!.content.size)
-                                        }
+                                        setPost(response)
                                         Log.d("로그", "${postRecyclerAdapter.itemCount}")
                                         loadLock = false
                                         binding.progressBar.visibility = INVISIBLE
@@ -231,7 +200,48 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
                         e.printStackTrace()
                     }
                 }
+    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun setPost(response: Response<ResultPost>) {
+        for (i in response.body()!!.content.indices) {
+            val nickname = response.body()!!.content[i].userNickname
+            val category = response.body()!!.content[i].category
+            val title = response.body()!!.content[i].title
+            val text = response.body()!!.content[i].text
+            val StringprofileImage = response.body()!!.content[i].imageSource
+            val byteProfileImage = Base64.decode(StringprofileImage,0)
+            val inputStream = ByteArrayInputStream(byteProfileImage)
+            val profileImage = BitmapFactory.decodeStream(inputStream)
+            val timeCreated = response.body()!!.content[i].timeStamp        // yyyy-MM-dd hh:mm:ss
+            var timeStamp = ""
+            val y = timeCreated.substring(0,4).toInt()
+            val M = timeCreated.substring(5,7).toInt()
+            val d = timeCreated.substring(8,10).toInt()
+            val h = timeCreated.substring(11,13).toInt()
+            val m = timeCreated.substring(14,16).toInt()
+            val s = timeCreated.substring(17,19).toInt()
+            var timeCreatedParsedDateTime = LocalDateTime.of(y,M,d,h,m,s)
+            var timeCreatedParsedDate = LocalDate.of(y,M,d)
 
+            if(ChronoUnit.HOURS.between(LocalDateTime.now(),timeCreatedParsedDateTime).toInt() ==0){
+                timeStamp =  (ChronoUnit.SECONDS.between(timeCreatedParsedDateTime,LocalDateTime.now()).toInt() / 60).toString() +"분 전"
+            }else if(ChronoUnit.DAYS.between(timeCreatedParsedDate,LocalDate.now()).toInt() == 0)
+                timeStamp = timeCreated.substring(11,16)
+            else
+                timeStamp = timeCreated.substring(5,10)
+
+            val comment = response.body()!!.content[i].replyCount
+            val no = response.body()!!.content[i].no
+            val myModel = PostModel(title,text,timeStamp,nickname,comment,category,no,profileImage)
+            modelList.add(myModel)
+        }
+        postRecyclerAdapter.submitList(modelList)
+        if(isRefresh){
+            postRecyclerAdapter.notifyDataSetChanged()
+            isRefresh = false
+        }else{
+            postRecyclerAdapter.notifyItemRangeInserted(((page-1)* index), response.body()!!.content.size)
+        }
     }
 
     override fun onClick(v: View, position: Int) {

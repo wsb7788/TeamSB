@@ -2,9 +2,12 @@ package com.project.teamsb.toolbar
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.util.Base64
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
@@ -26,6 +29,7 @@ import com.project.teamsb.api.ServerAPI
 import com.project.teamsb.databinding.*
 import com.project.teamsb.login.LoginActivity
 import com.project.teamsb.main.MainActivity
+import com.project.teamsb.main.calendar.CalendarObj
 import com.project.teamsb.post.App
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -35,6 +39,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.ByteArrayOutputStream
+import java.io.InputStream
 
 class SettingActivity:AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivitySettingBinding
@@ -120,6 +126,7 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
     private fun takeAlbum() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = android.provider.MediaStore.Images.Media.CONTENT_TYPE
+        intent.type = "image/*"
         startForResult.launch(intent)
 
     }
@@ -128,7 +135,23 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                 result: ActivityResult ->
             if(result.resultCode == Activity.RESULT_OK) {
-                val data = result.data!!.data
+                val data = result.data!!.data!!
+
+                val ins = data.let {
+                    applicationContext.contentResolver.openInputStream(data)
+                }
+                val img = BitmapFactory.decodeStream(ins)
+                ins?.close()
+                val resized = Bitmap.createScaledBitmap(img,256,256,true)
+                val byteArrayOutputStream = ByteArrayOutputStream()
+                resized.compress(Bitmap.CompressFormat.JPEG, 100,byteArrayOutputStream)
+                val byteArray = byteArrayOutputStream.toByteArray()
+                val outStream = ByteArrayOutputStream()
+                val res = resources
+                val profileImageBase64 = Base64.encodeToString(byteArray,0)
+                //여기까지 인코딩
+
+                sendProfileImage(profileImageBase64)
 
                 Glide
                     .with(App.instance)
@@ -139,6 +162,35 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
 
             }
             }
+
+    private fun sendProfileImage(image:String) {
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
+                val id = pref.getString("id","")!!
+                CalendarObj.api.profileSet(id,image).enqueue(object : Callback<ResultNoReturn>{
+                    override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
+                        if(response.body()!!.code == 200){
+                            Toast.makeText(applicationContext,"이미지 설정 완료",Toast.LENGTH_SHORT).show()
+                        }else
+                            Toast.makeText(applicationContext,"${response.body()!!.message}",Toast.LENGTH_SHORT).show()
+
+                    }
+
+                    override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
+                        Toast.makeText(applicationContext,"서버통신 문제",Toast.LENGTH_SHORT).show()
+                    }
+
+                })
+
+
+            }catch (e:Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+
     val startForCrop =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                 result: ActivityResult ->

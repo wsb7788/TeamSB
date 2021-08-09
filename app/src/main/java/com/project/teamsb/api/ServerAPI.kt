@@ -127,6 +127,11 @@ interface ServerAPI {
     fun feedback(
         @Field("curUser") curUser: String,
         @Field("text") text: String,
-
+    ) : Call<ResultNoReturn>
+    @FormUrlEncoded
+    @POST("/profileSet/")
+    fun profileSet(
+        @Field("curId") curId: String,
+        @Field("profile_image") profile_image: String,
     ) : Call<ResultNoReturn>
 }

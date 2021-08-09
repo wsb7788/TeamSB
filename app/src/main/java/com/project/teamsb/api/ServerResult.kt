@@ -34,7 +34,8 @@ data class Content(
     var viewCount : String = "",
     var reportCount : String = "",
     var replyCount : String = "",
-    var hash: List<String>)
+    var hash: List<String>,
+    var imageSource: String = "")
 
 data class ResultWrite(
     var check: Boolean = false,
