@@ -57,7 +57,7 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        view = DialogEditProfileImageBinding.inflate(layoutInflater)
+
         binding = ActivitySettingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -111,7 +111,9 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
 
 
     private fun profileImageDialog() {
+
         val dialogBuilder = AlertDialog.Builder(this)
+        view = DialogEditProfileImageBinding.inflate(layoutInflater)
         dialogBuilder.setView(view.root)
         val alertDialog = dialogBuilder.create()
         alertDialog.show()
