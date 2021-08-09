@@ -375,6 +375,7 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
             for(i in content.hash){
                 hash += " #"
                 hash += i
+                hash += "\n"
             }
         }
         binding.tvKeyword2.text = hash

@@ -12,7 +12,7 @@ class KeywordViewHolder(val binding: LayoutRecyclerKeywordBinding): RecyclerView
     fun bind(keywordModel: KeywordModel){
 
 
-        binding.tvInsideRcvKeyword.text = keywordModel.text
+        binding.tvInsideRcvKeyword.text = "#" + keywordModel.text
 
 
     }

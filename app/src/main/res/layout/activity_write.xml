@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
@@ -45,126 +46,124 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/line1"
         app:layout_constraintWidth_percent="0.9">
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="20dp">
-
-            <LinearLayout
-                android:id="@+id/layout_title"
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-
-                android:orientation="horizontal"
-                android:weightSum="100"
-                app:layout_constraintEnd_toEndOf="parent"
+            <TextView
+                android:id="@+id/tv_category"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="카테고리"
+                android:padding="2dp"
+                app:layout_constraintWidth_percent="0.27"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:background="@drawable/write_rectangle"
+                android:textColor="@color/black"
+                android:textSize="17sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"/>
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="27"
-                    android:gravity="start|center"
-                    android:text="글 제목"
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:entries="@array/category"
+                android:gravity="center"
+                android:spinnerMode="dialog"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_category"
+                app:layout_constraintStart_toEndOf="@id/tv_category"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <EditText
-                    android:id="@+id/et_title"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="75"
-                    android:background="@null"
-                    android:hint="제목을 입력하세요"
-                    android:textSize="18sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layout_category"
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:orientation="horizontal"
-                android:weightSum="100"
-                app:layout_constraintEnd_toEndOf="parent"
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:text="글 제목"
+                android:padding="2dp"
+                app:layout_constraintWidth_percent="0.27"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:background="@drawable/write_rectangle"
+                android:textColor="@color/black"
+                android:textSize="17sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layout_title">
+                app:layout_constraintTop_toBottomOf="@id/tv_category"/>
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="25"
-                    android:gravity="start|center"
-                    android:text="카테고리"
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
-
-                <Spinner
-                    android:id="@+id/spinner"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center|start"
-                    android:layout_weight="40"
-                    android:entries="@array/category"
-                    android:gravity="center"
-                    android:spinnerMode="dialog" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layout_keyword"
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:orientation="horizontal"
-                android:weightSum="100"
+            <EditText
+                android:id="@+id/et_title"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:background="@null"
+                android:hint="제목을 입력해주세요"
+                android:padding="2dp"
+                android:textSize="17sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_title"
+                app:layout_constraintTop_toTopOf="@id/tv_title" />
+
+            <TextView
+                android:id="@+id/tv_keyword"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:text="키워드"
+                android:padding="2dp"
+                app:layout_constraintWidth_percent="0.27"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:background="@drawable/write_rectangle"
+                android:textColor="@color/black"
+                android:textSize="17sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layout_category">
+                app:layout_constraintTop_toBottomOf="@id/tv_title"/>
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="27"
-                    android:gravity="start|center"
-                    android:text="키워드"
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
+            <EditText
+                android:id="@+id/et_keyword"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:hint="최대 3개를 입력할 수 있습니다."
+                android:textSize="17sp"
+                android:layout_marginLeft="10dp"
+                android:padding="2dp"
+                app:layout_constraintStart_toEndOf="@id/tv_keyword"
+                app:layout_constraintTop_toTopOf="@id/tv_keyword"/>
 
-                <EditText
-                    android:id="@+id/et_keyword"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="50"
-                    android:background="@null"
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
-
-                <Button
-                    android:id="@+id/btn_add_keyword"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="23"
-                    android:backgroundTint="#ffd966"
-                    android:text="추가"
-                    android:textSize="18sp" />
-            </LinearLayout>
+            <TextView
+                android:id="@+id/btn_add_keyword"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:text="#"
+                android:layout_margin="5dp"
+                android:elevation="5dp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:background="@drawable/keyword_rectangle"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@+id/et_keyword"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/et_keyword"
+                app:layout_constraintTop_toTopOf="@id/et_keyword" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcv_keyword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="10dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layout_keyword" />
+                app:layout_constraintTop_toBottomOf="@id/tv_keyword"/>
 
             <View
-                android:id="@+id/line2"
+                android:id="@+id/line"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:background="?android:attr/listDivider"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -174,17 +173,18 @@
                 android:id="@+id/et_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:background="@null"
                 android:gravity="top"
-                android:hint="내용을 입력하세요."
+                android:hint="내용을 입력해주세요."
                 android:padding="5dp"
-                android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:textSize="17sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/line2" />
+                app:layout_constraintTop_toBottomOf="@id/line"
+                android:minLines="10"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -147,8 +147,8 @@ class HomeFragment : Fragment(), View.OnClickListener {
                             response: Response<ResultPost>
                         ) {
                             for (i in response.body()!!.content.indices) {
-                                val category = response.body()!!.content[i].title
-                                val text = response.body()!!.content[i].text
+                                val category = response.body()!!.content[i].category
+                                val text = response.body()!!.content[i].title
                                 val myModel = RecentModel(category, text)
                                 modelList.add(myModel)
                             }
