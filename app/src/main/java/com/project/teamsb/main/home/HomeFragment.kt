@@ -61,6 +61,10 @@ class HomeFragment : Fragment(), View.OnClickListener {
         postLoading()
 
         calendarLoading()
+        binding.vf.setInAnimation(context,android.R.anim.fade_in)
+        binding.vf.setOutAnimation(context,android.R.anim.fade_out)
+        binding.vf.startFlipping()
+        binding.vf.flipInterval = 2000
 
         return binding.root
     }
