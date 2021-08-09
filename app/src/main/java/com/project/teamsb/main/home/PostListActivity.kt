@@ -96,11 +96,15 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
             }
         })
         binding.srlCategory.setOnRefreshListener {
-            page = 1
-            postRecyclerAdapter.clearList()
-            isRefresh = true
-            postLoading()
-            noMoreItem = false
+            if (!loadLock) {
+                loadLock = true
+                page = 1
+                postRecyclerAdapter.clearList()
+                isRefresh = true
+                postLoading()
+                noMoreItem = false
+            }
+
             binding.srlCategory.isRefreshing = false
         }
         postRecyclerAdapter.setItemClickListener(this)
@@ -211,7 +215,7 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
                                             postRecyclerAdapter.notifyDataSetChanged()
                                             isRefresh = false
                                         }else{
-                                            postRecyclerAdapter.notifyItemRangeInserted(((page-1)* index), index+1)
+                                            postRecyclerAdapter.notifyItemRangeInserted(((page-1)* index), response.body()!!.content.size)
                                         }
                                         Log.d("로그", "${postRecyclerAdapter.itemCount}")
                                         loadLock = false

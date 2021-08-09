@@ -76,13 +76,15 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
         replyLoading(id,page,no)
 
         binding.srlPost.setOnRefreshListener {
+            if(!loadLock){
                 page = 1
                 commentRecyclerAdapter.clearList()
-                isRefresh = true
+                loadLock = true
                 replyLoading(id, page, no)
                 noMoreItem = false
-                binding.srlPost.isRefreshing = false
 
+            }
+            binding.srlPost.isRefreshing = false
         }
         binding.postScrollView.viewTreeObserver.addOnScrollChangedListener {
             var view = binding.postScrollView.getChildAt (binding.postScrollView.childCount - 1);
@@ -186,7 +188,7 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
                                 if(isRefresh){
                                     commentRecyclerAdapter.notifyDataSetChanged()
                                 }else{
-                                    commentRecyclerAdapter.notifyItemRangeInserted((page -1)*index,index)
+                                    commentRecyclerAdapter.notifyItemRangeInserted((page -1)*index,response.body()!!.content.size)
                                 }
                                 loadLock = false
                                 binding.progressBar.visibility = INVISIBLE

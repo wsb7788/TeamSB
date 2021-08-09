@@ -12,6 +12,91 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="30dp">
 
+        <ViewFlipper
+            android:id="@+id/vf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#ffe38b"
+                android:padding="2dp">
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/ic_speak"
+                    android:layout_marginLeft="5dp"/>
+                <TextView
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="1. 앙기모띠"
+                    android:textSize="15dp"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#ffe38b"
+                android:padding="2dp">
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/ic_speak"
+                    android:layout_marginLeft="5dp"/>
+                <TextView
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="2. 앙앙기모띠"
+                    android:textSize="15dp"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#ffe38b"
+                android:padding="2dp">
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/ic_speak"
+                    android:layout_marginLeft="5dp"/>
+                <TextView
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="3. 앙앙앙기모띠"
+                    android:textSize="15dp"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#ffe38b"
+                android:padding="2dp">
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/ic_speak"
+                    android:layout_marginLeft="5dp"/>
+                <TextView
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="4. 앙앙앙앙기모띠"
+                    android:textSize="15dp"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+        </ViewFlipper>
 
         <ImageButton
             android:id="@+id/btn1"
@@ -25,7 +110,7 @@
             app:layout_constraintEnd_toStartOf="@+id/btn2"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/vf"
             app:layout_constraintWidth_percent="0.20" />
 
         <ImageButton
@@ -40,7 +125,7 @@
             app:layout_constraintEnd_toStartOf="@+id/btn3"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/btn1"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/vf"
             app:layout_constraintWidth_percent="0.20" />
 
         <ImageButton
@@ -55,7 +140,7 @@
             app:layout_constraintEnd_toStartOf="@+id/btn4"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/btn2"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/vf"
             app:layout_constraintWidth_percent="0.20" />
 
         <ImageButton
@@ -70,7 +155,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/btn3"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/vf"
             app:layout_constraintWidth_percent="0.20" />
 
         <TextView
@@ -143,7 +228,9 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView1"
-            app:layout_constraintWidth_percent="0.9">
+            app:layout_constraintWidth_percent="0.9"
+            android:layout_margin="10dp"
+            android:elevation="10dp">
 
             <TextView
                 android:id="@+id/tv_recent"
