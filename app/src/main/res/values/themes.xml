@@ -22,8 +22,14 @@
     <style name="CalendarViewTheme">
         <item name="colorAccent">#F9DA78</item>
     </style>
-    <style name="ToolbarTitleStyle.Dark" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
-        <item name="android:textColor">#f9da78</item> <!-- Toolbar의 타이틀 텍스트 색상-->
-        <item name="android:textSize">20dp</item> <!-- Toolbar의 타이틀 텍스트 사이즈-->
+
+    // 툴바 색
+    <style name="AppTheme.ActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="actionMenuTextColor">#f9da78</item>
+        <item name="android:textColorPrimary">#ffffff</item>S
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+
     </style>
+
 </resources>
