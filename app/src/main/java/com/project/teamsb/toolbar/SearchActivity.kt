@@ -101,6 +101,9 @@ class SearchActivity:AppCompatActivity(),View.OnClickListener {
                     val page1 = page
                     serverAPI.search(page1,category1,keyword ).enqueue(object : Callback<ResultPost> {
                         override fun onResponse(call: Call<ResultPost>, response: Response<ResultPost>) {
+                            if (page==1){
+                                postRecyclerAdapter.clearList()
+                            }
                             for (i in response.body()!!.content.indices) {
                                 val title = response.body()!!.content[i].title.toString()
                                 val timeStamp = response.body()!!.content[i].timeStamp.toString()
@@ -137,7 +140,6 @@ class SearchActivity:AppCompatActivity(),View.OnClickListener {
                         else-> ""
                     }
                     page = 1
-                    postRecyclerAdapter.clearList()
                     postLoading()
                 }
 

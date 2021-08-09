@@ -102,7 +102,6 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
             if (!loadLock) {
                 loadLock = true
                 page = 1
-                postRecyclerAdapter.clearList()
                 isRefresh = true
                 postLoading()
                 noMoreItem = false
@@ -117,7 +116,7 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
         super.onResume()
         if(returnWrite){
             page = 1
-            postRecyclerAdapter.clearList()
+
             isRefresh = true
             postLoading()
             noMoreItem = false
@@ -182,6 +181,9 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
                                     @RequiresApi(Build.VERSION_CODES.O)
                                     override fun onResponse(call: Call<ResultPost>, response: Response<ResultPost>) {
 
+                                        if(page ==1 ){
+                                            postRecyclerAdapter.clearList()
+                                        }
                                         if (response.body()!!.content.size % 10 != 0 || response.body()!!.content.isEmpty()) {
                                             noMoreItem = true
                                         }
@@ -208,10 +210,14 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
             val category = response.body()!!.content[i].category
             val title = response.body()!!.content[i].title
             val text = response.body()!!.content[i].text
+
+
             val StringprofileImage = response.body()!!.content[i].imageSource
             val byteProfileImage = Base64.decode(StringprofileImage,0)
             val inputStream = ByteArrayInputStream(byteProfileImage)
             val profileImage = BitmapFactory.decodeStream(inputStream)
+
+
             val timeCreated = response.body()!!.content[i].timeStamp        // yyyy-MM-dd hh:mm:ss
             var timeStamp = ""
             val y = timeCreated.substring(0,4).toInt()

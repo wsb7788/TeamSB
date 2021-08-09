@@ -39,13 +39,15 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
 
 class SettingActivity:AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivitySettingBinding
     private lateinit var view: DialogEditProfileImageBinding
-
+    lateinit var profileImage:Bitmap
+    lateinit var profileImageBase64:String
     var retrofit: Retrofit = Retrofit.Builder()
         .baseUrl("http://13.209.10.30:3000/")
         .addConverterFactory(GsonConverterFactory.create())
@@ -117,6 +119,8 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
             takeAlbum()
         }
         view.btnPositive.setOnClickListener {
+            sendProfileImage(profileImageBase64)
+            alertDialog.onBackPressed()
         }
         view.btnNegative.setOnClickListener {
             alertDialog.onBackPressed()
@@ -142,23 +146,25 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
                 }
                 val img = BitmapFactory.decodeStream(ins)
                 ins?.close()
-                val resized = Bitmap.createScaledBitmap(img,256,256,true)
+                val resized = Bitmap.createScaledBitmap(img,300,300,true)
                 val byteArrayOutputStream = ByteArrayOutputStream()
-                resized.compress(Bitmap.CompressFormat.JPEG, 100,byteArrayOutputStream)
+                resized.compress(Bitmap.CompressFormat.JPEG, 50,byteArrayOutputStream)
                 val byteArray = byteArrayOutputStream.toByteArray()
                 val outStream = ByteArrayOutputStream()
                 val res = resources
-                val profileImageBase64 = Base64.encodeToString(byteArray,0)
+                profileImageBase64 = Base64.encodeToString(byteArray,0)
                 //여기까지 인코딩
 
-                sendProfileImage(profileImageBase64)
-
+                val byteProfileImage = Base64.decode(profileImageBase64,0)
+                val inputStream = ByteArrayInputStream(byteProfileImage)
+                profileImage = BitmapFactory.decodeStream(inputStream)
                 Glide
                     .with(App.instance)
-                    .load(data)
+                    .load(profileImage)
                     .circleCrop()
                     .placeholder(R.mipmap.ic_launcher)
-                    .into(binding.ivSettingProfileImage)
+                    .into(view.ivEditProfileImage)
+
 
             }
             }
@@ -172,10 +178,15 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
                 CalendarObj.api.profileSet(id,image).enqueue(object : Callback<ResultNoReturn>{
                     override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
                         if(response.body()!!.code == 200){
+                            Glide
+                                .with(App.instance)
+                                .load(profileImage)
+                                .circleCrop()
+                                .placeholder(R.mipmap.ic_launcher)
+                                .into(binding.ivSettingProfileImage)
                             Toast.makeText(applicationContext,"이미지 설정 완료",Toast.LENGTH_SHORT).show()
                         }else
                             Toast.makeText(applicationContext,"${response.body()!!.message}",Toast.LENGTH_SHORT).show()
-
                     }
 
                     override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
@@ -191,22 +202,32 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    val startForCrop =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                result: ActivityResult ->
-            if(result.resultCode == Activity.RESULT_OK) {
-                val data = result.data!!.data
-                Toast.makeText(this,"$data",Toast.LENGTH_LONG).show()
+   /* private fun setImage() {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
+                val id = pref.getString("id","")!!
+                CalendarObj.api.detail(id,image).enqueue(object : Callback<ResultNoReturn>{
+                    override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
+                        if(response.body()!!.code == 200){
+
+                        }else
+                            Toast.makeText(applicationContext,"${response.body()!!.message}",Toast.LENGTH_SHORT).show()
+                    }
+
+                    override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
+                        Toast.makeText(applicationContext,"서버통신 문제",Toast.LENGTH_SHORT).show()
+                    }
+
+                })
 
 
-
+            }catch (e:Exception){
+                e.printStackTrace()
             }
         }
 
-
-
-
-
+    }*/
 
     private fun feedback(content: String) {
         CoroutineScope(Dispatchers.IO).launch {
