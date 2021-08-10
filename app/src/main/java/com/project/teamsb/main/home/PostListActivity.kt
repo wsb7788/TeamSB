@@ -2,6 +2,7 @@ package com.project.teamsb.main.home
 
 import android.content.ContentValues.TAG
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
@@ -212,14 +213,23 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
             val text = response.body()!!.content[i].text
 
 
-            val StringprofileImage = response.body()!!.content[i].imageSource
-            val byteProfileImage = Base64.decode(StringprofileImage,0)
-            val inputStream = ByteArrayInputStream(byteProfileImage)
-            val profileImage = BitmapFactory.decodeStream(inputStream)
+            var stringprofileImage:String
+            if(response.body()!!.content[i].imageSource.isNullOrBlank()){
+                stringprofileImage = ""
+            }else{
+                stringprofileImage = response.body()!!.content[i].imageSource
+            }
+                val byteProfileImage = Base64.decode(stringprofileImage,0)
+                val inputStream = ByteArrayInputStream(byteProfileImage)
+                val profileImage = BitmapFactory.decodeStream(inputStream)
+
+
 
 
             val timeCreated = response.body()!!.content[i].timeStamp        // yyyy-MM-dd hh:mm:ss
             var timeStamp = ""
+
+
             val y = timeCreated.substring(0,4).toInt()
             val M = timeCreated.substring(5,7).toInt()
             val d = timeCreated.substring(8,10).toInt()

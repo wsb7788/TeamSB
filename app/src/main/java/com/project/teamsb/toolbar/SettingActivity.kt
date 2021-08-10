@@ -25,6 +25,7 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.project.teamsb.R
 import com.project.teamsb.api.NicknameSet
 import com.project.teamsb.api.ResultNoReturn
+import com.project.teamsb.api.ResultProfileImage
 import com.project.teamsb.api.ServerAPI
 import com.project.teamsb.databinding.*
 import com.project.teamsb.login.LoginActivity
@@ -61,6 +62,7 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
         binding = ActivitySettingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        imageSet()
         nicknameSet()
 
 
@@ -68,6 +70,47 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
         binding.btnLogout.setOnClickListener(this)
         binding.btnSettingFeedback.setOnClickListener(this)
         binding.ivSettingProfileImage.setOnClickListener(this)
+    }
+
+    private fun imageSet() {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
+                val id = pref.getString("id","")!!
+                CalendarObj.api.getUserProfileImage(id).enqueue(object : Callback<ResultProfileImage>{
+                    override fun onResponse(call: Call<ResultProfileImage>, response: Response<ResultProfileImage>) {
+                        if(response.body()!!.code == 200){
+                            val stringProfileImage:String
+                            if(response.body()!!.content.isNullOrBlank()){
+                                stringProfileImage = ""
+                            }else{
+                                stringProfileImage = response.body()!!.content
+                            }
+                            val byteProfileImage = Base64.decode(stringProfileImage,0)
+                            val inputStream = ByteArrayInputStream(byteProfileImage)
+                            profileImage = BitmapFactory.decodeStream(inputStream)
+                            Glide
+                                .with(App.instance)
+                                .load(profileImage)
+                                .circleCrop()
+                                .placeholder(R.drawable.profile_basic)
+                                .into(binding.ivSettingProfileImage)
+                            Toast.makeText(applicationContext,"이미지 설정 완료",Toast.LENGTH_SHORT).show()
+                        }else
+                            Toast.makeText(applicationContext,"${response.body()!!.message}",Toast.LENGTH_SHORT).show()
+                    }
+
+                    override fun onFailure(call: Call<ResultProfileImage>, t: Throwable) {
+                        Toast.makeText(applicationContext,"서버통신 문제",Toast.LENGTH_SHORT).show()
+                    }
+
+                })
+
+
+            }catch (e:Exception){
+                e.printStackTrace()
+            }
+        }
     }
 
     override fun onClick(v: View?) {
@@ -204,32 +247,6 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
         }
     }
 
-   /* private fun setImage() {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
-                val id = pref.getString("id","")!!
-                CalendarObj.api.detail(id,image).enqueue(object : Callback<ResultNoReturn>{
-                    override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
-                        if(response.body()!!.code == 200){
-
-                        }else
-                            Toast.makeText(applicationContext,"${response.body()!!.message}",Toast.LENGTH_SHORT).show()
-                    }
-
-                    override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
-                        Toast.makeText(applicationContext,"서버통신 문제",Toast.LENGTH_SHORT).show()
-                    }
-
-                })
-
-
-            }catch (e:Exception){
-                e.printStackTrace()
-            }
-        }
-
-    }*/
 
     private fun feedback(content: String) {
         CoroutineScope(Dispatchers.IO).launch {

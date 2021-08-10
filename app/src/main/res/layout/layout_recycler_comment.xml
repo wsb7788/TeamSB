@@ -44,6 +44,5 @@
         app:layout_constraintStart_toStartOf="@id/tv_comment_nickname"
         app:layout_constraintTop_toBottomOf="@id/tv_comment_content"
         android:textSize="15sp"
-        android:textStyle="bold"
         android:text="11/11 17:45"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

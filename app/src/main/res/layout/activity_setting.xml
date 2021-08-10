@@ -55,7 +55,6 @@
                              android:clickable="true"
                              android:layout_width="0dp"
                              android:layout_weight="40"
-                             android:src="@drawable/profile_image"
                              android:layout_height="130dp"
                              android:padding="15dp"
                              android:layout_gravity="center"/>

@@ -25,7 +25,9 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:background="#ffe38b"
-                android:padding="2dp">
+                android:padding="2dp"
+                android:layout_marginBottom="5dp"
+                android:elevation="5dp">
                 <ImageView
                     android:layout_width="18dp"
                     android:layout_height="18dp"
@@ -100,8 +102,8 @@
 
         <ImageButton
             android:id="@+id/btn1"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="81dp"
+            android:layout_height="83dp"
             android:layout_marginTop="5dp"
             android:backgroundTint="#fff"
             android:scaleType="fitCenter"
@@ -229,7 +231,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView1"
             app:layout_constraintWidth_percent="0.9"
-            android:layout_margin="5dp"
             android:elevation="5dp">
 
             <TextView

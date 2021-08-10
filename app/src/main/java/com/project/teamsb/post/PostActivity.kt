@@ -188,7 +188,12 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
                                     val id = id==  response.body()!!.content[i].userId
                                     val timestampBefore =response.body()!!.content[i].timeStamp.substring(5,16) // MM-dd hh:mm 을
                                     val timestamp = timestampBefore.replace("-","/") // MM/dd hh:mm 으로 변경
-                                    val byteProfileImage = Base64.decode(response.body()!!.content[i].imageSource,0)
+                                    var stringProfileImage:String
+                                    if(response.body()!!.content[i].imageSource.isNullOrBlank()){
+                                        stringProfileImage = ""
+                                    }else
+                                        stringProfileImage = response.body()!!.content[i].imageSource
+                                    val byteProfileImage = Base64.decode(stringProfileImage,0)
                                     val inputStream = ByteArrayInputStream(byteProfileImage)
                                     val profileImage = BitmapFactory.decodeStream(inputStream)
                                     val myModel = CommentModel(nickname = nickname,id= id, content = content,timestamp,profileImage)
@@ -392,7 +397,13 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
         binding.tvKeyword.text = hash
         binding.tvContent.text = content.text
 
-        val byteProfileImage = Base64.decode(content.imageSource,0)
+        var stringProfileImage:String
+        if(content.imageSource.isNullOrBlank()){
+            stringProfileImage = ""
+        }else{
+            stringProfileImage = content.imageSource
+        }
+        val byteProfileImage = Base64.decode(stringProfileImage,0)
         val inputStream = ByteArrayInputStream(byteProfileImage)
         val profileImage = BitmapFactory.decodeStream(inputStream)
         Glide

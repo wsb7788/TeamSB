@@ -98,6 +98,12 @@ interface ServerAPI {
     ) : Call<ResultNickname>
 
     @FormUrlEncoded
+    @POST("/getUser/profile_image/")
+    fun getUserProfileImage(
+        @Field("curId") curId: String,
+    ) : Call<ResultProfileImage>
+
+    @FormUrlEncoded
     @POST("/check_mod/")
     fun checkMod(
         @Field("curUser") curUser: String,

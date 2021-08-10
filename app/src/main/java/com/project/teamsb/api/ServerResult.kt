@@ -70,6 +70,12 @@ data class ResultNickname(
     var message: String = "",
     var content: String = "")
 
+data class ResultProfileImage(
+    var check: Boolean = false,
+    var code: Int = 0,
+    var message: String = "",
+    var content: String = "")
+
 data class GetCalendar(
     var check: Boolean,
     var code: Int,
