@@ -8,24 +8,25 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:layout_marginBottom="10dp"
+        android:background="@color/white"
+        android:elevation="10dp"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginBottom="10dp"
-        android:background="@color/white"
-        android:elevation="10dp">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            android:id="@+id/tv_toolbar"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:focusableInTouchMode="true"
             android:layout_gravity="center"
+            android:focusableInTouchMode="true"
             android:gravity="center"
-            android:text="게시글"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="20sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
     </androidx.appcompat.widget.Toolbar>
 
     <View
@@ -38,11 +39,12 @@
         app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent="0.9"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/comment_ll"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/cl_comment"
         app:layout_constraintTop_toBottomOf="@id/line">
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -63,195 +65,110 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:paddingTop="20dp">
-
-                    <TextView
-                        android:id="@+id/et_title"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:padding="1dp"
-                        android:text="제목"
-                        android:textColor="@color/black"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.05"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintWidth_percent="0.225" />
-
-                    <TextView
-                        android:id="@+id/tv_title2"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:background="#FFF2CC"
-                        android:paddingLeft="5dp"
-                        android:paddingTop="1dp"
-                        android:paddingBottom="1dp"
-                        android:textColor="@color/black"
-                        android:textSize="18sp"
-                        app:layout_constraintStart_toEndOf="@+id/et_title"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintWidth_percent="0.675" />
-
-                    <TextView
-                        android:id="@+id/tv_category"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:padding="1dp"
-                        android:text="카테고리"
-                        android:textColor="@color/black"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.05"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/et_title"
-                        app:layout_constraintWidth_percent="0.225" />
-
-                    <TextView
-                        android:id="@+id/tv_category2"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:background="#FFF2CC"
-                        android:paddingLeft="5dp"
-                        android:paddingTop="1dp"
-                        android:paddingBottom="1dp"
-                        android:textColor="@color/black"
-                        android:textSize="18sp"
-                        app:layout_constraintStart_toEndOf="@+id/tv_category"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_title2"
-                        app:layout_constraintWidth_percent="0.675" />
-
-                    <TextView
-                        android:id="@+id/tv_time"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:padding="1dp"
-                        android:text="작성시간"
-                        android:textColor="@color/black"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.05"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_category"
-                        app:layout_constraintWidth_percent="0.225" />
-
-                    <TextView
-                        android:id="@+id/tv_time2"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:background="#FFF2CC"
-                        android:paddingLeft="5dp"
-                        android:paddingTop="1dp"
-                        android:paddingBottom="1dp"
-                        android:textColor="@color/black"
-                        android:textSize="18sp"
-                        app:layout_constraintStart_toEndOf="@+id/tv_time"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_category2"
-                        app:layout_constraintWidth_percent="0.675" />
-
-                    <TextView
-                        android:id="@+id/tv_writer"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:padding="1dp"
-                        android:text="작성자"
-                        android:textColor="@color/black"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.05"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_time"
-                        app:layout_constraintWidth_percent="0.225" />
-
-                    <TextView
-                        android:id="@+id/tv_writer2"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:background="#FFF2CC"
-                        android:paddingLeft="5dp"
-                        android:paddingTop="1dp"
-                        android:paddingBottom="1dp"
-                        android:textColor="@color/black"
-                        android:textSize="18sp"
-                        app:layout_constraintStart_toEndOf="@+id/tv_writer"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_time2"
-                        app:layout_constraintWidth_percent="0.675" />
-
-                    <TextView
-                        android:id="@+id/tv_keyword"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:padding="1dp"
-                        android:text="키워드"
-                        android:textColor="@color/black"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.05"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_writer"
-                        app:layout_constraintWidth_percent="0.225" />
-
-                    <TextView
-                        android:id="@+id/tv_keyword2"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:background="#FFF2CC"
-                        android:paddingLeft="5dp"
-                        android:paddingTop="1dp"
-                        android:paddingBottom="1dp"
-                        android:textColor="@color/black"
-                        android:textSize="18sp"
-                        app:layout_constraintStart_toEndOf="@+id/tv_keyword"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_writer2"
-                        app:layout_constraintWidth_percent="0.675" />
-
-                    <TextView
-                        android:id="@+id/tv_content"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:background="@drawable/rectangle_gray"
-                        android:minLines="10"
-                        android:padding="10dp"
-                        android:textColor="@color/black"
-                        android:textSize="18sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_keyword2"
-                        app:layout_constraintWidth_percent="0.9" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rcv_comment"
-                        android:layout_width="0dp"
-                        app:layout_constraintWidth_percent="0.9"
-                        android:layout_height="wrap_content"
-                        android:nestedScrollingEnabled="false"
-                        app:layout_constraintTop_toBottomOf="@id/tv_content"
-                        app:layout_constraintBottom_toTopOf="@id/progressBar"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        />
-                    <ProgressBar
-                        android:id="@+id/progressBar"
-                        style="?android:attr/progressBarStyle"
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_height="match_parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/rcv_comment"
-                        app:layout_constraintBottom_toBottomOf="parent" />
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:id="@+id/iv_profile"
+                            android:layout_width="45dp"
+                            android:layout_height="50dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:src="@drawable/profile_basic"/>
+
+                        <TextView
+                            android:id="@+id/tv_nickname"
+                            android:text="닉네임은여덟글자"
+                            android:textSize="17dp"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:layout_marginLeft="10dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintStart_toEndOf="@id/iv_profile"
+                            app:layout_constraintTop_toTopOf="@id/iv_profile"/>
+
+                        <TextView
+                            android:id="@+id/tv_time_stamp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="11/11 17:45"
+                            android:textSize="17sp"
+                            app:layout_constraintBottom_toBottomOf="@id/iv_profile"
+                            app:layout_constraintStart_toStartOf="@+id/tv_nickname" />
+
+                        <TextView
+                            android:id="@+id/tv_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/iv_profile"
+                            android:text="7시에 가천대 어쩌구저쩌구"
+                            android:textSize="17sp"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:layout_marginTop="20dp"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/tv_content"
+                            android:textSize="17sp"
+                            android:textColor="@color/black"
+                            android:layout_marginTop="15dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_title"
+                            android:text="7시 가천대에서 얼미ㅏㄴ어림너이ㅓㅁ니ㅏ어치ㅏㅓㅁㄴ이ㅏㅊ 구해용"/>
+
+
+                        <TextView
+                            android:id="@+id/tv_keyword"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_content"
+                            android:text="#1번출구 #7시"
+                            android:textSize="18sp"
+                            android:textColor="#ffd03b"
+                            android:textStyle="bold"
+                            android:layout_marginTop="15dp"/>
+
+                        <View
+                            android:id="@+id/line2"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="?android:attr/listDivider"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_keyword"
+                            android:layout_marginTop="10dp"/>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rcv_comment"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/line2"
+                            android:layout_marginTop="10dp"
+                             />
+
+                        <ProgressBar
+                            android:id="@+id/progressBar"
+                            style="?android:attr/progressBarStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/rcv_comment" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -259,38 +176,40 @@
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <LinearLayout
-        android:id="@+id/comment_ll"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@drawable/comment_rectangle"
-        android:orientation="horizontal"
-        android:weightSum="100"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_comment"
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent="0.9"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintWidth_percent="0.9">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/write_rectangle"
+        android:layout_marginBottom="20dp">
 
         <EditText
             android:id="@+id/et_comment"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="80"
+            android:layout_height="wrap_content"
             android:background="@null"
             android:hint="댓글을 입력하세요."
-            android:paddingLeft="20dp" />
-
-        <Button
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btn_comment"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginLeft="20dp"/>
+        <ImageView
             android:id="@+id/btn_comment"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="20"
-            android:background="@drawable/btn_set_comment"
-            android:scaleX="0.7"
-            app:backgroundTint="@color/black" />
-    </LinearLayout>
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="7dp"
+            android:background="@drawable/keyword_rectangle"
+            android:src="@drawable/btn_upload"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
 
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
 

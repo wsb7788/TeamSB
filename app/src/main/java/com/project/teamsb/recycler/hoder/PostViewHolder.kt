@@ -32,7 +32,7 @@ class PostViewHolder(val binding: LayoutRecyclerPostListBinding): RecyclerView.V
             .with(App.instance)
             .load(postModel.profileImage)
             .circleCrop()
-            .placeholder(R.mipmap.ic_launcher)
+            .placeholder(R.drawable.profile_basic)
             .into(binding.ivProfile)
 
     }

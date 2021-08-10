@@ -272,7 +272,7 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
                 intent = Intent(this, WriteActivity::class.java)
                 intent.putExtra("no",no)
                 intent.putExtra("edit",true)
-                intent.putExtra("category",binding.tvCategory2.text)
+                intent.putExtra("category",binding.tvToolbar.text)
                 startActivity(intent)
             }
             R.id.report_tb -> {
@@ -366,19 +366,19 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
     }
 
     fun setContent(content: Content){
-        binding.tvTitle2.text = content.title
-        binding.tvCategory2.text = content.category
-        binding.tvTime2.text = content.timeStamp
-        binding.tvWriter2.text = content.userNickname
+        binding.tvTitle.text = content.title
+        binding.tvToolbar.text = content.category
+        binding.tvTimeStamp.text = content.timeStamp
+        binding.tvNickname.text = content.userNickname
         var hash = ""
         if(content.hash.isNotEmpty()){
             for(i in content.hash){
-                hash += " #"
+                hash += "#"
                 hash += i
-                hash += "\n"
+                hash += " "
             }
         }
-        binding.tvKeyword2.text = hash
+        binding.tvKeyword.text = hash
         binding.tvContent.text = content.text
     }
 

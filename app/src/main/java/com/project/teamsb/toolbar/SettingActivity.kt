@@ -164,7 +164,7 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
                     .with(App.instance)
                     .load(profileImage)
                     .circleCrop()
-                    .placeholder(R.mipmap.ic_launcher)
+                    .placeholder(R.drawable.profile_basic)
                     .into(view.ivEditProfileImage)
 
 
@@ -184,7 +184,7 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
                                 .with(App.instance)
                                 .load(profileImage)
                                 .circleCrop()
-                                .placeholder(R.mipmap.ic_launcher)
+                                .placeholder(R.drawable.profile_basic)
                                 .into(binding.ivSettingProfileImage)
                             Toast.makeText(applicationContext,"이미지 설정 완료",Toast.LENGTH_SHORT).show()
                         }else

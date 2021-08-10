@@ -34,7 +34,7 @@ class CommentViewHolder(val binding: LayoutRecyclerCommentBinding): RecyclerView
             .with(App.instance)
             .load(commentModel.nickname)
             //.centerCrop()
-            .placeholder(R.mipmap.ic_launcher)
+            .placeholder(R.drawable.profile_basic)
             .into(binding.ivCommentProfile)
 
     }
