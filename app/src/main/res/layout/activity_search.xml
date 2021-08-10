@@ -46,46 +46,53 @@
         app:layout_constraintTop_toBottomOf="@+id/line"
         app:layout_constraintWidth_percent="0.9">
 
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|start"
-            android:entries="@array/category"
-            android:gravity="center"
-            android:spinnerMode="dialog"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <EditText
             android:id="@+id/et_search"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@null"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/round_rectangle"
             android:hint="검색어를 입력하세요."
-            app:layout_constraintEnd_toStartOf="@+id/btn_search"
-            app:layout_constraintStart_toEndOf="@id/spinner"
+            android:layout_marginRight="10dp"
+            android:paddingTop="7dp"
+            android:paddingBottom="7dp"
+            android:paddingLeft="20dp"
+            android:textSize="17dp"
+            android:elevation="5dp"
+            app:layout_constraintEnd_toStartOf="@+id/btn_filter"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
+        <ImageView
             android:id="@+id/btn_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#ffd996"
-            android:text="검색"
-            android:textSize="18sp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:clickable="true"
+            android:src="@drawable/profile_basic"
+            app:layout_constraintBottom_toBottomOf="@+id/et_search"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@id/et_search" />
+        <ImageView
+            android:id="@+id/btn_filter"
+            android:clickable="true"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            app:layout_constraintEnd_toStartOf="@id/btn_search"
+            android:layout_marginRight="10dp"
+            app:layout_constraintTop_toTopOf="@id/et_search"
+            android:src="@drawable/ic_filter"
 
+            android:background="@drawable/ic_filter_only" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcv_search"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginTop="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinner" />
+            app:layout_constraintTop_toBottomOf="@+id/et_search" />
 
 
 
