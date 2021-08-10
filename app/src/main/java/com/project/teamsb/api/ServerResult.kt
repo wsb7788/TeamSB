@@ -55,6 +55,7 @@ data class ReplyContent(
     var content: String = "",
     var userId: String = "",
     var userNickname: String = "",
+    var imageSource: String = "",
     var timeStamp: String = "",
     var mod_timeStamp: String = "",
     var right: Boolean = false)

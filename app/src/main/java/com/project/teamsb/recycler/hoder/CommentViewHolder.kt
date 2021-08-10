@@ -1,6 +1,5 @@
 package com.project.teamsb.recycler.hoder
 
-import android.graphics.Color
 import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -28,15 +27,16 @@ class CommentViewHolder(val binding: LayoutRecyclerCommentBinding): RecyclerView
         binding.tvCommentNickname.text = commentModel.nickname
         binding.tvCommentContent.text = commentModel.content
         if(commentModel.id!!){
-            binding.tvCommentNickname.setTextColor(Color.RED)
+            binding.tvCommentNickname.setTextColor(-0x62588)
         }
         Glide
             .with(App.instance)
-            .load(commentModel.nickname)
-            //.centerCrop()
+            .load(commentModel.profileImage)
+            .circleCrop()
             .placeholder(R.drawable.profile_basic)
             .into(binding.ivCommentProfile)
 
+        binding.tvCommentTimeStamp.text = commentModel.timeStamp
     }
 
 }

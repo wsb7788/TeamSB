@@ -4,7 +4,10 @@ package com.project.teamsb.post
 
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Base64
 import android.view.*
 import android.view.View.*
 import android.view.inputmethod.InputMethodManager
@@ -12,6 +15,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.project.teamsb.R
 import com.project.teamsb.api.*
 import com.project.teamsb.databinding.ActivityPostBinding
@@ -25,6 +29,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.ByteArrayInputStream
 
 
 class PostActivity : AppCompatActivity(),View.OnClickListener {
@@ -180,8 +185,13 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
                                     }
                                     val nickname = response.body()!!.content[i].userNickname
                                     val content = response.body()!!.content[i].content
-                                    val id = id == response.body()!!.content[i].userId
-                                    val myModel = CommentModel(nickname = nickname,id= id, content = content)
+                                    val id = id==  response.body()!!.content[i].userId
+                                    val timestampBefore =response.body()!!.content[i].timeStamp.substring(5,16) // MM-dd hh:mm 을
+                                    val timestamp = timestampBefore.replace("-","/") // MM/dd hh:mm 으로 변경
+                                    val byteProfileImage = Base64.decode(response.body()!!.content[i].imageSource,0)
+                                    val inputStream = ByteArrayInputStream(byteProfileImage)
+                                    val profileImage = BitmapFactory.decodeStream(inputStream)
+                                    val myModel = CommentModel(nickname = nickname,id= id, content = content,timestamp,profileImage)
                                     modelList.add(myModel)
                                 }
                                 commentRecyclerAdapter.submitList(modelList)
@@ -368,18 +378,29 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
     fun setContent(content: Content){
         binding.tvTitle.text = content.title
         binding.tvToolbar.text = content.category
-        binding.tvTimeStamp.text = content.timeStamp
-        binding.tvNickname.text = content.userNickname
+        val timestamp = content.timeStamp.substring(5,16) // MM-dd hh:mm 을
+        binding.tvTimeStamp.text = timestamp.replace("-","/") // MM/dd hh:mm 으로 변경
+            binding.tvNickname.text = content.userNickname
         var hash = ""
         if(content.hash.isNotEmpty()){
             for(i in content.hash){
                 hash += "#"
                 hash += i
-                hash += " "
+                hash += "     "
             }
         }
         binding.tvKeyword.text = hash
         binding.tvContent.text = content.text
+
+        val byteProfileImage = Base64.decode(content.imageSource,0)
+        val inputStream = ByteArrayInputStream(byteProfileImage)
+        val profileImage = BitmapFactory.decodeStream(inputStream)
+        Glide
+            .with(App.instance)
+            .load(profileImage)
+            .circleCrop()
+            .placeholder(R.drawable.profile_basic)
+            .into(binding.ivProfile)
     }
 
 }
