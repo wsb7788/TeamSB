@@ -16,6 +16,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.RemoteMessage
 import com.project.teamsb.api.ResultLogin
+import com.project.teamsb.api.ResultNoReturn
 import com.project.teamsb.api.ServerAPI
 import com.project.teamsb.databinding.ActivityLoginBinding
 import com.project.teamsb.main.MainActivity
@@ -40,51 +41,32 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     var serverAPI: ServerAPI = retrofit.create(ServerAPI::class.java)
 
     lateinit var imm: InputMethodManager
-
+    lateinit var token:String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
                 Log.w("로그", "Fetching FCM registration token failed", task.exception)
                 return@OnCompleteListener
             }
-
             // Get new FCM registration token
-            val token = task.result
-
-            // Log and toast
-            Log.d("로그", token!!)
-            Toast.makeText(this, token, Toast.LENGTH_SHORT).show()
+            token = task.result!!
         })
 
         imm = getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        val pref = getSharedPreferences("autoLogin", MODE_PRIVATE)
-        val editorAuto = pref.edit()
-        if (pref.getBoolean("autoLoginCheck", false)) {
+
+        val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
+        if (pref.getBoolean("autoLoginSuccess", false)) {
             binding.autoLoginCb.isChecked = true
-            val id = pref.getString("id", "")!!
-            val pw = pref.getString("pw", "")!!
-            if(id.isNotBlank() || id.isNotEmpty()){
-                login(id, pw)
-            }
-
-
+            val intent = Intent(applicationContext, MainActivity::class.java)
+            startActivity(intent)
         }
         binding.loginBtn.setOnClickListener(this)
-
-        binding.autoLoginCb.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                editorAuto.putBoolean("autoLoginCheck", true)
-                editorAuto.apply()
-            }else{
-                editorAuto.clear()
-                editorAuto.apply()
-            }
-        }
 
     }
 
@@ -97,9 +79,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
             val id= id
             val pw = pw
-
-            val prefAuto = getSharedPreferences("autoLogin", MODE_PRIVATE)
-            val editorAuto = prefAuto.edit()
 
             val prefInfo = getSharedPreferences("userInfo", MODE_PRIVATE)
             val editorInfo = prefInfo.edit()
@@ -115,14 +94,13 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                     override fun onResponse(call: Call<ResultLogin>, response: Response<ResultLogin>) {
                         binding.progressBar.visibility = INVISIBLE
 
-
                         if(response.body()!!.check){
                             editorInfo.putString("id", id)
                             editorInfo.apply()
                             if(binding.autoLoginCb.isChecked){
-                                editorAuto.putString("id",id)
-                                editorAuto.putString("pw",pw)
-                                editorAuto.apply()
+                                editorInfo.putBoolean("autoLoginSuccess",true)
+                                editorInfo.apply()
+                                sendToken()
                             }
                             if(response.body()!!.nickname){
                                 val intent = Intent(applicationContext, MainActivity::class.java)
@@ -138,6 +116,40 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                 })
             }catch(e: Exception) {
                 binding.progressBar.visibility = INVISIBLE
+                e.printStackTrace()
+            }
+
+        }
+    }
+
+    private fun sendToken() {
+        CoroutineScope(Dispatchers.IO).launch {
+
+
+
+            val prefInfo = getSharedPreferences("userInfo", MODE_PRIVATE)
+            val edit = prefInfo.edit()
+            val id = prefInfo.getString("id","")!!
+            val token = token
+
+            try{
+                serverAPI.getToken(id, token).enqueue(object : Callback<ResultNoReturn> {
+                    override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
+                       Toast.makeText(applicationContext,"서버통신 오류",Toast.LENGTH_SHORT).show()
+
+                    }
+
+                    override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
+                        if (response.body()!!.check){
+                            edit.putString("token",token)
+                            edit.apply()
+                        }else{
+                            Toast.makeText(applicationContext,"${response.body()!!.message}",Toast.LENGTH_SHORT).show()
+
+                        }
+                    }
+                })
+            }catch(e: Exception) {
                 e.printStackTrace()
             }
 

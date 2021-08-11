@@ -140,4 +140,11 @@ interface ServerAPI {
         @Field("curId") curId: String,
         @Field("profile_image") profile_image: String,
     ) : Call<ResultNoReturn>
+
+    @FormUrlEncoded
+    @POST("/getToken/")
+    fun getToken(
+        @Field("curUser") curUser: String,
+        @Field("token") token: String
+    ) : Call<ResultNoReturn>
 }

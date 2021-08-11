@@ -279,17 +279,44 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
         val alertDialog = dialogBuilder.create()
         alertDialog.show()
         view.btnPositive.setOnClickListener {
-            val pref = getSharedPreferences("autoLogin", MODE_PRIVATE)
-            val editor = pref.edit()
-            editor.clear()
-            editor.apply()
-            val intent = Intent(this, LoginActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(intent)
+            deleteToken()
+
         }
         view.btnNegative.setOnClickListener {
             alertDialog.onBackPressed()
         }
+    }
+
+    private fun deleteToken() {
+
+        val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
+        val edit = pref.edit()
+        val id = pref.getString("id","")!!
+
+        try{
+            serverAPI.getToken(id, "").enqueue(object : Callback<ResultNoReturn> {
+                override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
+                    Toast.makeText(applicationContext,"서버통신 오류",Toast.LENGTH_SHORT).show()
+
+                }
+
+                override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
+                    if (response.body()!!.check){
+                        edit.clear()
+                        edit.apply()
+                        val intent = Intent(applicationContext, LoginActivity::class.java)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                        startActivity(intent)
+                    }else{
+                        Toast.makeText(applicationContext,"${response.body()!!.message}",Toast.LENGTH_SHORT).show()
+
+                    }
+                }
+            })
+        }catch(e: Exception) {
+            e.printStackTrace()
+        }
+
     }
 
     private fun nicknameDialog() {
