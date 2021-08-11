@@ -164,6 +164,9 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
             }
             R.id.search_tb -> {
                 val intent = Intent(this, SearchActivity::class.java)
+                if(category == "룸메이트"){
+                    category = "룸메"
+                }
                 intent.putExtra("category", category)
                 startActivity(intent)
             }
