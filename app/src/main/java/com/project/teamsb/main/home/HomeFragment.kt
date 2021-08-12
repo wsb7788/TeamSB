@@ -126,7 +126,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
                 startActivity(intent)
             }
             binding.btn4 -> {
-                intent.putExtra("category", "룸메이트")
+                intent.putExtra("category", "룸메")
                 startActivity(intent)
             }
             binding.tvRecentPost -> {

@@ -74,18 +74,23 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener,KeywordRecyclerAdap
         val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
         id = pref.getString("id","")!!
 
-        category = if(intent.hasExtra("category")) {
+      /*  category = if(intent.hasExtra("category")) {
             intent.getStringExtra("category")!! }else{
             "all" }
+*/
+        category = intent.getStringExtra("category")!!
 
         when(category){
-            "all" -> binding.spinner.setSelection(0)
+
             "배달"->binding.spinner.setSelection(1)
             "택배"->binding.spinner.setSelection(2)
             "택시"->binding.spinner.setSelection(3)
-            "룸메이트"->binding.spinner.setSelection(4)
+            "룸메"->binding.spinner.setSelection(4)
+            "all" -> binding.spinner.setSelection(0)
             else -> "그럴리가업썽"
         }
+        Toast.makeText(applicationContext, "${category}",Toast.LENGTH_SHORT).show()
+
         if(intent.hasExtra("edit")){
             no =intent.getIntExtra("no",0)
             setEdit(no)
@@ -124,7 +129,7 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener,KeywordRecyclerAdap
             "배달"->1
             "택배"->2
             "택시"->3
-            "룸메이트"->4
+            "룸메"->4
             else -> 0
         })
         editable = SpannableStringBuilder(content.text)
@@ -220,7 +225,8 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener,KeywordRecyclerAdap
                 serverAPI.modifyArticle(id,title,category,text,keyword1,no).enqueue(object: Callback<ResultWrite> {
                     override fun onResponse(call: Call<ResultWrite>, response: Response<ResultWrite>) {
                         if (response.body()!!.check){
-                            Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
+                            //Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(applicationContext, "${keyword1}", Toast.LENGTH_SHORT).show()
                         }else{
                             Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
                         }
@@ -237,14 +243,14 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener,KeywordRecyclerAdap
 
     }
 
-    fun submit(userID: String, category: String){
+    private fun submit(userID: String, category: String){
 
             CoroutineScope(Dispatchers.IO).launch {
                 try{
                     val title = binding.etTitle.text.toString()
                     val text = binding.etContent.text.toString()
-                    val keyword1 = ArrayList<String>(keyWord)
-                    serverAPI.writeArticle(title,category,userID,text,keyword1).enqueue(object: Callback<ResultWrite> {
+                    val keyWord1 = ArrayList<String>(keyWord)
+                    serverAPI.writeArticle(title,category,userID,text,keyWord1).enqueue(object: Callback<ResultWrite> {
                         override fun onResponse(call: Call<ResultWrite>, response: Response<ResultWrite>) {
                             if (response.body()!!.check){
                                 Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()

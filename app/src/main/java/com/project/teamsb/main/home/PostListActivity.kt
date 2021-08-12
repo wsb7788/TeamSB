@@ -89,12 +89,10 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
                 val itemTotalCount = recyclerView.adapter!!.itemCount-1
                 // 스크롤이 끝에 도달했는지 확인
                 if (lastVisibleItemPosition > itemTotalCount*0.7) {
-                    if (!loadLock) {
-                        loadLock = true
-                        if (!noMoreItem) {
+                    if (!loadLock&&!noMoreItem) {
+                            loadLock = true
                             page++
                             postLoading()
-                        }
                     }
                 }
             }
@@ -106,9 +104,10 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
                 isRefresh = true
                 postLoading()
                 noMoreItem = false
-            }
 
+            }
             binding.srlCategory.isRefreshing = false
+
         }
         postRecyclerAdapter.setItemClickListener(this)
 
@@ -117,7 +116,6 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
         super.onResume()
         if(returnWrite){
             page = 1
-
             isRefresh = true
             postLoading()
             noMoreItem = false
@@ -134,7 +132,7 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
             "택배"->"parcel"
             "배달"->"delivery"
             "택시"->"taxi"
-            "룸메이트"->"room-mate"
+            "룸메"->"room-mate"
             else ->"all"
         }
 
@@ -164,9 +162,6 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
             }
             R.id.search_tb -> {
                 val intent = Intent(this, SearchActivity::class.java)
-                if(category == "룸메이트"){
-                    category = "룸메"
-                }
                 intent.putExtra("category", category)
                 startActivity(intent)
             }
@@ -192,7 +187,6 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
                                             noMoreItem = true
                                         }
                                         setPost(response)
-                                        Log.d("로그", "${postRecyclerAdapter.itemCount}")
                                         loadLock = false
                                         binding.progressBar.visibility = INVISIBLE
 

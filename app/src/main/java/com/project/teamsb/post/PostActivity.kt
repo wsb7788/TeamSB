@@ -47,6 +47,7 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
     var loadLock = false
     var noMoreItem = false
     var isRefresh = false
+    lateinit var curCategory:String
     lateinit var nickname:String
     lateinit var id:String
     var no: Int = 0
@@ -72,22 +73,20 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
         nickname = pref.getString("nickname","")!!
 
         checkMod(id, no)
-        accessArticle(no)
+
         commentRecyclerAdapter = CommentRecyclerAdapter()
         binding.rcvComment.apply {
             layoutManager = LinearLayoutManager(this@PostActivity, LinearLayoutManager.VERTICAL, false)
             adapter = commentRecyclerAdapter
         }
-        replyLoading(id,page,no)
-
         binding.srlPost.setOnRefreshListener {
+
             if(!loadLock){
+                isRefresh = true
                 page = 1
                 commentRecyclerAdapter.clearList()
                 loadLock = true
-                replyLoading(id, page, no)
-                noMoreItem = false
-
+                contentLoading(no)
             }
             binding.srlPost.isRefreshing = false
         }
@@ -95,16 +94,26 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
             var view = binding.postScrollView.getChildAt (binding.postScrollView.childCount - 1);
             var diff =(view.bottom - (binding.postScrollView.height + binding.postScrollView.scrollY));
             if (diff == 0) {
-                if (!loadLock) {
+                if (!loadLock&&!noMoreItem) {
                     loadLock = true
-                    if (!noMoreItem) {
-                        replyLoading(id,++page,no)
-                    }
+                    replyLoading(id,++page,no)
                 }
             }
         };
         binding.btnComment.setOnClickListener(this)
     }
+    override fun onResume() {
+        super.onResume()
+            isRefresh = true
+            page = 1
+            commentRecyclerAdapter.clearList()
+            loadLock = true
+            noMoreItem = false
+        accessArticle(no)
+
+
+    }
+
     private fun checkMod(curUser: String, no: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
@@ -129,13 +138,14 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
         }
     }
     private fun contentLoading(no:Int) {
-        CoroutineScope(Dispatchers.Default).async {
+        CoroutineScope(Dispatchers.Default).launch {
             try {
                 serverAPI.detail(no).enqueue(object :
                     Callback<ResultPost> {
                     override fun onResponse(call: Call<ResultPost>, response: Response<ResultPost>) {
                         if(response.body()!!.check){
                             setContent(response.body()!!.content[0])
+                            replyLoading(id, page, no)
                         }
                     }
                     override fun onFailure(call: Call<ResultPost>, t: Throwable) {
@@ -157,6 +167,7 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
                         if(response.body()!!.check){
                             Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
                             contentLoading(no)
+
                         }else{
                             Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
                         }
@@ -179,10 +190,8 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
                         serverAPI.replyList(page, no,id).enqueue(object :
                             Callback<ResultReply> {
                             override fun onResponse(call: Call<ResultReply>, response: Response<ResultReply>) {
+                                noMoreItem = response.body()!!.content.size % 20 != 0 || response.body()!!.content.isEmpty()
                                 for (i in response.body()!!.content.indices) {
-                                    if (response.body()!!.content.size % 20 != 0 || response.body()!!.content.isEmpty()) {
-                                        noMoreItem = true;
-                                    }
                                     val nickname = response.body()!!.content[i].userNickname
                                     val content = response.body()!!.content[i].content
                                     val id = id==  response.body()!!.content[i].userId
@@ -202,6 +211,7 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
                                 commentRecyclerAdapter.submitList(modelList)
                                 if(isRefresh){
                                     commentRecyclerAdapter.notifyDataSetChanged()
+                                    isRefresh = false
                                 }else{
                                     commentRecyclerAdapter.notifyItemRangeInserted((page -1)*index,response.body()!!.content.size)
                                 }
@@ -287,7 +297,7 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
                 intent = Intent(this, WriteActivity::class.java)
                 intent.putExtra("no",no)
                 intent.putExtra("edit",true)
-                intent.putExtra("category",binding.tvToolbar.text)
+                intent.putExtra("category",curCategory)
                 startActivity(intent)
             }
             R.id.report_tb -> {
@@ -383,6 +393,7 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
     fun setContent(content: Content){
         binding.tvTitle.text = content.title
         binding.tvToolbar.text = content.category
+        curCategory = content.category
         val timestamp = content.timeStamp.substring(5,16) // MM-dd hh:mm 을
         binding.tvTimeStamp.text = timestamp.replace("-","/") // MM/dd hh:mm 으로 변경
             binding.tvNickname.text = content.userNickname
