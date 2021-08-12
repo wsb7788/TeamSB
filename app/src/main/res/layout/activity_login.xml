@@ -10,8 +10,8 @@
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
             android:src="@drawable/gachon_logo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -19,69 +19,104 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.1" />
 
-        <Button
-            android:id="@+id/login_btn"
-            android:layout_width="300dp"
-            android:layout_height="70dp"
-            android:layout_marginTop="10dp"
-            android:text="로그인"
-            android:textColor="#000000"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:backgroundTint="#F9DA78"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.495"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/password_et" />
-
-        <EditText
-            android:id="@+id/id_et"
-            android:layout_width="300dp"
-            android:layout_height="70dp"
-            android:background="#FDF2D0"
-            android:gravity="left|center_vertical"
-            android:hint="아이디"
-            android:inputType="text"
-            android:paddingLeft="10sp"
-            android:maxLines="1"
-            android:textAllCaps="false"
-            android:textColor="#AEABAB"
+        <TextView
+            android:id="@+id/tv_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="학교 아이디와 비밀번호를 입력하세요"
+            android:textColor="@color/black"
+            android:layout_marginBottom="20dp"
             android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/cl_et_box"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageView2" />
+
+
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_et_box"
+            android:layout_width="0dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintWidth_percent="0.8"
+            android:layout_height="0dp"
+            app:layout_constraintHeight_percent="0.2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@drawable/login_rectangle">
+            <EditText
+                android:id="@+id/id_et"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintHeight_percent="0.5"
+                android:background="@null"
+                android:hint="ID"
+                android:inputType="text"
+                android:paddingLeft="10sp"
+                android:singleLine="true"
+                android:textAllCaps="false"
+                android:textColor="#AEABAB"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <View
+                android:id="@+id/line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#c4c4c4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+            <EditText
+                android:id="@+id/password_et"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintHeight_percent="0.5"
+                android:background="@null"
+                android:gravity="left|center_vertical"
+                android:hint="PW"
+                android:inputType="textPassword"
+                android:singleLine="true"
+                android:paddingLeft="10sp"
+                android:textColor="#AEABAB"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
 
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView2"
-            app:layout_constraintVertical_bias="0.2" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <EditText
-            android:id="@+id/password_et"
-            android:layout_width="300dp"
-            android:layout_height="70dp"
-            android:layout_marginTop="10dp"
-            android:background="#FDF2D0"
-            android:gravity="left|center_vertical"
-            android:hint="비밀번호"
-            android:inputType="textPassword"
-            android:paddingLeft="10sp"
-            android:maxLines="1"
-            android:textColor="#AEABAB"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/id_et" />
 
         <CheckBox
             android:id="@+id/autoLogin_cb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:text="자동 로그인"
             android:textColor="@color/black"
-            app:layout_constraintStart_toStartOf="@+id/login_btn"
-            app:layout_constraintTop_toBottomOf="@+id/login_btn" />
+            app:layout_constraintStart_toStartOf="@+id/cl_et_box"
+            app:layout_constraintTop_toBottomOf="@+id/cl_et_box" />
 
+        <ImageView
+            android:id="@+id/login_btn"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:clickable="true"
+            android:paddingLeft="9dp"
+            android:src="@drawable/ic_login_next"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.15"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.9"
+            app:layout_constraintWidth_percent="0.15"/>
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"

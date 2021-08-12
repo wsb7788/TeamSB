@@ -95,7 +95,6 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
                                 .circleCrop()
                                 .placeholder(R.drawable.profile_basic)
                                 .into(binding.ivSettingProfileImage)
-                            Toast.makeText(applicationContext,"이미지 설정 완료",Toast.LENGTH_SHORT).show()
                         }else
                             Toast.makeText(applicationContext,"${response.body()!!.message}",Toast.LENGTH_SHORT).show()
                     }
