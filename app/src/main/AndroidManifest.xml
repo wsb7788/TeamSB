@@ -19,7 +19,7 @@
         <activity android:name=".toolbar.SearchActivity"/>
         <activity android:name=".toolbar.SettingActivity"/>
         <activity android:name=".toolbar.WriteActivity"/>
-        <activity android:name=".toolbar.AlertActivity"/>
+        <activity android:name=".toolbar.NotificationActivity"/>
             <activity android:name=".main.MainActivity"/>
 
         <activity android:name=".login.LoginActivity">

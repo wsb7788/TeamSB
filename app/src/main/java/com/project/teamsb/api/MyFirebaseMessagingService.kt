@@ -9,17 +9,12 @@ import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
 import android.util.Log
-import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.project.teamsb.R
 import com.project.teamsb.login.LoginActivity
-import com.project.teamsb.main.MainActivity
-import com.project.teamsb.toolbar.AlertActivity
 
 class MyFirebaseMessagingService:FirebaseMessagingService() {
     private val TAG: String = this.javaClass.simpleName

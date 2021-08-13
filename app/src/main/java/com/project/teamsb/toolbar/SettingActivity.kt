@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.util.Base64
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
@@ -61,17 +62,30 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
 
         binding = ActivitySettingBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        setSupportActionBar(binding.toolbar)
         imageSet()
         nicknameSet()
 
 
         binding.btnEditNickname.setOnClickListener(this)
-        binding.btnLogout.setOnClickListener(this)
         binding.btnSettingFeedback.setOnClickListener(this)
         binding.ivSettingProfileImage.setOnClickListener(this)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_logout,menu)
+        return true
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.logout_tb -> {
+                logoutDialog()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+
+
+    }
     private fun imageSet() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
@@ -116,9 +130,6 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
         when (v) {
             binding.btnEditNickname -> {
                 nicknameDialog()
-            }
-            binding.btnLogout -> {
-                logoutDialog()
             }
             binding.btnSettingFeedback -> {
                 feedbackDialog()

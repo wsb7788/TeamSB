@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:icon="@drawable/ic_notification"
-        android:title="notification"
-        android:id="@+id/notification_tb"
+    <item android:icon="@drawable/ic_notification_new"
+        android:title="notification_new"
+        android:id="@+id/notification_new_tb"
         app:showAsAction="always"/>
 
 </menu>

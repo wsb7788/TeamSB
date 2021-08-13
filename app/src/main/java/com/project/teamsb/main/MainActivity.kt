@@ -14,14 +14,14 @@ import com.google.android.material.snackbar.Snackbar
 import com.project.teamsb.CalendarFragment
 import com.project.teamsb.R
 import com.project.teamsb.api.ResultNickname
+import com.project.teamsb.api.ResultNotiCheck
 import com.project.teamsb.api.ServerAPI
 import com.project.teamsb.toolbar.SettingActivity
-import com.project.teamsb.toolbar.WriteActivity
 import com.project.teamsb.databinding.ActivityMainBinding
 import com.project.teamsb.main.home.HomeFragment
 import com.project.teamsb.main.notice.NoticeFragment
 import com.project.teamsb.main.user.UserFragment
-import com.project.teamsb.toolbar.AlertActivity
+import com.project.teamsb.toolbar.NotificationActivity
 import com.project.teamsb.toolbar.SearchActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -39,7 +39,7 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
 
     val manager = supportFragmentManager
     var mBackWait:Long = 0
-
+    var isNotiCheck = false
     var retrofit: Retrofit = Retrofit.Builder()
         .baseUrl("http://13.209.10.30:3000/")
         .addConverterFactory(GsonConverterFactory.create())
@@ -62,6 +62,8 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
         supportActionBar?.setHomeAsUpIndicator(R.drawable.setting)
 
         getUserInfo()
+
+        checkNotification()
     }
 
     private fun getUserInfo() {
@@ -93,14 +95,17 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_search,menu)
-        menuInflater.inflate(R.menu.menu_notification,menu)
+        if(isNotiCheck){
+            menuInflater.inflate(R.menu.menu_notification_new,menu)
+        }else{
+            menuInflater.inflate(R.menu.menu_notification,menu)
+        }
         return true
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
-            R.id.notification_tb -> {
-
-                val intent = Intent(this, AlertActivity::class.java)
+            R.id.notification_tb, R.id.notification_new_tb -> {
+                val intent = Intent(this, NotificationActivity::class.java)
                 startActivity(intent)
             }
             R.id.search_tb -> {
@@ -112,13 +117,38 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
                 val intent = Intent(this, SettingActivity::class.java)
                 startActivity(intent)
             }
-
         }
         return super.onOptionsItemSelected(item)
-
-
     }
-
+    private fun checkNotification() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val pref= getSharedPreferences("userInfo", MODE_PRIVATE)
+            val id = pref.getString("id","")!!
+            try {
+                serverAPI.notiCheck("notification/check",id).enqueue(object :
+                    Callback<ResultNotiCheck>{
+                    override fun onResponse(call: Call<ResultNotiCheck>, response: Response<ResultNotiCheck>) {
+                        if(response.body()!!.check){
+                            if(response.body()!!.content.isNullOrEmpty()){
+                                isNotiCheck = false
+                                invalidateOptionsMenu()
+                            }else{
+                                isNotiCheck = true
+                                invalidateOptionsMenu()
+                            }
+                        }else{
+                            Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    override fun onFailure(call: Call<ResultNotiCheck>, t: Throwable) {
+                        Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()
+                    }
+                })
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
     fun ShowTabCalendar(){
         val transaction = manager.beginTransaction()
         val fragment = CalendarFragment()

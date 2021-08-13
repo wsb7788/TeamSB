@@ -1,340 +1,342 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="653dp"
         android:orientation="vertical"
         android:weightSum="100">
+
         <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="7"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
-            android:backgroundTint="@color/white"
             android:layout_marginBottom="10dp"
+            android:layout_weight="7"
             android:background="@color/white"
-            android:elevation="10dp">
+            android:backgroundTint="@color/white"
+            android:elevation="10dp"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:text="설정"
+                android:textStyle="bold"
                 android:textColor="@color/black"
-                android:textSize="30sp"/>
+                android:textSize="20sp" />
         </androidx.appcompat.widget.Toolbar>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="?android:attr/listDivider" />
+
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="93">
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <LinearLayout
-                         android:id="@+id/layout_id"
-                         android:layout_marginTop="20dp"
-                         android:layout_width="0dp"
-                         android:layout_height="130dp"
-                         app:layout_constraintWidth_percent="0.8"
-                         app:layout_constraintStart_toStartOf="parent"
-                         app:layout_constraintEnd_toEndOf="parent"
-                         app:layout_constraintTop_toTopOf="parent"
-                         android:background="@drawable/home_rectangle"
-                         android:orientation="horizontal"
-                         android:weightSum="100"
-                         >
+                    android:id="@+id/layout_id"
+                    android:layout_width="0dp"
+                    android:layout_height="130dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/home_rectangle"
+                    android:orientation="horizontal"
+                    android:weightSum="100"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.8">
 
-                         <ImageView
-                             android:id="@+id/iv_setting_profile_image"
-                             android:clickable="true"
-                             android:layout_width="0dp"
-                             android:layout_weight="40"
-                             android:layout_height="130dp"
-                             android:padding="15dp"
-                             android:layout_gravity="center"/>
-                         <TextView
-                             android:id="@+id/tv_nickname"
-                             android:layout_width="0dp"
-                             android:layout_height="wrap_content"
-                             android:layout_weight="35"
-                             android:textSize="18sp"
-                             android:textColor="@color/black"
-                             android:text="SB 크루 수장"
-                             android:layout_gravity="center"/>
-                         <Button
-                             android:id="@+id/btn_edit_nickname"
-                             android:text="변경"
-                             android:backgroundTint="#ffd996"
-                             android:layout_width="0dp"
-                             android:layout_weight="20"
-                             android:layout_height="wrap_content"
+                    <ImageView
+                        android:id="@+id/iv_setting_profile_image"
+                        android:layout_width="0dp"
+                        android:layout_height="130dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="40"
+                        android:clickable="true"
+                        android:padding="15dp" />
 
-                             />
+                    <TextView
+                        android:id="@+id/tv_nickname"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="35"
+                        android:text="SB 크루 수장"
+                        android:textColor="@color/black"
+                        android:textSize="18sp" />
 
-                     </LinearLayout>
+                    <Button
+                        android:id="@+id/btn_edit_nickname"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="20"
+                        android:backgroundTint="#ffd996"
+                        android:text="변경"
+
+                        />
+
+                </LinearLayout>
+
                 <View
                     android:id="@+id/line1"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    app:layout_constraintTop_toBottomOf="@+id/layout_id"
-                    app:layout_constraintWidth_percent="0.8"
                     android:layout_marginTop="20dp"
+                    android:background="?android:attr/listDivider"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@+id/layout_id"
+                    app:layout_constraintWidth_percent="0.8" />
+
                 <LinearLayout
                     android:id="@+id/setting1"
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_marginTop="20dp"
-                    app:layout_constraintWidth_percent="0.8"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/line1"
                     android:background="@drawable/rectangle_black"
+                    android:weightSum="100"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/line1"
 
-                    android:weightSum="100">
+                    app:layout_constraintWidth_percent="0.8">
+
                     <TextView
-                        android:text="앱 가이드"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="80"
-
                         android:gravity="left|center"
+
                         android:paddingLeft="20dp"
-                        android:textSize="18sp"
-                        android:textColor="@color/black" />
+                        android:text="앱 가이드"
+                        android:textColor="@color/black"
+                        android:textSize="18sp" />
+
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="20">
+
                         <ImageButton
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_margin="10dp"
-                            android:gravity="center"
                             android:background="@null"
-                            android:src="@drawable/setting_go_btn"
-                            />
+                            android:gravity="center"
+                            android:src="@drawable/setting_go_btn" />
                     </LinearLayout>
-                </LinearLayout>>
+                </LinearLayout>
+                >
+
                 <LinearLayout
                     android:id="@+id/setting2"
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_marginTop="10dp"
-                    app:layout_constraintWidth_percent="0.8"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/setting1"
                     android:background="@drawable/rectangle_black"
-                    android:weightSum="100">
+                    android:weightSum="100"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/setting1"
+                    app:layout_constraintWidth_percent="0.8">
+
                     <TextView
-                        android:text="알림 설정"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="80"
                         android:gravity="left|center"
                         android:paddingLeft="20dp"
-                        android:textSize="18sp"
-                        android:textColor="@color/black" />
+                        android:text="알림 설정"
+                        android:textColor="@color/black"
+                        android:textSize="18sp" />
+
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="20">
+
                         <ImageButton
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_margin="10dp"
-                            android:gravity="center"
                             android:background="@null"
-                            android:src="@drawable/setting_go_btn"
-                            />
+                            android:gravity="center"
+                            android:src="@drawable/setting_go_btn" />
                     </LinearLayout>
-                </LinearLayout>>
+                </LinearLayout>
+                >
+
                 <LinearLayout
                     android:id="@+id/setting3"
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_marginTop="10dp"
-                    app:layout_constraintWidth_percent="0.8"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/setting2"
                     android:background="@drawable/rectangle_black"
-                    android:weightSum="100">
+                    android:weightSum="100"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/setting2"
+                    app:layout_constraintWidth_percent="0.8">
+
                     <TextView
-                        android:text="개인정보처리방침"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="80"
                         android:gravity="left|center"
                         android:paddingLeft="20dp"
-                        android:textSize="18sp"
-                        android:textColor="@color/black" />
+                        android:text="개인정보처리방침"
+                        android:textColor="@color/black"
+                        android:textSize="18sp" />
+
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="20">
+
                         <ImageButton
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_margin="10dp"
-                            android:gravity="center"
                             android:background="@null"
-                            android:src="@drawable/setting_go_btn"
-                            />
+                            android:gravity="center"
+                            android:src="@drawable/setting_go_btn" />
                     </LinearLayout>
-                </LinearLayout>>
+                </LinearLayout>
+                >
+
                 <LinearLayout
                     android:id="@+id/setting4"
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_marginTop="10dp"
-                    app:layout_constraintWidth_percent="0.8"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/setting3"
                     android:background="@drawable/rectangle_black"
-                    android:weightSum="100">
+                    android:weightSum="100"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/setting3"
+                    app:layout_constraintWidth_percent="0.8">
+
                     <TextView
-                        android:text="이용약관"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="80"
                         android:gravity="left|center"
                         android:paddingLeft="20dp"
-                        android:textSize="18sp"
-                        android:textColor="@color/black" />
+                        android:text="이용약관"
+                        android:textColor="@color/black"
+                        android:textSize="18sp" />
+
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="20">
+
                         <ImageButton
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_margin="10dp"
-                            android:gravity="center"
                             android:background="@null"
-                            android:src="@drawable/setting_go_btn"
-                            />
+                            android:gravity="center"
+                            android:src="@drawable/setting_go_btn" />
                     </LinearLayout>
-                </LinearLayout>>
+                </LinearLayout>
+                >
+
                 <LinearLayout
                     android:id="@+id/setting5"
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_marginTop="10dp"
-                    app:layout_constraintWidth_percent="0.8"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/setting4"
                     android:background="@drawable/rectangle_black"
-                    android:weightSum="100">
+                    android:weightSum="100"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/setting4"
+                    app:layout_constraintWidth_percent="0.8">
+
                     <TextView
-                        android:text="기숙사 이용 방법"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="80"
                         android:gravity="left|center"
                         android:paddingLeft="20dp"
-                        android:textSize="18sp"
-                        android:textColor="@color/black" />
+                        android:text="기숙사 이용 방법"
+                        android:textColor="@color/black"
+                        android:textSize="18sp" />
+
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="20">
+
                         <ImageButton
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_margin="10dp"
-                            android:gravity="center"
                             android:background="@null"
-                            android:src="@drawable/setting_go_btn"
-                            />
+                            android:gravity="center"
+                            android:src="@drawable/setting_go_btn" />
                     </LinearLayout>
-                </LinearLayout>>
+                </LinearLayout>
+                >
+
                 <LinearLayout
                     android:id="@+id/setting_feedback"
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_marginTop="10dp"
-                    app:layout_constraintWidth_percent="0.8"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/setting5"
                     android:background="@drawable/rectangle_black"
-                    android:weightSum="100">
+                    android:weightSum="100"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/setting5"
+                    app:layout_constraintWidth_percent="0.8">
+
                     <TextView
-                        android:text="피드백 보내기"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="80"
                         android:gravity="left|center"
                         android:paddingLeft="20dp"
-                        android:textSize="18sp"
-                        android:textColor="@color/black" />
+                        android:text="피드백 보내기"
+                        android:textColor="@color/black"
+                        android:textSize="18sp" />
+
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="20">
+
                         <ImageButton
                             android:id="@+id/btn_setting_feedback"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_margin="10dp"
-                            android:gravity="center"
                             android:background="@null"
-                            android:src="@drawable/setting_go_btn"
-                            />
+                            android:gravity="center"
+                            android:src="@drawable/setting_go_btn" />
                     </LinearLayout>
-                </LinearLayout>>
-                <View
-                    android:id="@+id/line2"
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider"
-                    app:layout_constraintTop_toBottomOf="@+id/setting_feedback"
-                    app:layout_constraintWidth_percent="0.8"
-                    android:layout_marginTop="10dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
-                <LinearLayout
-                    android:id="@+id/logoutLayout"
-                    android:layout_width="0dp"
-                    android:layout_height="60dp"
-                    android:layout_marginTop="10dp"
-                    app:layout_constraintWidth_percent="0.8"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/line2"
+                </LinearLayout>
 
-                    android:orientation="vertical">                    >
-                    <Button
-                        android:id="@+id/btn_logout"
-                        android:layout_width="150dp"
-                        android:layout_height="match_parent"
-                        android:text="로그아웃"
-                        android:textSize="20sp"
-                        android:backgroundTint="#ffd966"
-                        android:layout_gravity="right"
-                        android:textStyle="bold"/>
-
-                </LinearLayout>>
 
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-         </androidx.core.widget.NestedScrollView>
+        </androidx.core.widget.NestedScrollView>
 
     </LinearLayout>
 

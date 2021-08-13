@@ -10,10 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat.invalidateOptionsMenu
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.project.teamsb.api.GetCalendar
-import com.project.teamsb.api.ResultPost
-import com.project.teamsb.api.ServerAPI
+import com.project.teamsb.api.*
 import com.project.teamsb.databinding.FragmentHomeBinding
 import com.project.teamsb.main.calendar.CalendarObj
 import com.project.teamsb.recycler.model.RecentModel
@@ -38,8 +37,9 @@ class HomeFragment : Fragment(), View.OnClickListener {
     var modelList = ArrayList<RecentModel>()
     private lateinit var recentRecyclerAdapter: RecentRecyclerAdapter
 
+    var isNotiCheck = false
     var retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl("http://13.209.10.30:3000/home/")
+        .baseUrl("http://13.209.10.30:3000/")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
@@ -68,6 +68,9 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
         return binding.root
     }
+
+
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun calendarLoading() {
@@ -141,7 +144,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
             CoroutineScope(Dispatchers.Default).launch {
 
                 try {
-                    serverAPI.recentPost().enqueue(object : Callback<ResultPost> {
+                    serverAPI.recentPost("home/recentPost/").enqueue(object : Callback<ResultPost> {
                         override fun onResponse(
                             call: Call<ResultPost>,
                             response: Response<ResultPost>

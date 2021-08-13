@@ -25,8 +25,10 @@ interface ServerAPI {
     ) : Call<NicknameSet>
 
 
-    @GET("recentPost")
-    fun recentPost() : Call<ResultPost>
+    @GET
+    fun recentPost(
+        @Url url: String
+    ) : Call<ResultPost>
 
     @GET
     fun categoryPost(
@@ -147,4 +149,11 @@ interface ServerAPI {
         @Field("curUser") curUser: String,
         @Field("token") token: String
     ) : Call<ResultNoReturn>
+
+    @FormUrlEncoded
+    @POST
+    fun notiCheck(
+        @Url url: String,
+        @Field("curUser") curUser: String
+    ) : Call<ResultNotiCheck>
 }

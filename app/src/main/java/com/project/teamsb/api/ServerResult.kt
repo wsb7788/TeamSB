@@ -87,3 +87,15 @@ data class GetMenu(
     var 점심: ArrayList<ArrayList<String>>,
     var 저녁: ArrayList<ArrayList<String>>)
 
+data class ResultNotiCheck(
+    var check: Boolean,
+    var code: Int,
+    var message: String = "",
+    var content: ArrayList<Notification>)
+
+data class Notification(
+    var notification_no: Int,
+    var userId: String,
+    var content: String,
+    var check_read: Boolean,
+    var timeStamp: String)
