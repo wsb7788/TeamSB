@@ -102,8 +102,8 @@
 
         <ImageButton
             android:id="@+id/btn1"
-            android:layout_width="81dp"
-            android:layout_height="83dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:layout_marginTop="5dp"
             android:backgroundTint="#fff"
             android:scaleType="fitCenter"
@@ -113,7 +113,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/vf"
-            app:layout_constraintWidth_percent="0.20" />
+            app:layout_constraintWidth_percent="0.17" />
 
         <ImageButton
             android:id="@+id/btn2"
@@ -128,7 +128,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/btn1"
             app:layout_constraintTop_toBottomOf="@+id/vf"
-            app:layout_constraintWidth_percent="0.20" />
+            app:layout_constraintWidth_percent="0.17" />
 
         <ImageButton
             android:id="@+id/btn3"
@@ -143,7 +143,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/btn2"
             app:layout_constraintTop_toBottomOf="@+id/vf"
-            app:layout_constraintWidth_percent="0.20" />
+            app:layout_constraintWidth_percent="0.17" />
 
         <ImageButton
             android:id="@+id/btn4"
@@ -158,7 +158,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/btn3"
             app:layout_constraintTop_toBottomOf="@+id/vf"
-            app:layout_constraintWidth_percent="0.20" />
+            app:layout_constraintWidth_percent="0.17" />
 
         <TextView
             android:id="@+id/textView1"
@@ -172,7 +172,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn1"
-            app:layout_constraintWidth_percent="0.2" />
+            app:layout_constraintWidth_percent="0.17" />
 
         <TextView
             android:id="@+id/textView2"
@@ -186,7 +186,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/textView1"
             app:layout_constraintTop_toBottomOf="@+id/btn1"
-            app:layout_constraintWidth_percent="0.2" />
+            app:layout_constraintWidth_percent="0.17" />
 
 
         <TextView
@@ -201,7 +201,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/textView2"
             app:layout_constraintTop_toBottomOf="@+id/btn1"
-            app:layout_constraintWidth_percent="0.2" />
+            app:layout_constraintWidth_percent="0.17" />
 
         <TextView
             android:id="@+id/textView4"
@@ -215,7 +215,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/textView3"
             app:layout_constraintTop_toBottomOf="@+id/btn1"
-            app:layout_constraintWidth_percent="0.2" />
+            app:layout_constraintWidth_percent="0.17" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_recent"
@@ -230,7 +230,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView1"
-            app:layout_constraintWidth_percent="0.9"
+            app:layout_constraintWidth_percent="0.95"
             android:elevation="5dp">
 
             <TextView

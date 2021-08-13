@@ -33,22 +33,22 @@
         android:id="@+id/fragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/bnv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        app:layout_constraintBottom_toTopOf="@id/bnv">
-    </FrameLayout>
+        app:layout_constraintTop_toBottomOf="@id/toolbar"></FrameLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bnv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:backgroundTint="@color/white"
         app:itemIconTint="@drawable/navigation_icon_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/menu_navigation"
-        app:itemIconSize="50dp"
+        android:layout_marginTop="10dp"
+        android:elevation="10dp"
+        app:itemIconSize="25dp"
         app:labelVisibilityMode="unlabeled" />
 </androidx.constraintlayout.widget.ConstraintLayout>

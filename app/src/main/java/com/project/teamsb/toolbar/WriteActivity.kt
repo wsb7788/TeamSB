@@ -132,7 +132,9 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener,KeywordRecyclerAdap
             "룸메"->4
             else -> 0
         })
+        binding.etContent.text = null
         editable = SpannableStringBuilder(content.text)
+
         binding.etContent.text = editable
         if(content.hash.isNotEmpty()){
             for(i in content.hash){
@@ -142,7 +144,6 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener,KeywordRecyclerAdap
             keywordRecyclerAdapter.submitList(modelList)
             keywordRecyclerAdapter.notifyItemRangeChanged(keywordIndex++,1)
         }
-
     }
 
 
@@ -152,7 +153,7 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener,KeywordRecyclerAdap
             binding.tvToolbar.text = "수정"
         }else{
             menuInflater.inflate(R.menu.menu_write_toolbar,menu)
-            binding.tvToolbar.text = "글쓰기"
+            binding.tvToolbar.text = "새 게시글"
         }
 
         return true

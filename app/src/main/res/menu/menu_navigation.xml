@@ -4,23 +4,19 @@
         android:id="@+id/navigation_home"
         android:icon="@drawable/home"
         android:title="home"
-        android:iconTint="@color/black"
         />
     <item
         android:id="@+id/navigation_user"
         android:icon="@drawable/user"
         android:title="user"
-        android:iconTint="@color/black"
         />
     <item
         android:id="@+id/navigation_calendar"
         android:icon="@drawable/calendar"
-        android:title="calendar"
-        android:iconTint="@color/black"/>
+        android:title="calendar"/>
 
     <item
         android:id="@+id/navigation_notice"
         android:icon="@drawable/notice"
-        android:title="notice"
-        android:iconTint="@color/black"/>
+        android:title="notice"/>
 </menu>
