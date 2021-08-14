@@ -129,7 +129,7 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
                     Callback<ResultNotiCheck>{
                     override fun onResponse(call: Call<ResultNotiCheck>, response: Response<ResultNotiCheck>) {
                         if(response.body()!!.check){
-                            if(response.body()!!.content.isNullOrEmpty()){
+                            if(response.body()!!.notificationCount == 0){
                                 isNotiCheck = false
                                 invalidateOptionsMenu()
                             }else{

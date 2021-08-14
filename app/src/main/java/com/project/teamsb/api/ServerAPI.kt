@@ -156,4 +156,11 @@ interface ServerAPI {
         @Url url: String,
         @Field("curUser") curUser: String
     ) : Call<ResultNotiCheck>
+
+    @FormUrlEncoded
+    @POST("/notification/list/")
+    fun notiList(
+        @Query("page") page:Int,
+        @Field("curUser") curUser: String
+    ) : Call<ResultNotiList>
 }

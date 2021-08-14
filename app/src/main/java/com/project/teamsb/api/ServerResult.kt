@@ -91,11 +91,22 @@ data class ResultNotiCheck(
     var check: Boolean,
     var code: Int,
     var message: String = "",
-    var content: ArrayList<Notification>)
+    var notificationCount:Int)
+
+data class ResultNotiList(
+    var check: Boolean,
+    var code: Int,
+    var message: String = "",
+    var content:ArrayList<Notification>)
 
 data class Notification(
     var notification_no: Int,
+    var article_no: Int,
     var userId: String,
+    var curUser: String,
+    var nickname: String,
+    var title: String,
     var content: String,
     var check_read: Boolean,
-    var timeStamp: String)
+    var timeStamp: String,
+    var imageSource: String)
