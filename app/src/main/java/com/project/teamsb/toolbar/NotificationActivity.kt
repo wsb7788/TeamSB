@@ -193,6 +193,7 @@ class NotificationActivity:AppCompatActivity(), NotificationRecyclerAdapter.OnIt
             val y = timeCreated.substring(0,4).toInt()
             val M = timeCreated.substring(5,7).toInt()
             val d = timeCreated.substring(8,10).toInt()
+
             val h = timeCreated.substring(11,13).toInt()
             val m = timeCreated.substring(14,16).toInt()
             val s = timeCreated.substring(17,19).toInt()
