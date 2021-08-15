@@ -1,17 +1,23 @@
 package com.project.teamsb.toolbar
 
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Base64
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.project.teamsb.R
 import com.project.teamsb.api.Notification
+import com.project.teamsb.api.ResultNoReturn
 import com.project.teamsb.api.ResultNotiList
 import com.project.teamsb.api.ServerAPI
 import com.project.teamsb.databinding.ActivityNotificationBinding
 import com.project.teamsb.databinding.ActivitySearchBinding
+import com.project.teamsb.post.PostActivity
 import com.project.teamsb.recycler.adapter.KeywordRecyclerAdapter
 import com.project.teamsb.recycler.adapter.NotificationRecyclerAdapter
 import com.project.teamsb.recycler.model.NotificationModel
@@ -28,12 +34,12 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
-class NotificationActivity:AppCompatActivity(), KeywordRecyclerAdapter.OnItemClickListener {
+class NotificationActivity:AppCompatActivity(), NotificationRecyclerAdapter.OnItemClickListener {
 
     val binding by lazy { ActivityNotificationBinding.inflate(layoutInflater) }
     private lateinit var notificationAdapter: NotificationRecyclerAdapter
     var modelList = ArrayList<NotificationModel>()
-    var page = 1
+    var page = 2
 
     var retrofit: Retrofit = Retrofit.Builder()
         .baseUrl("http://13.209.10.30:3000/")
@@ -57,12 +63,60 @@ class NotificationActivity:AppCompatActivity(), KeywordRecyclerAdapter.OnItemCli
             adapter = notificationAdapter
         }
 
-        notificationLoading()
 
+        setSupportActionBar(binding.toolbar)
+        notificationAdapter.setItemClickListener(this)
 
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_notification_read_all,menu)
+        binding.tvToolbar.text = "알림"
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.read_all ->{
+
+                notificationReadAll()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun notificationReadAll() {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
+                val id = pref.getString("id","")!!
+                serverAPI.notiReadAll(id).enqueue(object :
+                    Callback<ResultNoReturn> {
+                    override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
+                        if(response.body()!!.check){
+                            page = 1
+                            notificationAdapter.clearList()
+                            notificationLoading()
+                        }
+                    }
+                    override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
+                        Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()
+                    }
+                })
+            } catch (e: Exception) {
+                Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()
+                e.printStackTrace()
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        notificationLoading()
+    }
+
     private fun notificationLoading() {
+
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
@@ -139,5 +193,36 @@ class NotificationActivity:AppCompatActivity(), KeywordRecyclerAdapter.OnItemCli
 
     override fun onClick(v: View, position: Int) {
 
+        val postNo = notificationAdapter.getPostNo(position)!!
+        val notiNo = notificationAdapter.getNotiNo(position)!!
+        notificationRead(notiNo,postNo)
+
+    }
+
+    private fun notificationRead(notiNo: Int,postNo:Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
+                val id = pref.getString("id","")!!
+                serverAPI.notiRead(id,notiNo).enqueue(object :
+                    Callback<ResultNoReturn> {
+                    override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
+                        if(response.body()!!.check){
+                            val intent = Intent(applicationContext,PostActivity::class.java)
+                            intent.putExtra("no",postNo)
+                            startActivity(intent)
+                        }else{
+                            Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
+                        Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()
+                    }
+                })
+            } catch (e: Exception) {
+                Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()
+                e.printStackTrace()
+            }
+        }
     }
 }

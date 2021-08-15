@@ -163,4 +163,16 @@ interface ServerAPI {
         @Query("page") page:Int,
         @Field("curUser") curUser: String
     ) : Call<ResultNotiList>
+
+    @FormUrlEncoded
+    @POST("/notification/read/")
+    fun notiRead(
+        @Field("curUser") curUser: String,
+        @Field("notification_no") notification_no:Int
+    ) : Call<ResultNoReturn>
+    @FormUrlEncoded
+    @POST("/notification/read/all/")
+    fun notiReadAll(
+        @Field("curUser") curUser: String,
+    ) : Call<ResultNoReturn>
 }
