@@ -7,9 +7,11 @@ import android.util.Base64
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.project.teamsb.R
 import com.project.teamsb.api.Notification
 import com.project.teamsb.api.ResultNoReturn
@@ -39,8 +41,11 @@ class NotificationActivity:AppCompatActivity(), NotificationRecyclerAdapter.OnIt
     val binding by lazy { ActivityNotificationBinding.inflate(layoutInflater) }
     private lateinit var notificationAdapter: NotificationRecyclerAdapter
     var modelList = ArrayList<NotificationModel>()
-    var page = 2
+    var page = 1
 
+    var loadLock = false
+    var noMoreItem = false
+    var isRefresh = false
     var retrofit: Retrofit = Retrofit.Builder()
         .baseUrl("http://13.209.10.30:3000/")
         .addConverterFactory(GsonConverterFactory.create())
@@ -63,8 +68,34 @@ class NotificationActivity:AppCompatActivity(), NotificationRecyclerAdapter.OnIt
             adapter = notificationAdapter
         }
 
+        binding.rcvNotification.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
 
-        setSupportActionBar(binding.toolbar)
+                val lastVisibleItemPosition = (recyclerView.layoutManager as LinearLayoutManager?)!!.findLastCompletelyVisibleItemPosition()
+                val itemTotalCount = recyclerView.adapter!!.itemCount-1
+                // 스크롤이 끝에 도달했는지 확인
+                if (lastVisibleItemPosition > itemTotalCount*0.7) {
+                    if (!loadLock&&!noMoreItem) {
+                        loadLock = true
+                        page++
+
+                        notificationLoading()
+                    }
+                }
+            }
+        })
+        binding.srl.setOnRefreshListener {
+            if (!loadLock) {
+                loadLock = true
+                page = 1
+                isRefresh = true
+                notificationLoading()
+                noMoreItem = false
+            }
+            binding.srl.isRefreshing = false
+        }
+
         notificationAdapter.setItemClickListener(this)
 
     }
@@ -95,7 +126,7 @@ class NotificationActivity:AppCompatActivity(), NotificationRecyclerAdapter.OnIt
                     override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
                         if(response.body()!!.check){
                             page = 1
-                            notificationAdapter.clearList()
+
                             notificationLoading()
                         }
                     }
@@ -116,7 +147,7 @@ class NotificationActivity:AppCompatActivity(), NotificationRecyclerAdapter.OnIt
     }
 
     private fun notificationLoading() {
-
+        binding.progressBar.visibility = VISIBLE
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
@@ -125,7 +156,15 @@ class NotificationActivity:AppCompatActivity(), NotificationRecyclerAdapter.OnIt
                     Callback<ResultNotiList> {
                     override fun onResponse(call: Call<ResultNotiList>, response: Response<ResultNotiList>) {
                         if(response.body()!!.check){
+                            if(page == 1){
+                                notificationAdapter.clearList()
+                            }
+                            if (response.body()!!.content.size % 10 != 0 || response.body()!!.content.isEmpty()) {
+                                noMoreItem = true
+                            }
                             setContent(response.body()!!.content)
+                            loadLock = false
+                            binding.progressBar.visibility = View.INVISIBLE
                         }
                     }
                     override fun onFailure(call: Call<ResultNotiList>, t: Throwable) {
@@ -185,6 +224,12 @@ class NotificationActivity:AppCompatActivity(), NotificationRecyclerAdapter.OnIt
             modelList.add(myModel)
         }
         notificationAdapter.submitList(modelList)
+        if(isRefresh){
+            notificationAdapter.notifyDataSetChanged()
+            isRefresh = false
+        }else{
+            notificationAdapter.notifyItemRangeInserted(((page-1)* 10),notification.size)
+        }
         notificationAdapter.notifyDataSetChanged()
 
 

@@ -88,7 +88,7 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
                 val lastVisibleItemPosition = (recyclerView.layoutManager as LinearLayoutManager?)!!.findLastCompletelyVisibleItemPosition()
                 val itemTotalCount = recyclerView.adapter!!.itemCount-1
                 // 스크롤이 끝에 도달했는지 확인
-                if (lastVisibleItemPosition > itemTotalCount*0.7) {
+                if (lastVisibleItemPosition == itemTotalCount) {
                     if (!loadLock&&!noMoreItem) {
                             loadLock = true
                             page++
