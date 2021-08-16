@@ -9,17 +9,22 @@ import com.prolificinteractive.materialcalendarview.DayViewDecorator
 import com.prolificinteractive.materialcalendarview.DayViewFacade
 import java.util.*
 
-class DayDecorator : DayViewDecorator  {
+class SunDayDecorator : DayViewDecorator {
 //오늘 날짜 색변경
-    var date= CalendarDay.today()
+    val calendar = Calendar.getInstance()
 
+
+    fun SundayDecorator() {
+    }
     override fun shouldDecorate(day: CalendarDay?): Boolean {
-        return day!! == date
+        day!!.copyTo(calendar)
+        val weekDay = calendar.get(Calendar.DAY_OF_WEEK)
+
+        return  weekDay == Calendar.SUNDAY
     }
 
     override fun decorate(view: DayViewFacade?) {
-        view!!.addSpan(StyleSpan(Typeface.BOLD))
-        view!!.addSpan(ForegroundColorSpan(Color.parseColor("#F9DA78")))
+        view!!.addSpan(ForegroundColorSpan(Color.parseColor("#FF0000")))
     }
 
-}s
+}

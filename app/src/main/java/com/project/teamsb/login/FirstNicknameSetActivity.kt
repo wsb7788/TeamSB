@@ -72,7 +72,7 @@ class FirstNicknameSetActivity : AppCompatActivity(),View.OnClickListener {
 
                     override fun onResponse(call: Call<NicknameCheck>, response: Response<NicknameCheck>) {
                         val body = response.body()!!
-                        if (body.check) {
+                        if (body.code==200) {
                             Toast.makeText(applicationContext, "사용 가능", Toast.LENGTH_SHORT).show()
                         } else {
                             Toast.makeText(applicationContext, "${body.message}", Toast.LENGTH_SHORT).show()
@@ -90,7 +90,7 @@ class FirstNicknameSetActivity : AppCompatActivity(),View.OnClickListener {
 
                 serverAPI.nicknameSet(id, nickName).enqueue(object : Callback<NicknameSet> {
                     override fun onResponse(call: Call<NicknameSet>, response: Response<NicknameSet>) {
-                        if (response.body()!!.check) {
+                        if (response.body()!!.code == 200) {
                             val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
                             val edit = pref.edit()
                             edit.putString("nickname", nickName)
