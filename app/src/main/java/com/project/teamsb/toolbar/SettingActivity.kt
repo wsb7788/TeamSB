@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Matrix
+import android.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -43,6 +45,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
+import java.io.IOException
 import java.io.InputStream
 
 class SettingActivity:AppCompatActivity(), View.OnClickListener {
@@ -199,9 +202,19 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
                 val ins = data.let {
                     applicationContext.contentResolver.openInputStream(data)
                 }
+
+                var exif:ExifInterface? = null
+                try {
+                    exif = ExifInterface(applicationContext.contentResolver.openInputStream(data)!!);
+                } catch (e : IOException) {
+                    e.printStackTrace();
+                }
+                val orientation = exif!!.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                ExifInterface.ORIENTATION_UNDEFINED);
                 val img = BitmapFactory.decodeStream(ins)
+                val settedImg = rotateBitmap(img,orientation)
                 ins?.close()
-                val resized = Bitmap.createScaledBitmap(img,300,300,true)
+                val resized = Bitmap.createScaledBitmap(settedImg!!,settedImg.width,settedImg.height,true)
                 val byteArrayOutputStream = ByteArrayOutputStream()
                 resized.compress(Bitmap.CompressFormat.JPEG, 50,byteArrayOutputStream)
                 val byteArray = byteArrayOutputStream.toByteArray()
@@ -215,7 +228,7 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
                 profileImage = BitmapFactory.decodeStream(inputStream)
                 Glide
                     .with(App.instance)
-                    .load(profileImage)
+                    .load(settedImg!!)
                     .circleCrop()
                     .placeholder(R.drawable.profile_basic)
                     .into(view.ivEditProfileImage)
@@ -223,6 +236,54 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
 
             }
             }
+
+    private fun rotateBitmap(img: Bitmap, orientation: Int): Bitmap? {
+        val matrix = Matrix()
+        when(orientation) {
+            ExifInterface.ORIENTATION_NORMAL -> return img
+            ExifInterface.ORIENTATION_FLIP_HORIZONTAL -> {
+                matrix.setScale(-1f, 1f)
+            }
+            ExifInterface.ORIENTATION_ROTATE_180 -> {
+                matrix.setRotate(180f)
+            }
+
+            ExifInterface.ORIENTATION_FLIP_VERTICAL -> {
+                matrix.setRotate(180f)
+                matrix.postScale(-1f, 1f)
+            }
+            ExifInterface.ORIENTATION_TRANSPOSE -> {
+                matrix.setRotate(90f)
+                matrix.postScale(-1f, 1f)
+            }
+            ExifInterface.ORIENTATION_TRANSVERSE -> {
+                matrix.setRotate(-90f)
+                matrix.postScale(-1f, 1f)
+            }
+            ExifInterface.ORIENTATION_ROTATE_270 -> {
+                matrix.setRotate(-90f)
+            }
+            ExifInterface.ORIENTATION_ROTATE_90 -> {
+                matrix.setRotate(90f)
+            }
+            else -> {
+                return img
+            }
+        }
+        return try {
+            val bmRotated = Bitmap.createBitmap(img,0,0,img.width,img.height,matrix,true)
+            img.recycle()
+            bmRotated
+        }catch (e: OutOfMemoryError){
+            e.printStackTrace()
+            null
+        }
+    }
+
+
+
+
+
 
     private fun sendProfileImage(image:String) {
 
