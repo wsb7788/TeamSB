@@ -86,7 +86,7 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
                 page = 1
                 commentRecyclerAdapter.clearList()
                 loadLock = true
-                contentLoading(no)
+                accessArticle(no)
             }
             binding.srlPost.isRefreshing = false
         }
@@ -170,6 +170,7 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
 
                         }else{
                             Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
+                            finish()
                         }
                     }
                     override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {

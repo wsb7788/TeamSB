@@ -64,6 +64,11 @@ class HomeFragment : Fragment(), View.OnClickListener {
         binding.vf.startFlipping()
         binding.vf.flipInterval = 2000
 
+        binding.srl.setOnRefreshListener {
+            postLoading()
+            calendarLoading()
+            binding.srl.isRefreshing = false
+        }
         return binding.root
     }
 
