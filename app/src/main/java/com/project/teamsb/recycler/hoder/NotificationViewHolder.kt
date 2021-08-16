@@ -22,6 +22,8 @@ class NotificationViewHolder(val binding: LayoutRecyclerNotificationBinding): Re
     fun bind(notificationModel: NotificationModel){
         if(!notificationModel.checkRead!!){
             binding.mother.setBackgroundColor(Color.parseColor("#FFF9E2"))
+        }else{
+            binding.mother.setBackgroundColor(Color.parseColor("#ffffff"))
         }
 
 

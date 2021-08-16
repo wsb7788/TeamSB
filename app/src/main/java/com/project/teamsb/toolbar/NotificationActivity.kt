@@ -79,7 +79,6 @@ class NotificationActivity:AppCompatActivity(), NotificationRecyclerAdapter.OnIt
                     if (!loadLock&&!noMoreItem) {
                         loadLock = true
                         page++
-
                         notificationLoading()
                     }
                 }
@@ -126,7 +125,6 @@ class NotificationActivity:AppCompatActivity(), NotificationRecyclerAdapter.OnIt
                     override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
                         if(response.body()!!.check){
                             page = 1
-
                             notificationLoading()
                         }
                     }
@@ -158,6 +156,7 @@ class NotificationActivity:AppCompatActivity(), NotificationRecyclerAdapter.OnIt
                         if(response.body()!!.check){
                             if(page == 1){
                                 notificationAdapter.clearList()
+                                notificationAdapter.notifyDataSetChanged()
                             }
                             if (response.body()!!.content.size % 10 != 0 || response.body()!!.content.isEmpty()) {
                                 noMoreItem = true
@@ -225,7 +224,7 @@ class NotificationActivity:AppCompatActivity(), NotificationRecyclerAdapter.OnIt
             modelList.add(myModel)
         }
         notificationAdapter.submitList(modelList)
-        if(isRefresh){
+        if(page==1){
             notificationAdapter.notifyDataSetChanged()
             isRefresh = false
         }else{
@@ -271,4 +270,5 @@ class NotificationActivity:AppCompatActivity(), NotificationRecyclerAdapter.OnIt
             }
         }
     }
+
 }
