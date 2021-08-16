@@ -36,5 +36,8 @@ class RecentRecyclerAdapter: RecyclerView.Adapter<RecentViewHolder>() {
         Log.d(TAG, "submitList called")
         this.modelList.addAll(modelList)
     }
+    fun clearList(){
+        modelList.clear()
+    }
 }
 

@@ -14,10 +14,12 @@ import com.google.android.material.snackbar.Snackbar
 import com.project.teamsb.CalendarFragment
 import com.project.teamsb.R
 import com.project.teamsb.api.ResultNickname
+import com.project.teamsb.api.ResultNoReturn
 import com.project.teamsb.api.ResultNotiCheck
 import com.project.teamsb.api.ServerAPI
 import com.project.teamsb.toolbar.SettingActivity
 import com.project.teamsb.databinding.ActivityMainBinding
+import com.project.teamsb.login.LoginActivity
 import com.project.teamsb.main.home.HomeFragment
 import com.project.teamsb.main.notice.NoticeFragment
 import com.project.teamsb.main.user.UserFragment
@@ -26,6 +28,7 @@ import com.project.teamsb.toolbar.SearchActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -63,6 +66,11 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
 
         getUserInfo()
 
+
+    }
+
+    override fun onResume() {
+        super.onResume()
         checkNotification()
     }
 
@@ -206,5 +214,46 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
             finishAndRemoveTask();						// 액티비티 종료 + 태스크 리스트에서 지우기
             android.os.Process.killProcess(android.os.Process.myPid());
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
+        if(!pref.getBoolean("autoLoginSuccess",false)){
+            deleteToken()
+        }
+    }
+
+    private fun deleteToken() {
+        runBlocking {
+            CoroutineScope(Dispatchers.IO).launch {
+                val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
+                val edit = pref.edit()
+                val id = pref.getString("id", "")!!
+                try {
+                    serverAPI.getToken(id, "").enqueue(object : Callback<ResultNoReturn> {
+                        override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
+                            Toast.makeText(applicationContext, "서버통신 오류", Toast.LENGTH_SHORT).show()
+
+                        }
+
+                        override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
+                            if (response.body()!!.check) {
+                                edit.clear()
+                                edit.apply()
+                                Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
+
+                            } else {
+                                Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    })
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
+
     }
 }

@@ -1,5 +1,6 @@
 package com.project.teamsb.recycler.hoder
 
+import android.graphics.Color
 import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -28,6 +29,8 @@ class CommentViewHolder(val binding: LayoutRecyclerCommentBinding): RecyclerView
         binding.tvCommentContent.text = commentModel.content
         if(commentModel.id!!){
             binding.tvCommentNickname.setTextColor(-0x62588)
+        }else{
+            binding.tvCommentNickname.setTextColor(Color.parseColor("#000000"))
         }
         Glide
             .with(App.instance)

@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="653dp"
-        android:orientation="vertical"
-        android:weightSum="100">
+        android:layout_height="match_parent">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="?actionBarSize"
             android:layout_marginBottom="10dp"
-            android:layout_weight="7"
             android:background="@color/white"
             android:backgroundTint="@color/white"
             android:elevation="10dp"
             android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme">
+            android:theme="?attr/actionBarTheme"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -32,312 +32,338 @@
         </androidx.appcompat.widget.Toolbar>
 
         <View
+            android:id="@+id/line"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="?android:attr/listDivider" />
+            android:background="?android:attr/listDivider"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"/>
 
-        <androidx.core.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="93">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/line"
+                app:layout_constraintBottom_toBottomOf="parent">
 
-                <LinearLayout
-                    android:id="@+id/layout_id"
-                    android:layout_width="0dp"
-                    android:layout_height="130dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/home_rectangle"
-                    android:orientation="horizontal"
-                    android:weightSum="100"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintWidth_percent="0.8">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                    <ImageView
-                        android:id="@+id/iv_setting_profile_image"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layout_id"
                         android:layout_width="0dp"
-                        android:layout_height="130dp"
-                        android:layout_gravity="center"
-                        android:layout_weight="40"
-                        android:clickable="true"
-                        android:padding="15dp" />
+                        android:layout_height="115dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/home_rectangle"
+                        android:padding="10dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintWidth_percent="0.85">
 
-                    <TextView
-                        android:id="@+id/tv_nickname"
+                        <ImageView
+                            android:id="@+id/iv_profile_image"
+                            android:layout_width="90dp"
+                            android:layout_height="90dp"
+                            android:layout_gravity="center"
+                            android:clickable="true"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tv_nickname"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="10dp"
+                            android:text="SB 크루 수장"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toTopOf="@+id/tv_email"
+                            app:layout_constraintStart_toEndOf="@id/iv_profile_image"
+                            app:layout_constraintTop_toTopOf="@+id/iv_profile_image"
+                            app:layout_constraintVertical_chainStyle="packed" />
+
+                        <TextView
+                            android:id="@+id/tv_email"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="wsb7788@gachon.ac.kr"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/iv_profile_image"
+                            app:layout_constraintStart_toStartOf="@id/tv_nickname"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_nickname" />
+
+                        <ImageView
+                            android:id="@+id/btn_profile_image_set"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:background="@drawable/pencil_rectangle"
+                            android:padding="5dp"
+                            android:src="@drawable/ic_pencil"
+                            app:layout_constraintBottom_toBottomOf="@id/iv_profile_image"
+                            app:layout_constraintEnd_toEndOf="@id/iv_profile_image" />
+
+                        <ImageView
+                            android:id="@+id/btn_edit_nickname"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:clickable="true"
+                            android:src="@drawable/ic_pencil"
+                            app:layout_constraintBottom_toBottomOf="@+id/tv_nickname"
+                            app:layout_constraintStart_toEndOf="@id/tv_nickname"
+                            app:layout_constraintTop_toTopOf="@+id/tv_nickname" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <View
+                        android:id="@+id/line1"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="35"
-                        android:text="SB 크루 수장"
-                        android:textColor="@color/black"
-                        android:textSize="18sp" />
-
-                    <Button
-                        android:id="@+id/btn_edit_nickname"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="20"
-                        android:backgroundTint="#ffd996"
-                        android:text="변경"
-
-                        />
-
-                </LinearLayout>
-
-                <View
-                    android:id="@+id/line1"
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="20dp"
-                    android:background="?android:attr/listDivider"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/layout_id"
-                    app:layout_constraintWidth_percent="0.8" />
-
-                <LinearLayout
-                    android:id="@+id/setting1"
-                    android:layout_width="0dp"
-                    android:layout_height="60dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/rectangle_black"
-                    android:weightSum="100"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/line1"
-
-                    app:layout_constraintWidth_percent="0.8">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="80"
-                        android:gravity="left|center"
-
-                        android:paddingLeft="20dp"
-                        android:text="앱 가이드"
-                        android:textColor="@color/black"
-                        android:textSize="18sp" />
+                        android:layout_height="1dp"
+                        android:layout_marginTop="20dp"
+                        android:background="?android:attr/listDivider"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/layout_id"
+                        app:layout_constraintWidth_percent="0.85" />
 
                     <LinearLayout
+                        android:id="@+id/setting1"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="20">
+                        android:layout_height="60dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/rectangle_black"
+                        android:weightSum="100"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/line1"
 
-                        <ImageButton
-                            android:layout_width="match_parent"
+                        app:layout_constraintWidth_percent="0.85">
+
+                        <TextView
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_margin="10dp"
-                            android:background="@null"
-                            android:gravity="center"
-                            android:src="@drawable/setting_go_btn" />
+                            android:layout_weight="80"
+                            android:gravity="left|center"
+
+                            android:paddingLeft="20dp"
+                            android:text="앱 가이드"
+                            android:textColor="@color/black"
+                            android:textSize="18sp" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="20">
+
+                            <ImageButton
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_margin="10dp"
+                                android:background="@null"
+                                android:gravity="center"
+                                android:src="@drawable/setting_go_btn" />
+                        </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
-                >
-
-                <LinearLayout
-                    android:id="@+id/setting2"
-                    android:layout_width="0dp"
-                    android:layout_height="60dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/rectangle_black"
-                    android:weightSum="100"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/setting1"
-                    app:layout_constraintWidth_percent="0.8">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="80"
-                        android:gravity="left|center"
-                        android:paddingLeft="20dp"
-                        android:text="알림 설정"
-                        android:textColor="@color/black"
-                        android:textSize="18sp" />
+                    >
 
                     <LinearLayout
+                        android:id="@+id/setting2"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="20">
+                        android:layout_height="60dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/rectangle_black"
+                        android:weightSum="100"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/setting1"
+                        app:layout_constraintWidth_percent="0.85">
 
-                        <ImageButton
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_margin="10dp"
-                            android:background="@null"
-                            android:gravity="center"
-                            android:src="@drawable/setting_go_btn" />
+                            android:layout_weight="80"
+                            android:gravity="left|center"
+                            android:paddingLeft="20dp"
+                            android:text="알림 설정"
+                            android:textColor="@color/black"
+                            android:textSize="18sp" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="20">
+
+                            <ImageButton
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_margin="10dp"
+                                android:background="@null"
+                                android:gravity="center"
+                                android:src="@drawable/setting_go_btn" />
+                        </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
-                >
-
-                <LinearLayout
-                    android:id="@+id/setting3"
-                    android:layout_width="0dp"
-                    android:layout_height="60dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/rectangle_black"
-                    android:weightSum="100"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/setting2"
-                    app:layout_constraintWidth_percent="0.8">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="80"
-                        android:gravity="left|center"
-                        android:paddingLeft="20dp"
-                        android:text="개인정보처리방침"
-                        android:textColor="@color/black"
-                        android:textSize="18sp" />
+                    >
 
                     <LinearLayout
+                        android:id="@+id/setting3"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="20">
+                        android:layout_height="60dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/rectangle_black"
+                        android:weightSum="100"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/setting2"
+                        app:layout_constraintWidth_percent="0.85">
 
-                        <ImageButton
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_margin="10dp"
-                            android:background="@null"
-                            android:gravity="center"
-                            android:src="@drawable/setting_go_btn" />
+                            android:layout_weight="80"
+                            android:gravity="left|center"
+                            android:paddingLeft="20dp"
+                            android:text="개인정보처리방침"
+                            android:textColor="@color/black"
+                            android:textSize="18sp" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="20">
+
+                            <ImageButton
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_margin="10dp"
+                                android:background="@null"
+                                android:gravity="center"
+                                android:src="@drawable/setting_go_btn" />
+                        </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
-                >
-
-                <LinearLayout
-                    android:id="@+id/setting4"
-                    android:layout_width="0dp"
-                    android:layout_height="60dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/rectangle_black"
-                    android:weightSum="100"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/setting3"
-                    app:layout_constraintWidth_percent="0.8">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="80"
-                        android:gravity="left|center"
-                        android:paddingLeft="20dp"
-                        android:text="이용약관"
-                        android:textColor="@color/black"
-                        android:textSize="18sp" />
+                    >
 
                     <LinearLayout
+                        android:id="@+id/setting4"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="20">
+                        android:layout_height="60dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/rectangle_black"
+                        android:weightSum="100"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/setting3"
+                        app:layout_constraintWidth_percent="0.85">
 
-                        <ImageButton
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_margin="10dp"
-                            android:background="@null"
-                            android:gravity="center"
-                            android:src="@drawable/setting_go_btn" />
+                            android:layout_weight="80"
+                            android:gravity="left|center"
+                            android:paddingLeft="20dp"
+                            android:text="이용약관"
+                            android:textColor="@color/black"
+                            android:textSize="18sp" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="20">
+
+                            <ImageButton
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_margin="10dp"
+                                android:background="@null"
+                                android:gravity="center"
+                                android:src="@drawable/setting_go_btn" />
+                        </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
-                >
-
-                <LinearLayout
-                    android:id="@+id/setting5"
-                    android:layout_width="0dp"
-                    android:layout_height="60dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/rectangle_black"
-                    android:weightSum="100"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/setting4"
-                    app:layout_constraintWidth_percent="0.8">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="80"
-                        android:gravity="left|center"
-                        android:paddingLeft="20dp"
-                        android:text="기숙사 이용 방법"
-                        android:textColor="@color/black"
-                        android:textSize="18sp" />
+                    >
 
                     <LinearLayout
+                        android:id="@+id/setting5"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="20">
+                        android:layout_height="60dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/rectangle_black"
+                        android:weightSum="100"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/setting4"
+                        app:layout_constraintWidth_percent="0.85">
 
-                        <ImageButton
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_margin="10dp"
-                            android:background="@null"
-                            android:gravity="center"
-                            android:src="@drawable/setting_go_btn" />
+                            android:layout_weight="80"
+                            android:gravity="left|center"
+                            android:paddingLeft="20dp"
+                            android:text="기숙사 이용 방법"
+                            android:textColor="@color/black"
+                            android:textSize="18sp" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="20">
+
+                            <ImageButton
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_margin="10dp"
+                                android:background="@null"
+                                android:gravity="center"
+                                android:src="@drawable/setting_go_btn" />
+                        </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
-                >
-
-                <LinearLayout
-                    android:id="@+id/setting_feedback"
-                    android:layout_width="0dp"
-                    android:layout_height="60dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/rectangle_black"
-                    android:weightSum="100"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/setting5"
-                    app:layout_constraintWidth_percent="0.8">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="80"
-                        android:gravity="left|center"
-                        android:paddingLeft="20dp"
-                        android:text="피드백 보내기"
-                        android:textColor="@color/black"
-                        android:textSize="18sp" />
+                    >
 
                     <LinearLayout
+                        android:id="@+id/setting_feedback"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="20">
+                        android:layout_height="60dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/rectangle_black"
+                        android:weightSum="100"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/setting5"
+                        app:layout_constraintWidth_percent="0.85">
 
-                        <ImageButton
-                            android:id="@+id/btn_setting_feedback"
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_margin="10dp"
-                            android:background="@null"
-                            android:gravity="center"
-                            android:src="@drawable/setting_go_btn" />
+                            android:layout_weight="80"
+                            android:gravity="left|center"
+                            android:paddingLeft="20dp"
+                            android:text="피드백 보내기"
+                            android:textColor="@color/black"
+                            android:textSize="18sp" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="20">
+
+                            <ImageButton
+                                android:id="@+id/btn_setting_feedback"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_margin="10dp"
+                                android:background="@null"
+                                android:gravity="center"
+                                android:src="@drawable/setting_go_btn" />
+                        </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
 
 
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        </androidx.core.widget.NestedScrollView>
-
-    </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

@@ -58,9 +58,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
             layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
             adapter = recentRecyclerAdapter
         }
-        postLoading()
 
-        calendarLoading()
         binding.vf.setInAnimation(context,android.R.anim.fade_in)
         binding.vf.setOutAnimation(context,android.R.anim.fade_out)
         binding.vf.startFlipping()
@@ -69,7 +67,12 @@ class HomeFragment : Fragment(), View.OnClickListener {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        postLoading()
 
+        calendarLoading()
+    }
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -83,6 +86,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
                 CalendarObj.api.getCalendar().enqueue(object :Callback<GetCalendar>{
                     override fun onResponse(call: Call<GetCalendar>, response: Response<GetCalendar>) {
                         for(i in response.body()!!.menu){
+
                             if(i.일자 == formatted){
                                 formatter = DateTimeFormatter.ofPattern("M월 d일 식단표")
                                 formatted = current.format(formatter)
@@ -149,6 +153,8 @@ class HomeFragment : Fragment(), View.OnClickListener {
                             call: Call<ResultPost>,
                             response: Response<ResultPost>
                         ) {
+                            modelList.clear()
+                            recentRecyclerAdapter.clearList()
                             for (i in response.body()!!.content.indices) {
                                 val category = response.body()!!.content[i].category
                                 val text = response.body()!!.content[i].title

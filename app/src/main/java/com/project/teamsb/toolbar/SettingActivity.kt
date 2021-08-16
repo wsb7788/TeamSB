@@ -13,6 +13,7 @@ import android.util.Base64
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultCallback
@@ -38,6 +39,7 @@ import com.project.teamsb.post.App
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -52,7 +54,8 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivitySettingBinding
     private lateinit var view: DialogEditProfileImageBinding
     lateinit var profileImage:Bitmap
-    lateinit var profileImageBase64:String
+    var profileImageBase64= "noSet"
+    var isImageSet = false
     var retrofit: Retrofit = Retrofit.Builder()
         .baseUrl("http://13.209.10.30:3000/")
         .addConverterFactory(GsonConverterFactory.create())
@@ -66,14 +69,16 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
         binding = ActivitySettingBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
-        imageSet()
-        nicknameSet()
 
+        imageSet(binding.ivProfileImage)
+        nicknameSet()
 
         binding.btnEditNickname.setOnClickListener(this)
         binding.btnSettingFeedback.setOnClickListener(this)
-        binding.ivSettingProfileImage.setOnClickListener(this)
+        binding.btnProfileImageSet.setOnClickListener(this)
     }
+
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_logout,menu)
@@ -88,45 +93,7 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
         return super.onOptionsItemSelected(item)
 
 
-    }
-    private fun imageSet() {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
-                val id = pref.getString("id","")!!
-                CalendarObj.api.getUserProfileImage(id).enqueue(object : Callback<ResultProfileImage>{
-                    override fun onResponse(call: Call<ResultProfileImage>, response: Response<ResultProfileImage>) {
-                        if(response.body()!!.code == 200){
-                            val stringProfileImage:String
-                            if(response.body()!!.content.isNullOrBlank()){
-                                stringProfileImage = ""
-                            }else{
-                                stringProfileImage = response.body()!!.content
-                            }
-                            val byteProfileImage = Base64.decode(stringProfileImage,0)
-                            val inputStream = ByteArrayInputStream(byteProfileImage)
-                            profileImage = BitmapFactory.decodeStream(inputStream)
-                            Glide
-                                .with(App.instance)
-                                .load(profileImage)
-                                .circleCrop()
-                                .placeholder(R.drawable.profile_basic)
-                                .into(binding.ivSettingProfileImage)
-                        }else
-                            Toast.makeText(applicationContext,"${response.body()!!.message}",Toast.LENGTH_SHORT).show()
-                    }
 
-                    override fun onFailure(call: Call<ResultProfileImage>, t: Throwable) {
-                        Toast.makeText(applicationContext,"서버통신 문제",Toast.LENGTH_SHORT).show()
-                    }
-
-                })
-
-
-            }catch (e:Exception){
-                e.printStackTrace()
-            }
-        }
     }
 
     override fun onClick(v: View?) {
@@ -137,7 +104,7 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
             binding.btnSettingFeedback -> {
                 feedbackDialog()
             }
-            binding.ivSettingProfileImage -> {
+            binding.btnProfileImageSet -> {
                 profileImageDialog()
             }
         }
@@ -173,12 +140,32 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
         dialogBuilder.setView(view.root)
         val alertDialog = dialogBuilder.create()
         alertDialog.show()
+        isImageSet = false
+        imageSet(view.ivEditProfileImage)
         view.btnGallery.setOnClickListener {
             takeAlbum()
         }
-        view.btnPositive.setOnClickListener {
+        view.btnPrimary.setOnClickListener{
+            Glide
+                .with(App.instance)
+                .load("")
+                .circleCrop()
+                .placeholder(R.drawable.profile_basic)
+                .into(binding.ivProfileImage)
+            profileImageBase64 = "noImg"
             sendProfileImage(profileImageBase64)
+            Toast.makeText(applicationContext,"기본 이미지로 설정 되었습니다.",Toast.LENGTH_SHORT).show()
             alertDialog.onBackPressed()
+        }
+        view.btnPositive.setOnClickListener {
+            if(isImageSet){
+                sendProfileImage(profileImageBase64)
+                alertDialog.onBackPressed()
+            }else{
+                Toast.makeText(applicationContext,"이미지를 설정해주세요.",Toast.LENGTH_SHORT).show()
+
+            }
+
         }
         view.btnNegative.setOnClickListener {
             alertDialog.onBackPressed()
@@ -192,7 +179,6 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
         startForResult.launch(intent)
 
     }
-
     val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                 result: ActivityResult ->
@@ -218,25 +204,20 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
                 val byteArrayOutputStream = ByteArrayOutputStream()
                 resized.compress(Bitmap.CompressFormat.JPEG, 50,byteArrayOutputStream)
                 val byteArray = byteArrayOutputStream.toByteArray()
-                val outStream = ByteArrayOutputStream()
-                val res = resources
                 profileImageBase64 = Base64.encodeToString(byteArray,0)
                 //여기까지 인코딩
-
                 val byteProfileImage = Base64.decode(profileImageBase64,0)
                 val inputStream = ByteArrayInputStream(byteProfileImage)
                 profileImage = BitmapFactory.decodeStream(inputStream)
+                isImageSet = true
                 Glide
                     .with(App.instance)
-                    .load(settedImg!!)
+                    .load(profileImage)
                     .circleCrop()
                     .placeholder(R.drawable.profile_basic)
                     .into(view.ivEditProfileImage)
-
-
             }
             }
-
     private fun rotateBitmap(img: Bitmap, orientation: Int): Bitmap? {
         val matrix = Matrix()
         when(orientation) {
@@ -279,43 +260,74 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
             null
         }
     }
-
-
-
-
-
-
-    private fun sendProfileImage(image:String) {
-
+    private fun imageSet(iv:ImageView) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
                 val id = pref.getString("id","")!!
-                CalendarObj.api.profileSet(id,image).enqueue(object : Callback<ResultNoReturn>{
-                    override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
+                CalendarObj.api.getUserProfileImage(id).enqueue(object : Callback<ResultProfileImage>{
+                    override fun onResponse(call: Call<ResultProfileImage>, response: Response<ResultProfileImage>) {
                         if(response.body()!!.code == 200){
-                            Glide
-                                .with(App.instance)
-                                .load(profileImage)
-                                .circleCrop()
-                                .placeholder(R.drawable.profile_basic)
-                                .into(binding.ivSettingProfileImage)
-                            Toast.makeText(applicationContext,"이미지 설정 완료",Toast.LENGTH_SHORT).show()
+                            var stringProfileImage:String?
+                            if(response.body()!!.content.isNullOrBlank()||response.body()!!.content.length<100){
+                                Glide
+                                    .with(App.instance)
+                                    .load("")
+                                    .circleCrop()
+                                    .placeholder(R.drawable.profile_basic)
+                                    .into(iv)
+                            }else{
+                                stringProfileImage = response.body()!!.content
+                                val byteProfileImage = Base64.decode(stringProfileImage,0)
+                                val inputStream = ByteArrayInputStream(byteProfileImage)
+                                profileImage = BitmapFactory.decodeStream(inputStream)
+                                Glide
+                                    .with(App.instance)
+                                    .load(profileImage)
+                                    .circleCrop()
+                                    .placeholder(R.drawable.profile_basic)
+                                    .into(iv)
+                            }
                         }else
                             Toast.makeText(applicationContext,"${response.body()!!.message}",Toast.LENGTH_SHORT).show()
                     }
 
-                    override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
+                    override fun onFailure(call: Call<ResultProfileImage>, t: Throwable) {
                         Toast.makeText(applicationContext,"서버통신 문제",Toast.LENGTH_SHORT).show()
                     }
-
                 })
-
-
             }catch (e:Exception){
                 e.printStackTrace()
             }
         }
+    }
+    private fun sendProfileImage(image:String) {
+
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
+                    val id = pref.getString("id","")!!
+                    CalendarObj.api.profileSet(id,image).enqueue(object : Callback<ResultNoReturn>{
+                        override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
+                            if(response.body()!!.code == 200){
+                                Toast.makeText(applicationContext,"이미지가 설정 되었습니다.",Toast.LENGTH_SHORT).show()
+                            }
+                        }
+
+                        override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
+                            Toast.makeText(applicationContext,"서버통신 문제",Toast.LENGTH_SHORT).show()
+                        }
+
+                    })
+
+
+                }catch (e:Exception){
+                    e.printStackTrace()
+                }
+                imageSet(binding.ivProfileImage)
+            }
+
+
     }
 
 
@@ -351,7 +363,7 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
         alertDialog.show()
         view.btnPositive.setOnClickListener {
             deleteToken()
-
+            alertDialog.onBackPressed()
         }
         view.btnNegative.setOnClickListener {
             alertDialog.onBackPressed()
@@ -359,35 +371,41 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
     }
 
     private fun deleteToken() {
-
-        val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
-        val edit = pref.edit()
-        val id = pref.getString("id","")!!
-
-        try{
-            serverAPI.getToken(id, "").enqueue(object : Callback<ResultNoReturn> {
-                override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
-                    Toast.makeText(applicationContext,"서버통신 오류",Toast.LENGTH_SHORT).show()
-
-                }
-
-                override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
-                    if (response.body()!!.check){
-                        edit.clear()
-                        edit.apply()
-                        val intent = Intent(applicationContext, LoginActivity::class.java)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-                        startActivity(intent)
-                    }else{
-                        Toast.makeText(applicationContext,"${response.body()!!.message}",Toast.LENGTH_SHORT).show()
+        CoroutineScope(Dispatchers.IO).launch {
+            val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
+            val edit = pref.edit()
+            val id = pref.getString("id", "")!!
+            try {
+                serverAPI.getToken(id, "").enqueue(object : Callback<ResultNoReturn> {
+                    override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
+                        Toast.makeText(applicationContext, "서버통신 오류", Toast.LENGTH_SHORT).show()
 
                     }
-                }
-            })
-        }catch(e: Exception) {
-            e.printStackTrace()
-        }
 
+                    override fun onResponse(
+                        call: Call<ResultNoReturn>,
+                        response: Response<ResultNoReturn>
+                    ) {
+                        if (response.body()!!.check) {
+                            edit.clear()
+                            edit.apply()
+                            val intent = Intent(applicationContext, LoginActivity::class.java)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                            startActivity(intent)
+                        } else {
+                            Toast.makeText(
+                                applicationContext,
+                                "${response.body()!!.message}",
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                        }
+                    }
+                })
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 
     private fun nicknameDialog() {
@@ -398,11 +416,15 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
         alertDialog.show()
         view.btnPositive.setOnClickListener {
             var text = view.etNickname.text.toString()
-            text.replace(" ", "")
-            if(text.isNullOrBlank()) {
+            var textReplaced = text.replace(" ", "")
+            if(textReplaced.length != text.length){
+                Toast.makeText(this, "공백은 들어갈 수 없습니다.", Toast.LENGTH_SHORT).show()
+            }
+            else if(textReplaced.isNullOrBlank()) {
                 Toast.makeText(this, "닉네임을 입력하세요.", Toast.LENGTH_SHORT).show()
-            }else if(text.length < 2 || text.length > 10){
-                Toast.makeText(this, "2~10자의 닉네임을 입력해주세요", Toast.LENGTH_SHORT).show()
+
+            }else if(textReplaced.length < 2 || textReplaced.length > 8){
+                Toast.makeText(this, "2~8자의 닉네임을 입력해주세요", Toast.LENGTH_SHORT).show()
             }else {
                 nicknameMod(text)
                 alertDialog.onBackPressed()
