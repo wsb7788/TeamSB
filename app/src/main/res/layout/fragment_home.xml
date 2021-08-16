@@ -113,7 +113,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/vf"
-            app:layout_constraintWidth_percent="0.17" />
+            app:layout_constraintWidth_percent="0.15" />
 
         <ImageButton
             android:id="@+id/btn2"
@@ -128,7 +128,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/btn1"
             app:layout_constraintTop_toBottomOf="@+id/vf"
-            app:layout_constraintWidth_percent="0.17" />
+            app:layout_constraintWidth_percent="0.15" />
 
         <ImageButton
             android:id="@+id/btn3"
@@ -143,7 +143,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/btn2"
             app:layout_constraintTop_toBottomOf="@+id/vf"
-            app:layout_constraintWidth_percent="0.17" />
+            app:layout_constraintWidth_percent="0.15" />
 
         <ImageButton
             android:id="@+id/btn4"
@@ -158,7 +158,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/btn3"
             app:layout_constraintTop_toBottomOf="@+id/vf"
-            app:layout_constraintWidth_percent="0.17" />
+            app:layout_constraintWidth_percent="0.15" />
 
         <TextView
             android:id="@+id/textView1"
@@ -238,6 +238,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="최근 올라온 게시물"
+                android:textStyle="bold"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"

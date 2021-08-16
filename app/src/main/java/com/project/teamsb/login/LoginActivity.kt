@@ -62,9 +62,15 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
         val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
         if (pref.getBoolean("autoLoginSuccess", false)) {
-            binding.autoLoginCb.isChecked = true
-            val intent = Intent(applicationContext, MainActivity::class.java)
-            startActivity(intent)
+            if(pref.getString("nickname","").isNullOrBlank()){
+                val intent = Intent(applicationContext, FirstNicknameSetActivity::class.java)
+                startActivity(intent)
+            }else{
+                val intent = Intent(applicationContext, MainActivity::class.java)
+                startActivity(intent)
+            }
+
+
         }
         binding.loginBtn.setOnClickListener(this)
 
