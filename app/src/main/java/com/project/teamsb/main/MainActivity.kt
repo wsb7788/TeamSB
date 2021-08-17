@@ -36,7 +36,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
+class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener,View.OnClickListener {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
@@ -58,15 +58,14 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
         val bottomNavigationView = findViewById<View>(binding.bnv.id) as BottomNavigationView             //OnNavigationItemSelectedListener 연결 aaa
         bottomNavigationView.setOnNavigationItemSelectedListener(this)
         bottomNavigationView.selectedItemId = R.id.navigation_home
+
         ShowTabHome()
-
-        setSupportActionBar(binding.toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_setting)
-
         getUserInfo()
 
 
+        binding.ivNotification.setOnClickListener(this)
+        binding.ivSearch.setOnClickListener(this)
+        binding.ivSetting.setOnClickListener(this)
     }
 
     override fun onResume() {
@@ -101,33 +100,6 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
     }
 
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_search,menu)
-        if(isNotiCheck){
-            menuInflater.inflate(R.menu.menu_notification_new,menu)
-        }else{
-            menuInflater.inflate(R.menu.menu_notification,menu)
-        }
-        return true
-    }
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            R.id.notification_tb, R.id.notification_new_tb -> {
-                val intent = Intent(this, NotificationActivity::class.java)
-                startActivity(intent)
-            }
-            R.id.search_tb -> {
-                val intent = Intent(this, SearchActivity::class.java)
-                intent.putExtra("category", "all")
-                startActivity(intent)
-            }
-            android.R.id.home -> {
-                val intent = Intent(this, SettingActivity::class.java)
-                startActivity(intent)
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
     private fun checkNotification() {
         CoroutineScope(Dispatchers.IO).launch {
             val pref= getSharedPreferences("userInfo", MODE_PRIVATE)
@@ -139,10 +111,10 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
                         if(response.body()!!.check){
                             if(response.body()!!.notificationCount == 0){
                                 isNotiCheck = false
-                                invalidateOptionsMenu()
+                                binding.ivNotification.setImageResource(R.drawable.ic_notification)
                             }else{
                                 isNotiCheck = true
-                                invalidateOptionsMenu()
+                                binding.ivNotification.setImageResource(R.drawable.ic_notification_new)
                             }
                         }else{
                             Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
@@ -255,5 +227,23 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
             }
         }
 
+    }
+
+    override fun onClick(v: View?) {
+        when(v){
+            binding.ivNotification -> {
+                val intent = Intent(this, NotificationActivity::class.java)
+                startActivity(intent)
+            }
+            binding.ivSearch -> {
+                val intent = Intent(this, SearchActivity::class.java)
+                intent.putExtra("category", "all")
+                startActivity(intent)
+            }
+            binding.ivSetting -> {
+                val intent = Intent(this, SettingActivity::class.java)
+                startActivity(intent)
+            }
+        }
     }
 }
