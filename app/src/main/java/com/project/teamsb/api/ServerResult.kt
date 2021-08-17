@@ -110,3 +110,18 @@ data class Notification(
     var check_read: Boolean,
     var timeStamp: String,
     var imageSource: String)
+
+data class ResponseNotice(
+    var check:Boolean,
+    var code:Int,
+    var message: String,
+    var content: ArrayList<NoticeContent>)
+
+data class NoticeContent(
+    var notice_no: Int,
+    var title:String,
+    var content:String,
+    var viewCount: Int,
+    var timeStamp: String,
+    var fixTop: Boolean)
+

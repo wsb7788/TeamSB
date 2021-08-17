@@ -28,61 +28,76 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:text="21/08/11"
+            android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
-        <TextView
+        <ImageView
+            android:id="@+id/iv_fixed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:src="@drawable/ic_fixed"
+            android:layout_marginLeft="5dp"
+            android:visibility="invisible"
+            app:layout_constraintStart_toEndOf="@id/iv_timeStamp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/iv_timeStamp"/>
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:ellipsize="end"
+            android:layout_marginTop="5dp"
             android:maxLines="1"
             android:text="asdfas"
-            android:textSize="18sp"
             android:textColor="@color/black"
+            android:textSize="15sp"
             android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/iv_arrow"
             app:layout_constraintStart_toStartOf="@+id/iv_timeStamp"
             app:layout_constraintTop_toBottomOf="@id/iv_timeStamp" />
 
         <ImageView
+            android:id="@+id/iv_arrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="5dp"
             android:src="@drawable/ic_arrow"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_notice_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/cl_notice_title"
-        app:layout_constraintTop_toBottomOf="@id/cl_notice_title"
+        android:padding="20dp"
         android:visibility="gone"
-        android:padding="20dp">
+        app:layout_constraintStart_toStartOf="@id/cl_notice_title"
+        app:layout_constraintTop_toBottomOf="@id/cl_notice_title">
 
         <TextView
             android:id="@+id/tv_sub_title"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="asdfasdf"
-            android:textSize="15sp"
             android:textColor="@color/black"
+            android:textSize="15sp"
             android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/tv_sub_content"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="123123"
-            android:textColor="@color/black"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="10dp"
-            app:layout_constraintTop_toBottomOf="@id/tv_sub_title"/>
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_sub_title" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

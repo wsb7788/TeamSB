@@ -180,4 +180,13 @@ interface ServerAPI {
     fun notiReadAll(
         @Field("curUser") curUser: String,
     ) : Call<ResultNoReturn>
+
+    @GET("/notice/list/")
+    fun noticeList(
+        @Query("page") page:Int
+    ): Call<ResponseNotice>
+    @GET("/notice/list/top/")
+    fun noticeTopList(
+        @Query("page") page:Int
+    ): Call<ResponseNotice>
 }
