@@ -180,7 +180,7 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
         // 뒤로가기 버튼 클릭
         if(System.currentTimeMillis() - mBackWait >=2000 ) {
             mBackWait = System.currentTimeMillis()
-            Snackbar.make(binding.root,"뒤로가기 버튼을 한번 더 누르면 종료됩니다.",Snackbar.LENGTH_LONG).show()
+            Snackbar.make(binding.root,"뒤로가기 버튼을 한번 더 누르면 종료됩니다.",Snackbar.LENGTH_SHORT).show()
         } else {
             moveTaskToBack(true);						// 태스크를 백그라운드로 이동
             finishAndRemoveTask();						// 액티비티 종료 + 태스크 리스트에서 지우기

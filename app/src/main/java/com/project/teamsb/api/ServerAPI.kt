@@ -187,6 +187,5 @@ interface ServerAPI {
     ): Call<ResponseNotice>
     @GET("/notice/list/top/")
     fun noticeTopList(
-        @Query("page") page:Int
-    ): Call<ResponseNotice>
+       ): Call<ResponseNotice>
 }

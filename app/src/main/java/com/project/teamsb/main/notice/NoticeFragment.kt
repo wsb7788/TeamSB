@@ -79,17 +79,18 @@ class NoticeFragment : Fragment(){
     override fun onResume() {
         super.onResume()
         dataLoading()
-        noticeLoading()
     }
 
     private fun dataLoading() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                CalendarObj.api.noticeTopList(page).enqueue(object:retrofit2.Callback<ResponseNotice>{
+                CalendarObj.api.noticeTopList().enqueue(object:retrofit2.Callback<ResponseNotice>{
                     override fun onResponse(call: Call<ResponseNotice>, response: Response<ResponseNotice>) {
                         if (response.body()!!.code==200){
                             if(!response.body()!!.content.isNullOrEmpty()){
                                 setContent(response.body()!!.content)
+                                page = 1
+                                noticeLoading()
                             }
                         }
                     }
@@ -119,10 +120,8 @@ class NoticeFragment : Fragment(){
                             }
                         }
                     }
-
                     override fun onFailure(call: Call<ResponseNotice>, t: Throwable) {
                         Toast.makeText(activity, "통신 에러", Toast.LENGTH_SHORT).show()
-
                     }
 
                 })
@@ -141,10 +140,12 @@ class NoticeFragment : Fragment(){
         for (i in 0 until content.size){
             val title = content[i].title
             val text = content[i].content
-            val timeStamp = content[i].timeStamp
             val noticeNo = content[i].notice_no
             val viewCount = content[i].viewCount
             val topFix = content[i].fixTop
+
+            val timeStamp = content[i].timeStamp.substring(0,10).replace("-","/")
+
             val myModel = NoticeModel(noticeNo.toString(),title,text,viewCount.toString(),timeStamp,topFix)
             modelList.add(myModel)
         }
