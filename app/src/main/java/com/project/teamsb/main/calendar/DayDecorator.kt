@@ -9,9 +9,9 @@ import com.prolificinteractive.materialcalendarview.DayViewDecorator
 import com.prolificinteractive.materialcalendarview.DayViewFacade
 import java.util.*
 
-class DayDecorator : DayViewDecorator  {
-//오늘 날짜 색변경
-    var date= CalendarDay.today()
+class DayDecorator : DayViewDecorator {
+    //오늘 날짜 색변경
+    var date = CalendarDay.today()
 
     override fun shouldDecorate(day: CalendarDay?): Boolean {
         return day!! == date
@@ -22,4 +22,4 @@ class DayDecorator : DayViewDecorator  {
         view!!.addSpan(ForegroundColorSpan(Color.parseColor("#F9DA78")))
     }
 
-}s
+}

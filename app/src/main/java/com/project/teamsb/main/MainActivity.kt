@@ -62,7 +62,7 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.setting)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_setting)
 
         getUserInfo()
 

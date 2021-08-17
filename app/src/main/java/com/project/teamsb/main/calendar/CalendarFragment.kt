@@ -63,10 +63,10 @@ class CalendarFragment : Fragment(), OnDateSelectedListener{
                 var dinner = arr?.get(Tdate)?.저녁?.get(0)?.joinToString("\n")
 
                 //오늘 식단 textView에 넣기
-                binding.breakfastTv.text = "아침 (11:50~13:30)\n$breakfast"
+                binding.breakfastTv.text = "아침 (07:00~08:30)\n$breakfast"
                 binding.lunchTv1.text = "점심 (11:50~13:30)\n$lunch1"
-                binding.lunchTv2.text = "[점심2]\n$lunch2"
-                binding.dinnerTv.text = "저녁 (11:50~13:30)\n$dinner"
+                binding.lunchTv2.text = "\nlunch2"
+                binding.dinnerTv.text = "저녁 (18:00~19:30)\n$dinner"
 
                 //날짜 변경시 식단 바꾸기
                 binding.materialCalendar.setOnDateChangedListener { widget, date, selected ->
