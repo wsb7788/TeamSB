@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="20dp">
+    android:paddingTop="20dp"
+    android:paddingRight="30dp"
+    android:paddingLeft="30dp"
+    android:paddingBottom="20dp"
+    >
 
     <TextView
-        android:id="@+id/tv_nickname"
+        android:id="@+id/tv_nickname1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="새로운 닉네임을 입력해주세요"
+        android:text="닉네임 수정하기"
         android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -18,47 +22,55 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:layout_margin="20sp"
-        android:id="@+id/et_nickname"
+    <TextView
+        android:id="@+id/tv_nickname2"
         android:layout_width="wrap_content"
-        android:singleLine="true"
-        android:layout_height="0dp"
-        android:textSize="15sp"
-        android:background="@null"
+        android:layout_height="wrap_content"
+        android:text="닉네임을 작성해주세요"
         android:textColor="@color/black"
-        android:hint="* 2~8자의 닉네임을 입력해주세요"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_nickname"/>
+        app:layout_constraintTop_toBottomOf="@+id/tv_nickname1" />
+
+    <EditText
+        android:id="@+id/et_nickname"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:hint="* 2~8자 이내로 작성해주세요."
+        android:singleLine="true"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_nickname2"
+        app:layout_constraintTop_toBottomOf="@+id/tv_nickname2" />
 
 
-
-    <Button
+    <TextView
         android:id="@+id/btn_positive"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:backgroundTint="#ffd996"
+        android:layout_width="50dp"
+        android:layout_height="33dp"
+        android:gravity="center"
+        android:background="@drawable/edit_nickname_rectangle"
+        android:layout_marginTop="20dp"
         android:text="확인"
-        android:textSize="18sp"
+        android:textColor="@color/black"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_negative"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_nickname" />
-
-    <Button
-        android:id="@+id/btn_negative"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:backgroundTint="#ffd996"
-        android:text="취소"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btn_positive" />
+        app:layout_constraintTop_toBottomOf="@+id/et_nickname"/>
+    <TextView
+        android:id="@+id/btn_negative"
+        android:layout_width="50dp"
+        android:layout_height="33dp"
+        android:gravity="center"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/edit_nickname_rectangle"
+        android:text="취소"
+        android:textColor="@color/black"
+
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/btn_positive"
+        app:layout_constraintTop_toTopOf="@+id/btn_positive"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -332,14 +332,18 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
         val alertDialog = dialogBuilder.create()
         alertDialog.show()
         view.btnReportPositive.setOnClickListener {
-            var text = when(view.spinnerReport.selectedItemPosition){
-                0 -> view.spinnerReport.getItemAtPosition(0).toString()
-                1 -> view.spinnerReport.getItemAtPosition(1).toString()
-                2 -> view.spinnerReport.getItemAtPosition(2).toString()
-                else -> "그럴리가없다잉"
+            if(view.spinnerReport.selectedItemPosition == 0 ){
+                Toast.makeText(applicationContext, "신고 사유를 선택해주세요.", Toast.LENGTH_SHORT).show()
+            }else{
+                var text = when(view.spinnerReport.selectedItemPosition){
+                    1 -> view.spinnerReport.getItemAtPosition(1).toString()
+                    2 -> view.spinnerReport.getItemAtPosition(2).toString()
+                    3 -> view.spinnerReport.getItemAtPosition(3).toString()
+                    else -> "그럴리가없다잉"
+                }
+                reportArticle(id,no,text)
+                alertDialog.onBackPressed()
             }
-            reportArticle(id,no,text)
-            alertDialog.onBackPressed()
         }
         view.btnReportNegative.setOnClickListener {
             alertDialog.onBackPressed()

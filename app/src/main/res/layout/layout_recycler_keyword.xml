@@ -6,7 +6,9 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/keyword_rectangle"
-    android:padding="1dp"
+    android:paddingTop="1dp"
+    android:paddingBottom="1dp"
+    android:paddingRight="5dp"
     android:layout_margin="10dp">
 
     <TextView
@@ -14,14 +16,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:text="이이잉"
+        android:text="asd"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="0dp"
+        android:padding="5dp"
+        android:src="@drawable/ic_delete_keyword"
+        app:layout_constraintBottom_toBottomOf="@id/tv_inside_rcv_keyword"
+        app:layout_constraintStart_toEndOf="@id/tv_inside_rcv_keyword"
+        app:layout_constraintTop_toTopOf="@id/tv_inside_rcv_keyword" />
 </androidx.constraintlayout.widget.ConstraintLayout>

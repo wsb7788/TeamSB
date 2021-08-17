@@ -63,10 +63,10 @@ class CalendarFragment : Fragment(), OnDateSelectedListener{
                 var dinner = arr?.get(Tdate)?.저녁?.get(0)?.joinToString("\n")
 
                 //오늘 식단 textView에 넣기
-                binding.breakfastTv.text = "아침 (07:00~08:30)\n$breakfast"
-                binding.lunchTv1.text = "점심 (11:50~13:30)\n$lunch1"
-                binding.lunchTv2.text = "\nlunch2"
-                binding.dinnerTv.text = "저녁 (18:00~19:30)\n$dinner"
+                binding.breakfastTv.text = "$breakfast"
+                binding.lunchTv1.text = "A코스\n$lunch1"
+                binding.lunchTv2.text = "B코스\n$lunch2"
+                binding.dinnerTv.text = "$dinner"
 
                 //날짜 변경시 식단 바꾸기
                 binding.materialCalendar.setOnDateChangedListener { widget, date, selected ->
@@ -88,17 +88,14 @@ class CalendarFragment : Fragment(), OnDateSelectedListener{
                     //선택된 날짜의 식단 가져오기
                     var breakfast = arr?.get(day)?.아침?.get(0)?.joinToString("\n")
                     var lunch1 = arr?.get(day)?.점심?.get(0)?.joinToString("\n")
-                    var lunch2= ""
-                    for(i in 0 until arr?.get(day)?.점심?.get(1)?.size!!){
-                        lunch2 += arr?.get(day)?.점심[1][i] + "\n"
-                    }
+                    var lunch2 = arr?.get(day)?.점심?.get(1)?.joinToString("\n")
                     var dinner = arr?.get(day)?.저녁?.get(0)?.joinToString("\n")
 
                     //불러온 식단 textView에 넣기
-                    binding.breakfastTv.text = "아침 (11:50~13:30)\n$breakfast"
-                    binding.lunchTv1.text = "점심 (11:50~13:30)\n$lunch1"
-                    binding.lunchTv2.text = "[점심2]\n$lunch2"
-                    binding.dinnerTv.text = "저녁 (11:50~13:30)\n$dinner"
+                    binding.breakfastTv.text = "$breakfast"
+                    binding.lunchTv1.text = "A코스\n$lunch1"
+                    binding.lunchTv2.text = "B코스\n$lunch2"
+                    binding.dinnerTv.text = "$dinner"
                 }
             }
 

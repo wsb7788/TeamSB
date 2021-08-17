@@ -27,81 +27,78 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp">
+            android:layout_height="0dp"
+            android:paddingLeft="20dp">
 
             <TextView
-                android:id="@+id/breakfastTv"
+                android:id="@+id/breakfast"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
                 android:textColor="@color/black"
+                android:text="아침 (11:50~13:30)"
+                android:textStyle="bold"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <View
-                android:id="@+id/divider1"
+            <TextView
+                android:id="@+id/breakfastTv"
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginHorizontal="10dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintTop_toBottomOf="@+id/breakfast"
+                app:layout_constraintStart_toStartOf="parent"/>
+            <TextView
+                android:id="@+id/lunch"
+                android:text="점심 (11:50~13:30)"
+                android:layout_width="180dp"
+                android:textStyle="bold"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:background="?android:attr/listDivider"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
+                android:textColor="@color/black"
+                android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/breakfastTv"
-                tools:ignore="MissingConstraints" />
-
+                app:layout_constraintTop_toBottomOf="@id/breakfastTv"/>
             <TextView
                 android:id="@+id/lunchTv1"
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:paddingLeft="20dp"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider1" />
+                app:layout_constraintTop_toBottomOf="@id/lunch" />
 
             <TextView
                 android:id="@+id/lunchTv2"
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:textColor="@color/black"
                 android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.686"
-                app:layout_constraintStart_toEndOf="@+id/lunchTv1"
-                app:layout_constraintTop_toBottomOf="@+id/divider1" />
+                app:layout_constraintTop_toBottomOf="@id/lunch"
+                app:layout_constraintStart_toEndOf="@id/lunchTv1"/>
 
-            <View
-                android:id="@+id/divider2"
+            <TextView
+                android:id="@+id/dinner"
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginHorizontal="10dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:background="?android:attr/listDivider"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.157"
+                android:text="저녁 (18:00~19:30)"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/lunchTv1"
-                tools:ignore="MissingConstraints" />
-
+                app:layout_constraintTop_toBottomOf="@+id/lunchTv2" />
             <TextView
                 android:id="@+id/dinnerTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:paddingLeft="20dp"
                 android:textColor="@color/black"
                 android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider2" />
+                app:layout_constraintStart_toEndOf="@id/dinner"
+                app:layout_constraintTop_toBottomOf="@id/dinner"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 

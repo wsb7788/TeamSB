@@ -142,6 +142,11 @@ interface ServerAPI {
         @Field("curId") curId: String,
         @Field("profile_image") profile_image: String,
     ) : Call<ResultNoReturn>
+    @FormUrlEncoded
+    @POST("/profileSet/delete")
+    fun profileDelete(
+        @Field("curId") curId: String
+    ) : Call<ResultNoReturn>
 
     @FormUrlEncoded
     @POST("/getToken/")

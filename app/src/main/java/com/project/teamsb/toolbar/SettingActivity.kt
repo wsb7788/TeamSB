@@ -146,15 +146,7 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
             takeAlbum()
         }
         view.btnPrimary.setOnClickListener{
-            Glide
-                .with(App.instance)
-                .load("")
-                .circleCrop()
-                .placeholder(R.drawable.profile_basic)
-                .into(binding.ivProfileImage)
-            profileImageBase64 = "noImg"
-            sendProfileImage(profileImageBase64)
-            Toast.makeText(applicationContext,"기본 이미지로 설정 되었습니다.",Toast.LENGTH_SHORT).show()
+            deleteProfileImage()
             alertDialog.onBackPressed()
         }
         view.btnPositive.setOnClickListener {
@@ -170,6 +162,35 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
         view.btnNegative.setOnClickListener {
             alertDialog.onBackPressed()
         }
+    }
+
+    private fun deleteProfileImage() {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
+                val id = pref.getString("id","")!!
+                CalendarObj.api.profileDelete(id).enqueue(object : Callback<ResultNoReturn>{
+                    override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
+                        if(response.body()!!.code == 200){
+                            Toast.makeText(applicationContext,"기본 이미지로 변경되었습니다.",Toast.LENGTH_SHORT).show()
+                            Glide
+                                .with(App.instance)
+                                .load("")
+                                .circleCrop()
+                                .placeholder(R.drawable.profile_basic)
+                                .into(binding.ivProfileImage)
+                        }
+                    }
+                    override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
+                        Toast.makeText(applicationContext,"서버통신 문제",Toast.LENGTH_SHORT).show()
+                    }
+                })
+            }catch (e:Exception){
+                e.printStackTrace()
+            }
+
+        }
+
     }
 
     private fun takeAlbum() {
@@ -261,45 +282,46 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
         }
     }
     private fun imageSet(iv:ImageView) {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
-                val id = pref.getString("id","")!!
-                CalendarObj.api.getUserProfileImage(id).enqueue(object : Callback<ResultProfileImage>{
-                    override fun onResponse(call: Call<ResultProfileImage>, response: Response<ResultProfileImage>) {
-                        if(response.body()!!.code == 200){
-                            var stringProfileImage:String?
-                            if(response.body()!!.content.isNullOrBlank()||response.body()!!.content.length<100){
-                                Glide
-                                    .with(App.instance)
-                                    .load("")
-                                    .circleCrop()
-                                    .placeholder(R.drawable.profile_basic)
-                                    .into(iv)
-                            }else{
-                                stringProfileImage = response.body()!!.content
-                                val byteProfileImage = Base64.decode(stringProfileImage,0)
-                                val inputStream = ByteArrayInputStream(byteProfileImage)
-                                profileImage = BitmapFactory.decodeStream(inputStream)
-                                Glide
-                                    .with(App.instance)
-                                    .load(profileImage)
-                                    .circleCrop()
-                                    .placeholder(R.drawable.profile_basic)
-                                    .into(iv)
-                            }
-                        }else
-                            Toast.makeText(applicationContext,"${response.body()!!.message}",Toast.LENGTH_SHORT).show()
-                    }
 
-                    override fun onFailure(call: Call<ResultProfileImage>, t: Throwable) {
-                        Toast.makeText(applicationContext,"서버통신 문제",Toast.LENGTH_SHORT).show()
-                    }
-                })
-            }catch (e:Exception){
-                e.printStackTrace()
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
+                    val id = pref.getString("id","")!!
+                    CalendarObj.api.getUserProfileImage(id).enqueue(object : Callback<ResultProfileImage>{
+                        override fun onResponse(call: Call<ResultProfileImage>, response: Response<ResultProfileImage>) {
+                            if(response.body()!!.code == 200){
+                                var stringProfileImage:String?
+                                if(response.body()!!.content.isNullOrBlank()||response.body()!!.content.length<100){
+                                    Glide
+                                        .with(App.instance)
+                                        .load("")
+                                        .circleCrop()
+                                        .placeholder(R.drawable.profile_basic)
+                                        .into(iv)
+                                }else{
+                                    stringProfileImage = response.body()!!.content
+                                    val byteProfileImage = Base64.decode(stringProfileImage,0)
+                                    val inputStream = ByteArrayInputStream(byteProfileImage)
+                                    profileImage = BitmapFactory.decodeStream(inputStream)
+                                    Glide
+                                        .with(App.instance)
+                                        .load(profileImage)
+                                        .circleCrop()
+                                        .placeholder(R.drawable.profile_basic)
+                                        .into(iv)
+                                }
+                            }else
+                                Toast.makeText(applicationContext,"${response.body()!!.message}",Toast.LENGTH_SHORT).show()
+                        }
+
+                        override fun onFailure(call: Call<ResultProfileImage>, t: Throwable) {
+                            Toast.makeText(applicationContext,"서버통신 문제",Toast.LENGTH_SHORT).show()
+                        }
+                    })
+                }catch (e:Exception){
+                    e.printStackTrace()
+                }
             }
-        }
     }
     private fun sendProfileImage(image:String) {
 
@@ -311,23 +333,23 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
                         override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
                             if(response.body()!!.code == 200){
                                 Toast.makeText(applicationContext,"이미지가 설정 되었습니다.",Toast.LENGTH_SHORT).show()
+                                Glide
+                                    .with(App.instance)
+                                    .load(profileImage)
+                                    .circleCrop()
+                                    .placeholder(R.drawable.profile_basic)
+                                    .into(binding.ivProfileImage)
                             }
                         }
-
                         override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
                             Toast.makeText(applicationContext,"서버통신 문제",Toast.LENGTH_SHORT).show()
                         }
-
                     })
-
-
                 }catch (e:Exception){
                     e.printStackTrace()
                 }
-                imageSet(binding.ivProfileImage)
+
             }
-
-
     }
 
 

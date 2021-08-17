@@ -1,35 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="20dp">
+    android:paddingTop="20dp"
+    android:paddingRight="30dp"
+    android:paddingLeft="30dp"
+    android:paddingBottom="20dp">
     <TextView
         android:id="@+id/tv_report"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="신고 사유"
+        android:text="게시글 신고하기"
         android:textSize="20sp"
         android:textColor="@color/black"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/tv_choice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="사유 선택"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_report" />
 
     <Spinner
         android:id="@+id/spinner_report"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#ffe38b"
+        android:entries="@array/report"
+        android:spinnerMode="dialog"
         app:layout_constraintBottom_toTopOf="@+id/btn_report_negative"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_report"
-        android:entries="@array/report"
-        android:spinnerMode="dialog" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_choice" />
 
-
-    <Button
+    <TextView
+        android:id="@+id/btn_report_positive"
+        android:layout_width="50dp"
+        android:layout_height="33dp"
+        android:gravity="center"
+        android:background="@drawable/edit_nickname_rectangle"
+        android:layout_marginTop="10dp"
+        android:text="신고"
+        android:textColor="#ff0000"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_report"/>
+    <TextView
+        android:id="@+id/btn_report_negative"
+        android:layout_width="50dp"
+        android:layout_height="33dp"
+        android:gravity="center"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/edit_nickname_rectangle"
+        android:text="취소"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/btn_report_positive"
+        app:layout_constraintTop_toTopOf="@+id/btn_report_positive"/>
+    <!--<Button
         android:id="@+id/btn_report_positive"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -54,6 +89,6 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btn_report_positive" />
+        app:layout_constraintStart_toEndOf="@+id/btn_report_positive" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
