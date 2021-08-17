@@ -394,6 +394,7 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
     fun setContent(content: Content){
         binding.tvTitle.text = content.title
         binding.tvToolbar.text = content.category
+        binding.tvComment.text = content.replyCount
         curCategory = content.category
         val timestamp = content.timeStamp.substring(5,16) // MM-dd hh:mm 을
         binding.tvTimeStamp.text = timestamp.replace("-","/") // MM/dd hh:mm 으로 변경

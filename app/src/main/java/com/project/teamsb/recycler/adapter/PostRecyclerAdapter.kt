@@ -45,8 +45,7 @@ class PostRecyclerAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         this.modelList.addAll(modelList)
     }
     override fun getItemViewType(position: Int): Int {
-        // 게시물과 프로그레스바 아이템뷰를 구분할 기준이 필요하다.
-        return when (modelList[position].text) {
+        return when (modelList[position].title) {
             null -> VIEW_TYPE_LOADING
             else -> VIEW_TYPE_POST_LIST
         }

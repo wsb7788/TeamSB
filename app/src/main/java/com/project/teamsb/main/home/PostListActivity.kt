@@ -208,8 +208,7 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
             val category = response.body()!!.content[i].category
             val title = response.body()!!.content[i].title
             val text = response.body()!!.content[i].text
-
-
+            val keywords = response.body()!!.content[i].hash
             var stringprofileImage:String
             if(response.body()!!.content[i].imageSource.isNullOrBlank()){
                 stringprofileImage = ""
@@ -245,7 +244,7 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
 
             val comment = response.body()!!.content[i].replyCount
             val no = response.body()!!.content[i].no
-            val myModel = PostModel(title,text,timeStamp,nickname,comment,category,no,profileImage)
+            val myModel = PostModel(title,keywords,timeStamp,nickname,comment,category,no,profileImage)
             modelList.add(myModel)
         }
         postRecyclerAdapter.submitList(modelList)

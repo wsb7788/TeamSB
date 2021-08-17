@@ -24,7 +24,28 @@ class PostViewHolder(val binding: LayoutRecyclerPostListBinding): RecyclerView.V
         binding.ivNickname.text = postModel.nickname
         binding.tvCategory.text = postModel.category
         binding.tvTitle.text = postModel.title
-        binding.tvContent.text = postModel.text
+        when(postModel.keyword!!.size){
+            1->{
+                binding.keyword1.text = "# "
+                binding.tvKeyword1.text = postModel.keyword!![0]
+            }
+            2->{
+                binding.keyword1.text = "# "
+                binding.keyword2.text = "# "
+                binding.tvKeyword1.text = postModel.keyword!![0]
+                binding.tvKeyword2.text = postModel.keyword!![1]
+            }
+            3->{
+                binding.keyword1.text = "# "
+                binding.keyword2.text = "# "
+                binding.keyword3.text = "# "
+                binding.tvKeyword1.text = postModel.keyword!![0]
+                binding.tvKeyword2.text = postModel.keyword!![1]
+                binding.tvKeyword3.text = postModel.keyword!![2]
+            }
+        }
+
+
         binding.tvComment.text = postModel.comment
         binding.tvTimeStamp.text = postModel.time
 

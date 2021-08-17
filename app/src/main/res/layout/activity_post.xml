@@ -91,6 +91,26 @@
                             app:layout_constraintStart_toEndOf="@id/iv_profile"
                             app:layout_constraintTop_toTopOf="@id/iv_profile"/>
 
+                        <ImageView
+                            android:id="@+id/iv_comment"
+                            android:layout_width="13dp"
+                            android:layout_height="19dp"
+                            android:layout_marginLeft="5dp"
+                            android:src="@drawable/comment_basic"
+                            app:layout_constraintBottom_toBottomOf="@+id/tv_nickname"
+                            app:layout_constraintStart_toEndOf="@id/tv_nickname"
+                            app:layout_constraintTop_toTopOf="@id/iv_profile" />
+
+                        <TextView
+                            android:id="@+id/tv_comment"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text=""
+                            app:layout_constraintBottom_toBottomOf="@+id/iv_comment"
+                            app:layout_constraintStart_toEndOf="@id/iv_comment"
+                            app:layout_constraintTop_toTopOf="@+id/iv_comment" />
+
                         <TextView
                             android:id="@+id/tv_time_stamp"
                             android:layout_width="wrap_content"

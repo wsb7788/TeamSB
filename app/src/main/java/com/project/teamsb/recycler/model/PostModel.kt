@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import android.util.Log
 import com.project.teamsb.api.Content
 
-class PostModel(var title: String? = null, var text: String? = null, var time: String? = null,var nickname: String? =  null,
+class PostModel(var title: String? = null, var keyword: List<String>? = null, var time: String? = null,var nickname: String? =  null,
                 var comment:String? = null,var category: String? = null,  var no: Int = 0,var profileImage: Bitmap? = null) {
     val TAG: String = "로그"
 

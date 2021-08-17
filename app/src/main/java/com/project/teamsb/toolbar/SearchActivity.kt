@@ -183,7 +183,7 @@ class SearchActivity:AppCompatActivity(),View.OnClickListener, PostRecyclerAdapt
                 val nickname = response.body()!!.content[i].userNickname
                 val category = response.body()!!.content[i].category
                 val title = response.body()!!.content[i].title
-                val text = response.body()!!.content[i].text
+                val keywords = response.body()!!.content[i].hash
 
 
                 var stringprofileImage:String
@@ -221,7 +221,7 @@ class SearchActivity:AppCompatActivity(),View.OnClickListener, PostRecyclerAdapt
 
                 val comment = response.body()!!.content[i].replyCount
                 val no = response.body()!!.content[i].no
-                val myModel = PostModel(title,text,timeStamp,nickname,comment,category,no,profileImage)
+                val myModel = PostModel(title,keywords,timeStamp,nickname,comment,category,no,profileImage)
                 modelList.add(myModel)
             }
             postRecyclerAdapter.submitList(modelList)
