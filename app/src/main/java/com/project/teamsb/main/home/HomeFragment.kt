@@ -26,6 +26,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.time.LocalDateTime
+import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 
@@ -84,25 +85,11 @@ class HomeFragment : Fragment(), View.OnClickListener {
     private fun calendarLoading() {
 
         CoroutineScope(Dispatchers.IO).launch {
-            val current = LocalDateTime.now()
-            var formatter = DateTimeFormatter.ISO_DATE
-            var formatted = current.format(formatter)
+
             try{
                 CalendarObj.api.getCalendar().enqueue(object :Callback<GetCalendar>{
                     override fun onResponse(call: Call<GetCalendar>, response: Response<GetCalendar>) {
-                        for(i in response.body()!!.menu){
-
-                            if(i.일자 == formatted){
-                                formatter = DateTimeFormatter.ofPattern("M월 d일 식단표")
-                                formatted = current.format(formatter)
-                                binding.foodtv.text = formatted
-                                binding.tvBreakfast.text  = "[아침]\n" + i.아침[0].joinToString("\n")
-                                binding.tvLunch1.text  = "[점심1]\n" + i.점심[0].joinToString("\n")
-                                binding.tvLunch2.text  = "[점심2]\n" + i.점심[1].joinToString("\n")
-                                binding.tvDinner.text  = "[저녁]\n" + i.저녁[0].joinToString("\n")
-
-                            }
-                        }
+                        setCalendar(response.body()!!.menu)
                     }
 
                     override fun onFailure(call: Call<GetCalendar>, t: Throwable) {
@@ -117,6 +104,41 @@ class HomeFragment : Fragment(), View.OnClickListener {
         }
 
 
+    }
+
+    private fun setCalendar(menu: ArrayList<GetMenu>) {
+        val current = LocalDateTime.now()
+        var formatter = DateTimeFormatter.ISO_DATE
+        var formatted = current.format(formatter)
+        for(i in menu){
+            if(i.일자 == formatted){
+                /*formatter = DateTimeFormatter.ofPattern("hh")
+                formatted = current.format(formatter)*/
+                var now = LocalTime.now()
+                var breakfast = LocalTime.of(8,30,0)
+                var lunch =  LocalTime.of(13,30,0)
+                var dinner =  LocalTime.of(19,30,0)
+                when {
+                    now.isBefore(breakfast) -> {
+                        binding.foodtv.text = "아침(07:00~08:30)"
+                         if(!i.아침[0].isNullOrEmpty()) {binding.tvConnerA.text = i.아침[0].joinToString ("\n")}
+
+                    }
+                    now.isBefore(lunch) -> {
+                        binding.foodtv.text = "점심(11:50~13:30)"
+                        if(!i.아침[0].isNullOrEmpty()) {binding.tvConnerA.text = i.점심[0].joinToString ("\n")}
+                        if(!i.아침[1].isNullOrEmpty()) {binding.tvConnerB.text = i.점심[1].joinToString ("\n")}
+                    }
+                    now.isBefore(dinner) -> {
+                        binding.foodtv.text = "아침(18:00~19:30)"
+                        if(!i.아침[0].isNullOrEmpty()) {binding.tvConnerA.text = i.저녁[0].joinToString ("\n")}
+                    }
+                    else -> {
+                        binding.foodtv.text = "식당 마감"
+                    }
+                }
+            }
+        }
     }
 
     override fun onClick(v: View) {

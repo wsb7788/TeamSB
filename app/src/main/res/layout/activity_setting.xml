@@ -55,7 +55,7 @@
                         android:layout_width="0dp"
                         android:layout_height="115dp"
                         android:layout_marginTop="20dp"
-                        android:background="@drawable/home_rectangle"
+                        android:background="@drawable/home_recent_rectangle"
                         android:padding="10dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
