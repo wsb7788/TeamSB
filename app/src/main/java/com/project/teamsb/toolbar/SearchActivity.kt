@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.project.teamsb.R
+import com.project.teamsb.api.ForcedTerminationService
 import com.project.teamsb.api.ResultPost
 import com.project.teamsb.api.ServerAPI
 import com.project.teamsb.databinding.ActivitySearchBinding
@@ -67,6 +68,7 @@ class SearchActivity:AppCompatActivity(),View.OnClickListener, PostRecyclerAdapt
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        startService(Intent(this, ForcedTerminationService::class.java))
 
         imm = getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as InputMethodManager
         postRecyclerAdapter = PostRecyclerAdapter()

@@ -64,6 +64,7 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
         binding = ActivityPostBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
+        startService(Intent(this, ForcedTerminationService::class.java))
 
         imm = getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
@@ -165,7 +166,6 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
                 serverAPI.accessArticle(no).enqueue(object : Callback<ResultNoReturn>{
                     override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
                         if(response.body()!!.check){
-                            Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
                             contentLoading(no)
 
                         }else{

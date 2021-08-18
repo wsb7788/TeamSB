@@ -36,6 +36,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+        <service android:name=".api.ForcedTerminationService" android:stopWithTask="false"/>
 
 
     </application>

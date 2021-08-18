@@ -13,10 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.project.teamsb.R
-import com.project.teamsb.api.Notification
-import com.project.teamsb.api.ResultNoReturn
-import com.project.teamsb.api.ResultNotiList
-import com.project.teamsb.api.ServerAPI
+import com.project.teamsb.api.*
 import com.project.teamsb.databinding.ActivityNotificationBinding
 import com.project.teamsb.databinding.ActivitySearchBinding
 import com.project.teamsb.post.PostActivity
@@ -61,6 +58,7 @@ class NotificationActivity:AppCompatActivity(), NotificationRecyclerAdapter.OnIt
         setSupportActionBar(binding.toolbar)
 
 
+        startService(Intent(this, ForcedTerminationService::class.java))
 
         notificationAdapter = NotificationRecyclerAdapter()
         binding.rcvNotification.apply {

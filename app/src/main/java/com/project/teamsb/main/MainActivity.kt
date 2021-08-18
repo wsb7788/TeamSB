@@ -3,6 +3,7 @@ package com.project.teamsb.main
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -13,10 +14,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.project.teamsb.CalendarFragment
 import com.project.teamsb.R
-import com.project.teamsb.api.ResultNickname
-import com.project.teamsb.api.ResultNoReturn
-import com.project.teamsb.api.ResultNotiCheck
-import com.project.teamsb.api.ServerAPI
+import com.project.teamsb.api.*
 import com.project.teamsb.toolbar.SettingActivity
 import com.project.teamsb.databinding.ActivityMainBinding
 import com.project.teamsb.login.LoginActivity
@@ -54,6 +52,9 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
         super.onCreate(savedInstanceState)
 
         setContentView(binding.root)
+
+        startService(Intent(this, ForcedTerminationService::class.java))
+
 
         val bottomNavigationView = findViewById<View>(binding.bnv.id) as BottomNavigationView             //OnNavigationItemSelectedListener 연결 aaa
         bottomNavigationView.setOnNavigationItemSelectedListener(this)
@@ -182,49 +183,41 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
             mBackWait = System.currentTimeMillis()
             Snackbar.make(binding.root,"뒤로가기 버튼을 한번 더 누르면 종료됩니다.",Snackbar.LENGTH_SHORT).show()
         } else {
-            moveTaskToBack(true);						// 태스크를 백그라운드로 이동
-            finishAndRemoveTask();						// 액티비티 종료 + 태스크 리스트에서 지우기
-            android.os.Process.killProcess(android.os.Process.myPid());
+            deleteTokenAndFinish()
         }
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
-        if(!pref.getBoolean("autoLoginSuccess",false)){
-            deleteToken()
-        }
-    }
-
-    private fun deleteToken() {
-        runBlocking {
-            CoroutineScope(Dispatchers.IO).launch {
-                val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
-                val edit = pref.edit()
-                val id = pref.getString("id", "")!!
+    private fun deleteTokenAndFinish() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
+            val edit = pref.edit()
+            val id = pref.getString("id","")!!
+            if(!pref.getBoolean("autoLoginSuccess",false)){
                 try {
-                    serverAPI.getToken(id, "").enqueue(object : Callback<ResultNoReturn> {
+                    serverAPI.getToken(id,null).enqueue(object : Callback<ResultNoReturn> {
                         override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
                             Toast.makeText(applicationContext, "서버통신 오류", Toast.LENGTH_SHORT).show()
-
+                            moveTaskToBack(true);						// 태스크를 백그라운드로 이동
+                            finishAndRemoveTask();						// 액티비티 종료 + 태스크 리스트에서 지우기
+                            android.os.Process.killProcess(android.os.Process.myPid());
                         }
-
                         override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
                             if (response.body()!!.check) {
                                 edit.clear()
-                                edit.apply()
+                                edit.commit()
                                 Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
-
                             } else {
                                 Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
                             }
+                            moveTaskToBack(true);						// 태스크를 백그라운드로 이동
+                            finishAndRemoveTask();						// 액티비티 종료 + 태스크 리스트에서 지우기
+                            android.os.Process.killProcess(android.os.Process.myPid());
                         }
                     })
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
             }
+
         }
 
     }

@@ -27,10 +27,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.GlideBuilder
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.project.teamsb.R
-import com.project.teamsb.api.NicknameSet
-import com.project.teamsb.api.ResultNoReturn
-import com.project.teamsb.api.ResultProfileImage
-import com.project.teamsb.api.ServerAPI
+import com.project.teamsb.api.*
 import com.project.teamsb.databinding.*
 import com.project.teamsb.login.LoginActivity
 import com.project.teamsb.main.MainActivity
@@ -65,6 +62,7 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        startService(Intent(this, ForcedTerminationService::class.java))
 
         binding = ActivitySettingBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -395,33 +393,14 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
     private fun deleteToken() {
         CoroutineScope(Dispatchers.IO).launch {
             val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
-            val edit = pref.edit()
             val id = pref.getString("id", "")!!
             try {
-                serverAPI.getToken(id, "").enqueue(object : Callback<ResultNoReturn> {
+                serverAPI.getToken(id,null).enqueue(object : Callback<ResultNoReturn> {
                     override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
                         Toast.makeText(applicationContext, "서버통신 오류", Toast.LENGTH_SHORT).show()
-
                     }
-
-                    override fun onResponse(
-                        call: Call<ResultNoReturn>,
-                        response: Response<ResultNoReturn>
-                    ) {
-                        if (response.body()!!.check) {
-                            edit.clear()
-                            edit.apply()
-                            val intent = Intent(applicationContext, LoginActivity::class.java)
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-                            startActivity(intent)
-                        } else {
-                            Toast.makeText(
-                                applicationContext,
-                                "${response.body()!!.message}",
-                                Toast.LENGTH_SHORT
-                            ).show()
-
-                        }
+                    override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
+                        deleteAndRestart()
                     }
                 })
             } catch (e: Exception) {
@@ -429,6 +408,18 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
             }
         }
     }
+
+    private fun deleteAndRestart() {
+        val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
+        val edit = pref.edit()
+        edit.clear()
+        edit.commit()
+        finishAffinity()
+        val intent = Intent(applicationContext, LoginActivity::class.java)
+        startActivity(intent)
+        System.exit(0)
+    }
+
 
     private fun nicknameDialog() {
         val dialogBuilder = AlertDialog.Builder(this)

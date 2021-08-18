@@ -1,5 +1,6 @@
 package com.project.teamsb.toolbar
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.SpannableStringBuilder
@@ -11,10 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.teamsb.R
-import com.project.teamsb.api.Content
-import com.project.teamsb.api.ResultPost
-import com.project.teamsb.api.ResultWrite
-import com.project.teamsb.api.ServerAPI
+import com.project.teamsb.api.*
 import com.project.teamsb.databinding.ActivityWriteBinding
 import com.project.teamsb.recycler.adapter.KeywordRecyclerAdapter
 import com.project.teamsb.recycler.model.KeywordModel
@@ -53,6 +51,7 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener,KeywordRecyclerAdap
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        startService(Intent(this, ForcedTerminationService::class.java))
 
         binding = ActivityWriteBinding.inflate(layoutInflater)
 

@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.RemoteMessage
+import com.project.teamsb.api.ForcedTerminationService
 import com.project.teamsb.api.ResultLogin
 import com.project.teamsb.api.ResultNoReturn
 import com.project.teamsb.api.ServerAPI
@@ -48,6 +49,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        startService(Intent(this, ForcedTerminationService::class.java))
 
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
@@ -99,14 +101,13 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
                     override fun onResponse(call: Call<ResultLogin>, response: Response<ResultLogin>) {
                         binding.progressBar.visibility = INVISIBLE
-
                         if(response.body()!!.check){
                             editorInfo.putString("id", id)
                             editorInfo.apply()
+                            sendToken()
                             if(binding.autoLoginCb.isChecked){
                                 editorInfo.putBoolean("autoLoginSuccess",true)
                                 editorInfo.apply()
-                                sendToken()
                             }
                             if(response.body()!!.nickname){
                                 val intent = Intent(applicationContext, MainActivity::class.java)
@@ -189,6 +190,34 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             finishAndRemoveTask();						// 액티비티 종료 + 태스크 리스트에서 지우기
             android.os.Process.killProcess(android.os.Process.myPid());
         }
+    }
+    override fun onDestroy() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
+            val edit = pref.edit()
+            val id = pref.getString("id","")!!
+            if(!pref.getBoolean("autoLoginSuccess",false)){
+                try {
+                    serverAPI.getToken(id,null).enqueue(object : Callback<ResultNoReturn> {
+                        override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
+                            Toast.makeText(applicationContext, "서버통신 오류", Toast.LENGTH_SHORT).show()
+                        }
+                        override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
+                            if (response.body()!!.check) {
+                                edit.clear()
+                                edit.commit()
+                                Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
+                            } else {
+                                Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    })
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
+        super.onDestroy()
     }
 }
 

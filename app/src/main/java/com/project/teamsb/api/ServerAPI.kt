@@ -152,7 +152,7 @@ interface ServerAPI {
     @POST("/getToken/")
     fun getToken(
         @Field("curUser") curUser: String,
-        @Field("token") token: String
+        @Field("token") token: String? = null
     ) : Call<ResultNoReturn>
 
     @FormUrlEncoded
