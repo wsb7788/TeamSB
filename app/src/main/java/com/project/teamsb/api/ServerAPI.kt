@@ -188,4 +188,7 @@ interface ServerAPI {
     @GET("/notice/list/top/")
     fun noticeTopList(
        ): Call<ResponseNotice>
+    @GET("/topBanner/")
+    fun topBanner(
+    ): Call<ResponseBanner>
 }

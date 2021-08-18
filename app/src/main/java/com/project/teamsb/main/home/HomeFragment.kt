@@ -3,6 +3,7 @@ package com.project.teamsb.main.home
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,11 +13,15 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat.invalidateOptionsMenu
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.widget.ViewPager2
+import androidx.viewpager2.widget.ViewPager2.ORIENTATION_VERTICAL
 import com.project.teamsb.api.*
 import com.project.teamsb.databinding.FragmentHomeBinding
 import com.project.teamsb.main.calendar.CalendarObj
 import com.project.teamsb.recycler.model.RecentModel
 import com.project.teamsb.recycler.adapter.RecentRecyclerAdapter
+import com.project.teamsb.recycler.adapter.TopBannerAdapter
+import com.project.teamsb.recycler.model.TopBannerModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -34,9 +39,18 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
     lateinit var binding: FragmentHomeBinding
 
+    var bannerCount = 0
+    var currentPosition = 0
+    var intervalTime = 2000.toLong()
+    var loadCount = 0
+
+
 
     var modelList = ArrayList<RecentModel>()
+    var bannerList = ArrayList<TopBannerModel>()
+
     private lateinit var recentRecyclerAdapter: RecentRecyclerAdapter
+    private lateinit var topBannerAdapter: TopBannerAdapter
 
     var isNotiCheck = false
     var retrofit: Retrofit = Retrofit.Builder()
@@ -45,7 +59,6 @@ class HomeFragment : Fragment(), View.OnClickListener {
         .build()
 
     var serverAPI: ServerAPI = retrofit.create(ServerAPI::class.java)
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         binding.btn1.setOnClickListener(this)
@@ -54,23 +67,68 @@ class HomeFragment : Fragment(), View.OnClickListener {
         binding.btn4.setOnClickListener(this)
         binding.tvRecentPost.setOnClickListener(this)
         recentRecyclerAdapter = RecentRecyclerAdapter()
-
+        topBannerAdapter = TopBannerAdapter()
         binding.rcvRecent5.apply {
             layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
             adapter = recentRecyclerAdapter
         }
 
-        binding.vf.setInAnimation(context,android.R.anim.fade_in)
-        binding.vf.setOutAnimation(context,android.R.anim.fade_out)
-        binding.vf.startFlipping()
-        binding.vf.flipInterval = 2000
+        binding.vp2.adapter = topBannerAdapter
+        binding.vp2.registerOnPageChangeCallback(object :ViewPager2.OnPageChangeCallback(){
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+            }
 
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels)
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {
+                super.onPageScrollStateChanged(state)
+            }
+        })
+
+        bannerLoading()
         binding.srl.setOnRefreshListener {
             postLoading()
             calendarLoading()
             binding.srl.isRefreshing = false
         }
         return binding.root
+    }
+
+    private fun bannerLoading() {
+        CoroutineScope(Dispatchers.IO).launch {
+
+            try {
+                CalendarObj.api.topBanner().enqueue(object: Callback<ResponseBanner>{
+                    override fun onResponse(call: Call<ResponseBanner>, response: Response<ResponseBanner>) {
+                        if(response.body()!!.code ==200){
+                            setbanner(response.body()!!.topBannerList)
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ResponseBanner>, t: Throwable) {
+                    }
+
+                })
+
+            }catch (e:Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun setbanner(topBannerList: List<String>) {
+        bannerCount = topBannerList.size
+        currentPosition = Int.MAX_VALUE/(bannerCount-1)
+        for(i in topBannerList.indices){
+            val mymodel = TopBannerModel(topBannerList[i])
+            bannerList.add(mymodel)
+        }
+        topBannerAdapter.submitList(bannerList)
+        topBannerAdapter.notifyDataSetChanged()
+
     }
 
     override fun onResume() {
@@ -112,8 +170,6 @@ class HomeFragment : Fragment(), View.OnClickListener {
         var formatted = current.format(formatter)
         for(i in menu){
             if(i.일자 == formatted){
-                /*formatter = DateTimeFormatter.ofPattern("hh")
-                formatted = current.format(formatter)*/
                 var now = LocalTime.now()
                 var breakfast = LocalTime.of(8,30,0)
                 var lunch =  LocalTime.of(13,30,0)

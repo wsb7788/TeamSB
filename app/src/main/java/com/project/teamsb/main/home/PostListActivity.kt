@@ -108,6 +108,8 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
             binding.srlCategory.isRefreshing = false
 
         }
+        binding.ivSearch.setOnClickListener(this)
+        binding.ivWrite.setOnClickListener(this)
         postRecyclerAdapter.setItemClickListener(this)
 
     }

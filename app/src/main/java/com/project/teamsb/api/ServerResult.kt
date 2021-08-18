@@ -126,3 +126,8 @@ data class NoticeContent(
     var fixTop: Boolean,
     var realTop:Boolean)
 
+data class ResponseBanner(
+    var check:Boolean,
+    var code:Int,
+    var message: String,
+    var topBannerList: List<String>)

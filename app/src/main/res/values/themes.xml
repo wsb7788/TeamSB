@@ -28,7 +28,7 @@
     <style name="AppTheme.ActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="actionMenuTextColor">#f9da78</item>
         <item name="android:textColorPrimary">#ffffff</item>S
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
 
     </style>

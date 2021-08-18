@@ -17,93 +17,37 @@
             android:layout_height="match_parent"
             android:layout_marginBottom="30dp">
 
-            <ViewFlipper
-                android:id="@+id/vf"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_vp2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:background="#ffe38b"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:background="#ffe38b"
-                    android:padding="2dp"
-                    android:layout_marginBottom="5dp"
-                    android:elevation="5dp">
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:src="@drawable/ic_speak"
-                        android:layout_marginLeft="5dp"/>
-                    <TextView
-                        android:layout_marginLeft="10dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="1. 앙기모띠"
-                        android:textSize="15dp"
-                        android:textColor="@color/black" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:background="#ffe38b"
-                    android:padding="2dp">
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:src="@drawable/ic_speak"
-                        android:layout_marginLeft="5dp"/>
-                    <TextView
-                        android:layout_marginLeft="10dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="2. 앙앙기모띠"
-                        android:textSize="15dp"
-                        android:textColor="@color/black" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:background="#ffe38b"
-                    android:padding="2dp">
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:src="@drawable/ic_speak"
-                        android:layout_marginLeft="5dp"/>
-                    <TextView
-                        android:layout_marginLeft="10dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="3. 앙앙앙기모띠"
-                        android:textSize="15dp"
-                        android:textColor="@color/black" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:background="#ffe38b"
-                    android:padding="2dp">
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:src="@drawable/ic_speak"
-                        android:layout_marginLeft="5dp"/>
-                    <TextView
-                        android:layout_marginLeft="10dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="4. 앙앙앙앙기모띠"
-                        android:textSize="15dp"
-                        android:textColor="@color/black" />
-                </LinearLayout>
-            </ViewFlipper>
+                <ImageView
+                    android:layout_marginLeft="5dp"
+                    android:id="@+id/iv"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_speak"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/vp2"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginLeft="5dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/iv"
+                    android:orientation="vertical"
+
+                    app:layout_constraintEnd_toEndOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             <ImageButton
                 android:id="@+id/btn1"
@@ -117,7 +61,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/btn2"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/vf"
+                app:layout_constraintTop_toBottomOf="@+id/cl_vp2"
                 app:layout_constraintWidth_percent="0.15" />
 
             <ImageButton
@@ -132,7 +76,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/btn3"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/btn1"
-                app:layout_constraintTop_toBottomOf="@+id/vf"
+                app:layout_constraintTop_toBottomOf="@+id/cl_vp2"
                 app:layout_constraintWidth_percent="0.15" />
 
             <ImageButton
@@ -147,7 +91,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/btn4"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/btn2"
-                app:layout_constraintTop_toBottomOf="@+id/vf"
+                app:layout_constraintTop_toBottomOf="@+id/cl_vp2"
                 app:layout_constraintWidth_percent="0.15" />
 
             <ImageButton
@@ -162,7 +106,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/btn3"
-                app:layout_constraintTop_toBottomOf="@+id/vf"
+                app:layout_constraintTop_toBottomOf="@+id/cl_vp2"
                 app:layout_constraintWidth_percent="0.15" />
 
             <TextView
