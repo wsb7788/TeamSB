@@ -146,7 +146,7 @@ class NoticeFragment : Fragment(){
             val viewCount = content[i].viewCount
             val topFix = content[i].realTop
 
-            val timeStamp = content[i].timeStamp.substring(0,10).replace("-","/")
+            val timeStamp = content[i].timeStamp.substring(2,10).replace("-","/")
 
             val myModel = NoticeModel(noticeNo.toString(),title,text,viewCount.toString(),timeStamp,topFix)
             modelList.add(myModel)

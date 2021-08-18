@@ -88,7 +88,6 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener,KeywordRecyclerAdap
             "all" -> binding.spinner.setSelection(0)
             else -> "그럴리가업썽"
         }
-        Toast.makeText(applicationContext, "${category}",Toast.LENGTH_SHORT).show()
 
         if(intent.hasExtra("edit")){
             no =intent.getIntExtra("no",0)
@@ -224,12 +223,7 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener,KeywordRecyclerAdap
                 val keyword1 = ArrayList<String>(keyWord)
                 serverAPI.modifyArticle(id,title,category,text,keyword1,no).enqueue(object: Callback<ResultWrite> {
                     override fun onResponse(call: Call<ResultWrite>, response: Response<ResultWrite>) {
-                        if (response.body()!!.check){
-                            //Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
-                            Toast.makeText(applicationContext, "${keyword1}", Toast.LENGTH_SHORT).show()
-                        }else{
-                            Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
-                        }
+                        Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
                     }
                     override fun onFailure(call: Call<ResultWrite>, t: Throwable) {
                         Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()

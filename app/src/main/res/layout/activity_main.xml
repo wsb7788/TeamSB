@@ -12,8 +12,8 @@
     android:background="#ffffff"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
     android:layout_marginBottom="10dp"
     android:elevation="10dp">
 
@@ -65,28 +65,6 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-    <!--<androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:theme="?attr/actionBarTheme"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginBottom="5dp"
-        android:elevation="5dp"
-        android:background="#ffffff">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="홈"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold"/>
-    </androidx.appcompat.widget.Toolbar>-->
 
     <FrameLayout
         android:id="@+id/fragment"

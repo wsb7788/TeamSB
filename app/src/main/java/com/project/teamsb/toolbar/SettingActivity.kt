@@ -66,7 +66,6 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
 
         binding = ActivitySettingBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setSupportActionBar(binding.toolbar)
 
         imageSet(binding.ivProfileImage)
         nicknameSet()
@@ -74,24 +73,7 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
         binding.btnEditNickname.setOnClickListener(this)
         binding.btnSettingFeedback.setOnClickListener(this)
         binding.btnProfileImageSet.setOnClickListener(this)
-    }
-
-
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_logout,menu)
-        return true
-    }
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            R.id.logout_tb -> {
-                logoutDialog()
-            }
-        }
-        return super.onOptionsItemSelected(item)
-
-
-
+        binding.btnLogout.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -104,6 +86,9 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
             }
             binding.btnProfileImageSet -> {
                 profileImageDialog()
+            }
+            binding.btnLogout -> {
+                logoutDialog()
             }
         }
 

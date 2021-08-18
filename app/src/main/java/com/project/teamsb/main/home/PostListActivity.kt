@@ -44,7 +44,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListener {
+class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListener, View.OnClickListener {
     val binding by lazy {ActivityCategoryBinding.inflate(layoutInflater)}
 
     var modelList = ArrayList<PostModel>()
@@ -69,7 +69,6 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        setSupportActionBar(binding.toolbar)
         setToolBarText()
 
 
@@ -145,31 +144,21 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
             adapter = postRecyclerAdapter
         }
     }
-
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_search,menu)
-        menuInflater.inflate(R.menu.menu_write,menu)
-        return true
-    }
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            R.id.write_tb -> {
+    override fun onClick(v: View?) {
+        when(v){
+            binding.ivSearch-> {
+                val intent = Intent(this, SearchActivity::class.java)
+                intent.putExtra("category", category)
+                startActivity(intent)
+            }
+            binding.ivWrite-> {
                 val intent = Intent(this, WriteActivity::class.java)
                 intent.putExtra("category",category)
                 startActivity(intent)
                 returnWrite = true
             }
-            R.id.search_tb -> {
-                val intent = Intent(this, SearchActivity::class.java)
-                intent.putExtra("category", category)
-                startActivity(intent)
-            }
         }
-        return super.onOptionsItemSelected(item)
     }
-
-
     fun postLoading(){
         binding.progressBar.visibility = VISIBLE
                 CoroutineScope(Dispatchers.IO).launch {
@@ -261,5 +250,7 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
         intent.putExtra("no", postRecyclerAdapter.getItemContentNo(position))
         startActivity(intent)
     }
+
+
 }
 
