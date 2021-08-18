@@ -123,5 +123,6 @@ data class NoticeContent(
     var content:String,
     var viewCount: Int,
     var timeStamp: String,
-    var fixTop: Boolean)
+    var fixTop: Boolean,
+    var realTop:Boolean)
 

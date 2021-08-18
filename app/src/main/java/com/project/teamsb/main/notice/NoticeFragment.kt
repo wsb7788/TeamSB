@@ -37,6 +37,8 @@ class NoticeFragment : Fragment(){
     var page = 1
     var loadLock = false
     var noMoreItem = false
+    var isTopLoading = true
+    var topCount = 0
     var retrofit: Retrofit = Retrofit.Builder()
         .baseUrl("http://13.209.10.30:3000/")
         .addConverterFactory(GsonConverterFactory.create())
@@ -82,12 +84,14 @@ class NoticeFragment : Fragment(){
     }
 
     private fun dataLoading() {
+        isTopLoading = true
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 CalendarObj.api.noticeTopList().enqueue(object:retrofit2.Callback<ResponseNotice>{
                     override fun onResponse(call: Call<ResponseNotice>, response: Response<ResponseNotice>) {
                         if (response.body()!!.code==200){
                             if(!response.body()!!.content.isNullOrEmpty()){
+                                topCount = response.body()!!.content.size
                                 setContent(response.body()!!.content)
                                 page = 1
                                 noticeLoading()
@@ -134,15 +138,13 @@ class NoticeFragment : Fragment(){
 
     private fun setContent(content: ArrayList<NoticeContent>) {
         modelList.clear()
-        if (content.size % 10 != 0 || content.isEmpty()) {
-            noMoreItem = true
-        }
+
         for (i in 0 until content.size){
             val title = content[i].title
             val text = content[i].content
             val noticeNo = content[i].notice_no
             val viewCount = content[i].viewCount
-            val topFix = content[i].fixTop
+            val topFix = content[i].realTop
 
             val timeStamp = content[i].timeStamp.substring(0,10).replace("-","/")
 
@@ -151,12 +153,17 @@ class NoticeFragment : Fragment(){
         }
         noticeRecyclerAdapter.submitList(modelList)
 
-        if(page == 1){
+        if(isTopLoading){
             noticeRecyclerAdapter.notifyDataSetChanged()
+            isTopLoading = false
         }else{
-            noticeRecyclerAdapter.notifyItemRangeInserted((page-1)*10,10)
+            if (content.size % 10 != 0 || content.isEmpty()) {
+                noMoreItem = true
+            }
+            noticeRecyclerAdapter.notifyItemRangeInserted(topCount + (page-1)*10,content.size)
+            ++page
         }
-        ++page
+
         loadLock = false
     }
 

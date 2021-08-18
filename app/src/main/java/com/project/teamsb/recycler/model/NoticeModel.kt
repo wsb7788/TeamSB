@@ -4,7 +4,8 @@ import android.graphics.Bitmap
 import android.util.Log
 import com.project.teamsb.api.Content
 
-class NoticeModel(var notice_no:String? = null, var title:String? = null, var content:String? = null, var viewCount:String?=null, var timeStamp:String?=null, var fixTop:Boolean?=false) {
+class NoticeModel(var notice_no:String? = null, var title:String? = null, var content:String? = null,
+                  var viewCount:String?=null, var timeStamp:String?=null, val realTop:Boolean? = false) {
     val TAG: String = "로그"
 
 

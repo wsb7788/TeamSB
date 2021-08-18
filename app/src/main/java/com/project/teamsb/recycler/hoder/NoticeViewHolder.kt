@@ -31,7 +31,7 @@ class NoticeViewHolder(val binding: LayoutRecyclerNoticeBinding): RecyclerView.V
         binding.tvSubTitle.text = noticeModel.title
         binding.tvSubContent.text = noticeModel.content
         binding.ivTimeStamp.text = noticeModel.timeStamp
-        if (noticeModel.fixTop!!){
+        if (noticeModel.realTop!!){
             binding.ivFixed.visibility = VISIBLE
         }else{
             binding.ivFixed.visibility = INVISIBLE
