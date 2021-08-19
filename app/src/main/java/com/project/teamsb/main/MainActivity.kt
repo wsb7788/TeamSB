@@ -137,7 +137,16 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
         transaction.replace(binding.fragment.id, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
+        setEnable()
+
     }
+
+    private fun setEnable() {
+        for(i in 0 until binding.bnv.menu.size()){
+            binding.bnv.menu.getItem(i).isEnabled = binding.bnv.menu.getItem(i).itemId != binding.bnv.selectedItemId
+        }
+    }
+
     fun ShowTabHome(){
         val transaction = manager.beginTransaction()
         val fragment = HomeFragment()
@@ -145,6 +154,7 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
         transaction.replace(binding.fragment.id, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
+        setEnable()
     }
     fun ShowTabNotice(){
         val transaction = manager.beginTransaction()
@@ -153,6 +163,7 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
         transaction.replace(binding.fragment.id, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
+        setEnable()
     }
     fun ShowTabUser(){
         val transaction = manager.beginTransaction()
@@ -161,6 +172,7 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
         transaction.replace(binding.fragment.id, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
+        setEnable()
     }
 
 

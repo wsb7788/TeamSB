@@ -64,7 +64,7 @@ class UserFragment : Fragment(),PostRecyclerAdapter.OnItemClickListener {
         binding = FragmentUserBinding.inflate(inflater, container, false)
 
         postRecyclerAdapter = PostRecyclerAdapter()
-
+        postRecyclerAdapter.clearList()
         binding.rcvPost.apply {
             layoutManager = GridLayoutManager(App.instance, 2)
             adapter = postRecyclerAdapter
