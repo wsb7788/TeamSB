@@ -131,3 +131,15 @@ data class ResponseBanner(
     var code:Int,
     var message: String,
     var topBannerList: List<String>)
+
+data class ResultGuide(
+    var check: Boolean = false,
+    var code: Int = 0,
+    var message: String = "",
+    var content: ArrayList<Guide>)
+
+data class Guide(
+    var guide_no:Int,
+    var title:String,
+    var content: String,
+    var timeStamp: String)

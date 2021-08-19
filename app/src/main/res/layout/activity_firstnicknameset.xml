@@ -32,6 +32,7 @@
             android:hint="2~8자 이내로 설정해주세요."
             android:paddingStart="20sp"
             android:textColor="#AEABAB"
+            android:singleLine="true"
             android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/check_btn"

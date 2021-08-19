@@ -2,4 +2,6 @@
     <string name="app_name">TeamSB</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="more1"><u>더보기</u></string>
+    <string name="more2"><u>자세히보기</u></string>
 </resources>

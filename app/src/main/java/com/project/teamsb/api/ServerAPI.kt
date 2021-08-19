@@ -197,4 +197,7 @@ interface ServerAPI {
         @Query("page") page: Int,
         @Field("curUser") curUser: String
     ) : Call<ResultPost>
+
+    @GET("/guide/list/")
+    fun guideList() : Call<ResultGuide>
 }

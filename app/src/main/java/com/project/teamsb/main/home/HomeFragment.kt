@@ -30,6 +30,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
+import kotlin.random.Random
 
 
 class HomeFragment : Fragment(), View.OnClickListener {
@@ -115,8 +116,27 @@ class HomeFragment : Fragment(), View.OnClickListener {
     override fun onResume() {
         super.onResume()
         postLoading()
-
         calendarLoading()
+        guideLoading()
+    }
+
+    private fun guideLoading() {
+        CoroutineScope(Dispatchers.IO).launch {
+            try{
+                CalendarObj.api.guideList().enqueue(object :Callback<ResultGuide>{
+                    override fun onResponse(call: Call<ResultGuide>, response: Response<ResultGuide>) {
+                        val rand = Random.nextInt(response.body()!!.content.size)
+                        binding.tvGuideTitle.text = response.body()!!.content[rand].title
+                        binding.tvGuideContent.text = response.body()!!.content[rand].content
+                    }
+                    override fun onFailure(call: Call<ResultGuide>, t: Throwable) {
+                    }
+                })
+            }catch(e: Exception){
+
+            }
+
+        }
     }
 
 

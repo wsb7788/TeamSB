@@ -39,6 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:hint="* 2~8자 이내로 작성해주세요."
+        android:maxLines="1"
         android:singleLine="true"
         android:textColor="@color/black"
         android:textSize="15sp"

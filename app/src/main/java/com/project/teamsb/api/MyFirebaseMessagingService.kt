@@ -6,6 +6,8 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.media.RingtoneManager
 import android.os.Build
 import android.util.Log
@@ -57,12 +59,16 @@ class MyFirebaseMessagingService:FirebaseMessagingService() {
 
         val channelId = "my_channel"
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+
+        val micon = BitmapFactory.decodeResource(applicationContext.resources,R.drawable.logo)
         try{
         val notificationBuilder = NotificationCompat.Builder(this,channelId)
             .setContentTitle(title)
             .setContentText(body)
             .setAutoCancel(true)
-            .setSmallIcon(R.drawable.logo)
+            .setLargeIcon(micon)
+            .setSmallIcon(R.drawable.ic_stat_name)
+            .setColor(Color.parseColor("#ff0000"))
             .setSound(defaultSoundUri)
             .setContentIntent(pendingIntent)
 
