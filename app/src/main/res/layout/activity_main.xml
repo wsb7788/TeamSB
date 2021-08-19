@@ -76,17 +76,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar"></FrameLayout>
 
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bnv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:elevation="10dp"
+        app:itemIconSize="25dp"
         app:itemIconTint="@drawable/navigation_icon_color"
+        app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/menu_navigation"
-        android:layout_marginTop="10dp"
-        android:elevation="10dp"
-        app:itemIconSize="25dp"
-        app:labelVisibilityMode="unlabeled" />
+        app:menu="@menu/menu_navigation" />
 </androidx.constraintlayout.widget.ConstraintLayout>

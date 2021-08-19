@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.project.teamsb.R
 import com.project.teamsb.api.*
+import com.project.teamsb.databinding.ActivityGuideBinding
 import com.project.teamsb.databinding.ActivityMainBinding
 import com.project.teamsb.databinding.FragmentHomeBinding
 import com.project.teamsb.main.calendar.CalendarObj
@@ -56,6 +57,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
         binding.btn2.setOnClickListener(this)
         binding.btn3.setOnClickListener(this)
         binding.btn4.setOnClickListener(this)
+        binding.tvGuidePost.setOnClickListener(this)
         binding.tvRecentPost.setOnClickListener(this)
         recentRecyclerAdapter = RecentRecyclerAdapter()
 
@@ -217,6 +219,10 @@ class HomeFragment : Fragment(), View.OnClickListener {
             }
             binding.tvRecentPost -> {
                 intent.putExtra("category", "전체 게시물")
+                startActivity(intent)
+            }
+            binding.tvGuidePost -> {
+                val intent = Intent(activity, GuideActivity::class.java)
                 startActivity(intent)
             }
         }
