@@ -5,17 +5,20 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.project.teamsb.databinding.FragmentHomeBinding
 import com.project.teamsb.databinding.LayoutRecyclerCommentBinding
 import com.project.teamsb.databinding.LayoutRecyclerProgressBinding
 import com.project.teamsb.recycler.model.CommentModel
 import com.project.teamsb.recycler.hoder.CommentViewHolder
 import com.project.teamsb.recycler.hoder.ProgressViewHolder
+import kotlinx.coroutines.NonDisposableHandle.parent
 
 class CommentRecyclerAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     val TAG: String = "로그"
 
     private var modelList = ArrayList<CommentModel>()
+
 
     private val VIEW_TYPE_ITEM = 0
     private val VIEW_TYPE_LOADING = 1

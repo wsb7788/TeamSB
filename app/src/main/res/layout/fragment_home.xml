@@ -35,16 +35,14 @@
                     android:src="@drawable/ic_speak"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"/>
-                <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/vp2"
+                <ViewFlipper
+                    android:id="@+id/vf"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_marginLeft="5dp"
+                    android:paddingLeft="5dp"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@id/iv"
-                    android:orientation="vertical"
-
                     app:layout_constraintEnd_toEndOf="parent"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
