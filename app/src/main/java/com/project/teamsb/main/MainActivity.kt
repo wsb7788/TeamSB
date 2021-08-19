@@ -133,6 +133,7 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
     fun ShowTabCalendar(){
         val transaction = manager.beginTransaction()
         val fragment = CalendarFragment()
+        binding.tvToolbar.text = "식단표"
         transaction.replace(binding.fragment.id, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
@@ -140,6 +141,7 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
     fun ShowTabHome(){
         val transaction = manager.beginTransaction()
         val fragment = HomeFragment()
+        binding.tvToolbar.text = "홈"
         transaction.replace(binding.fragment.id, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
@@ -147,6 +149,7 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
     fun ShowTabNotice(){
         val transaction = manager.beginTransaction()
         val fragment = NoticeFragment()
+        binding.tvToolbar.text = "공지사항"
         transaction.replace(binding.fragment.id, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
@@ -154,6 +157,7 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
     fun ShowTabUser(){
         val transaction = manager.beginTransaction()
         val fragment = UserFragment()
+        binding.tvToolbar.text = "내 글"
         transaction.replace(binding.fragment.id, fragment)
         transaction.addToBackStack(null)
         transaction.commit()

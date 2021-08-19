@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.project.teamsb.R
 import com.project.teamsb.api.*
+import com.project.teamsb.databinding.ActivityMainBinding
 import com.project.teamsb.databinding.FragmentHomeBinding
 import com.project.teamsb.main.calendar.CalendarObj
 import com.project.teamsb.recycler.model.RecentModel
@@ -34,6 +35,7 @@ import java.time.format.DateTimeFormatter
 class HomeFragment : Fragment(), View.OnClickListener {
 
     lateinit var binding: FragmentHomeBinding
+
 
 
     var modelList = ArrayList<RecentModel>()

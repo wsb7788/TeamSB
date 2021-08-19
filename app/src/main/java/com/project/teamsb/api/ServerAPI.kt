@@ -191,4 +191,10 @@ interface ServerAPI {
     @GET("/topBanner/")
     fun topBanner(
     ): Call<ResponseBanner>
+    @FormUrlEncoded
+    @POST("/myArticleList/")
+    fun myArticleList(
+        @Query("page") page: Int,
+        @Field("curUser") curUser: String
+    ) : Call<ResultPost>
 }
