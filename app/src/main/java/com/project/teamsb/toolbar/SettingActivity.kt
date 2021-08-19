@@ -10,10 +10,12 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.util.Base64
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
+import android.widget.Switch
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultCallback
@@ -26,6 +28,8 @@ import androidx.core.net.toUri
 import com.bumptech.glide.Glide
 import com.bumptech.glide.GlideBuilder
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import com.project.teamsb.R
 import com.project.teamsb.api.*
 import com.project.teamsb.databinding.*
@@ -53,6 +57,8 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
     lateinit var profileImage:Bitmap
     var profileImageBase64= "noSet"
     var isImageSet = false
+    lateinit var token:String
+
     var retrofit: Retrofit = Retrofit.Builder()
         .baseUrl("http://13.209.10.30:3000/")
         .addConverterFactory(GsonConverterFactory.create())
@@ -62,10 +68,23 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivitySettingBinding.inflate(layoutInflater)
         startService(Intent(this, ForcedTerminationService::class.java))
 
-        binding = ActivitySettingBinding.inflate(layoutInflater)
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w("로그", "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+            // Get new FCM registration token
+            token = task.result!!
+        })
+        val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
         setContentView(binding.root)
+        binding.switch1.isChecked = !pref.getString("token",null).isNullOrEmpty()
+
+
+
 
         imageSet(binding.ivProfileImage)
         nicknameSet()
@@ -74,6 +93,47 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
         binding.btnSettingFeedback.setOnClickListener(this)
         binding.btnProfileImageSet.setOnClickListener(this)
         binding.btnLogout.setOnClickListener(this)
+        binding.btnPersonalInfo.setOnClickListener(this)
+        binding.btnAppInfo.setOnClickListener(this)
+        binding.switch1.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked){
+                setToken()
+            }else{
+                deleteOnlyToken()
+                val edit = pref.edit()
+                edit.remove("token")
+                edit.apply()
+            }
+        }
+    }
+
+    private fun setToken() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val prefInfo = getSharedPreferences("userInfo", MODE_PRIVATE)
+            val edit = prefInfo.edit()
+            val id = prefInfo.getString("id","")!!
+            val token = token
+            try{
+                serverAPI.getToken(id, token).enqueue(object : Callback<ResultNoReturn> {
+                    override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
+                        Toast.makeText(applicationContext,"서버통신 오류",Toast.LENGTH_SHORT).show()
+                    }
+
+                    override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
+                        if (response.body()!!.check){
+                            edit.putString("token",token)
+                            edit.apply()
+                        }else{
+                            Toast.makeText(applicationContext,"${response.body()!!.message}",Toast.LENGTH_SHORT).show()
+
+                        }
+                    }
+                })
+            }catch(e: Exception) {
+                e.printStackTrace()
+            }
+
+        }
     }
 
     override fun onClick(v: View?) {
@@ -89,6 +149,14 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
             }
             binding.btnLogout -> {
                 logoutDialog()
+            }
+            binding.btnPersonalInfo ->{
+                val intent = Intent(Intent.ACTION_VIEW,Uri.parse("https://summer-echidna-7ed.notion.site/f9a75cbef96d4863bf2bfa9af64e0998"))
+                startActivity(intent)
+            }
+            binding.btnAppInfo ->{
+                val intent = Intent(Intent.ACTION_VIEW,Uri.parse("https://summer-echidna-7ed.notion.site/8ddb4bc158204cca9c579712101650af"))
+                startActivity(intent)
             }
         }
 
@@ -393,7 +461,23 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
             }
         }
     }
-
+    private fun deleteOnlyToken() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
+            val id = pref.getString("id", "")!!
+            try {
+                serverAPI.getToken(id,null).enqueue(object : Callback<ResultNoReturn> {
+                    override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
+                        Toast.makeText(applicationContext, "서버통신 오류", Toast.LENGTH_SHORT).show()
+                    }
+                    override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
+                    }
+                })
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
     private fun deleteAndRestart() {
         val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
         val edit = pref.edit()
