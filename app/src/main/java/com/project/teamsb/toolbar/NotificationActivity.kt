@@ -139,6 +139,7 @@ class NotificationActivity:AppCompatActivity(), NotificationRecyclerAdapter.OnIt
 
     override fun onResume() {
         super.onResume()
+        page=1
         notificationLoading()
     }
 

@@ -1,7 +1,9 @@
 package com.project.teamsb.toolbar
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
@@ -9,6 +11,7 @@ import android.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.provider.Settings
 import android.util.Base64
 import android.util.Log
 import android.view.Menu
@@ -23,13 +26,16 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.app.ShareCompat
+import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import com.bumptech.glide.Glide
 import com.bumptech.glide.GlideBuilder
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
+import com.project.teamsb.BuildConfig
 import com.project.teamsb.R
 import com.project.teamsb.api.*
 import com.project.teamsb.databinding.*
@@ -54,10 +60,10 @@ import java.io.InputStream
 class SettingActivity:AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivitySettingBinding
     private lateinit var view: DialogEditProfileImageBinding
-    lateinit var profileImage:Bitmap
-    var profileImageBase64= "noSet"
+    lateinit var profileImage: Bitmap
+    var profileImageBase64 = "noSet"
     var isImageSet = false
-    lateinit var token:String
+    lateinit var token: String
 
     var retrofit: Retrofit = Retrofit.Builder()
         .baseUrl("http://13.209.10.30:3000/")
@@ -81,7 +87,7 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
         })
         val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
         setContentView(binding.root)
-        binding.switch1.isChecked = !pref.getString("token",null).isNullOrEmpty()
+        binding.switch1.isChecked = !pref.getString("token", null).isNullOrEmpty()
 
 
 
@@ -96,9 +102,9 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
         binding.btnPersonalInfo.setOnClickListener(this)
         binding.btnAppInfo.setOnClickListener(this)
         binding.switch1.setOnCheckedChangeListener { _, isChecked ->
-            if(isChecked){
+            if (isChecked) {
                 setToken()
-            }else{
+            } else {
                 deleteOnlyToken()
                 val edit = pref.edit()
                 edit.remove("token")
@@ -111,25 +117,32 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
         CoroutineScope(Dispatchers.IO).launch {
             val prefInfo = getSharedPreferences("userInfo", MODE_PRIVATE)
             val edit = prefInfo.edit()
-            val id = prefInfo.getString("id","")!!
+            val id = prefInfo.getString("id", "")!!
             val token = token
-            try{
+            try {
                 serverAPI.getToken(id, token).enqueue(object : Callback<ResultNoReturn> {
                     override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
-                        Toast.makeText(applicationContext,"서버통신 오류",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(applicationContext, "서버통신 오류", Toast.LENGTH_SHORT).show()
                     }
 
-                    override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
-                        if (response.body()!!.check){
-                            edit.putString("token",token)
+                    override fun onResponse(
+                        call: Call<ResultNoReturn>,
+                        response: Response<ResultNoReturn>
+                    ) {
+                        if (response.body()!!.check) {
+                            edit.putString("token", token)
                             edit.apply()
-                        }else{
-                            Toast.makeText(applicationContext,"${response.body()!!.message}",Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(
+                                applicationContext,
+                                "${response.body()!!.message}",
+                                Toast.LENGTH_SHORT
+                            ).show()
 
                         }
                     }
                 })
-            }catch(e: Exception) {
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
 
@@ -150,12 +163,18 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
             binding.btnLogout -> {
                 logoutDialog()
             }
-            binding.btnPersonalInfo ->{
-                val intent = Intent(Intent.ACTION_VIEW,Uri.parse("https://summer-echidna-7ed.notion.site/f9a75cbef96d4863bf2bfa9af64e0998"))
+            binding.btnPersonalInfo -> {
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://summer-echidna-7ed.notion.site/f9a75cbef96d4863bf2bfa9af64e0998")
+                )
                 startActivity(intent)
             }
-            binding.btnAppInfo ->{
-                val intent = Intent(Intent.ACTION_VIEW,Uri.parse("https://summer-echidna-7ed.notion.site/8ddb4bc158204cca9c579712101650af"))
+            binding.btnAppInfo -> {
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://summer-echidna-7ed.notion.site/8ddb4bc158204cca9c579712101650af")
+                )
                 startActivity(intent)
             }
         }
@@ -171,9 +190,9 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
         view.btnPositive.setOnClickListener {
             var text = view.tvFeedback.text.toString()
             text.replace(" ", "")
-            if(text.isNullOrBlank()){
-                Toast.makeText(this,"댓글을 입력하세요.",Toast.LENGTH_SHORT).show()
-            }else{
+            if (text.isNullOrBlank()) {
+                Toast.makeText(this, "댓글을 입력하세요.", Toast.LENGTH_SHORT).show()
+            } else {
                 feedback(view.tvFeedback.text.toString())
                 alertDialog.onBackPressed()
             }
@@ -194,18 +213,19 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
         isImageSet = false
         imageSet(view.ivEditProfileImage)
         view.btnGallery.setOnClickListener {
-            takeAlbum()
+            chekPermission()
+
         }
-        view.btnPrimary.setOnClickListener{
+        view.btnPrimary.setOnClickListener {
             deleteProfileImage()
             alertDialog.onBackPressed()
         }
         view.btnPositive.setOnClickListener {
-            if(isImageSet){
+            if (isImageSet) {
                 sendProfileImage(profileImageBase64)
                 alertDialog.onBackPressed()
-            }else{
-                Toast.makeText(applicationContext,"이미지를 설정해주세요.",Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(applicationContext, "이미지를 설정해주세요.", Toast.LENGTH_SHORT).show()
 
             }
 
@@ -214,6 +234,50 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
             alertDialog.onBackPressed()
         }
     }
+
+    fun chekPermission() {
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+        ) {
+            Log.d("로그잉","${Manifest.permission.READ_EXTERNAL_STORAGE}")
+            takeAlbum()
+            //return true
+        }else{
+            val permissions: Array<String> = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
+            ActivityCompat.requestPermissions(this, permissions, 0)
+        }
+
+        //return false
+
+
+
+    }
+
+    override fun onRequestPermissionsResult( requestCode: Int, permissions: Array<out String>, grantResults: IntArray ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    when(requestCode){ 0 -> { if (grantResults.isNotEmpty()){
+        var isGranted = false
+        for(grant in grantResults){
+               if(grant != PackageManager.PERMISSION_GRANTED){
+                   isGranted = false
+                   break
+               }
+            }
+        if(isGranted){
+            takeAlbum()
+             } else {// 허용하지 않은 권한이 있음. 필수권한/선택권한 여부에 따라서 별도 처리를 해주어야 함.
+            if(!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)){
+        // 다시 묻지 않기 체크하면서 권한 거부 되었음.
+            Toast.makeText(applicationContext,"프로필 이미지 설정을 위해서는\n접근 권한이 필요합니다.",Toast.LENGTH_SHORT).show()
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS) .setData(Uri.parse("package:" + BuildConfig.APPLICATION_ID))        // 권한 설정하는 앱 설정으로 넘어가기
+                startActivity(intent)
+                 } else {
+                     // 접근 권한 거부하였음.
+            Toast.makeText(applicationContext,"프로필 이미지 설정을 위해서는\n접근 권한이 필요합니다.",Toast.LENGTH_SHORT).show()
+
+                      }
+        }
+    } } }}
 
     private fun deleteProfileImage() {
         CoroutineScope(Dispatchers.IO).launch {
