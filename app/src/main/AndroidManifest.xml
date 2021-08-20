@@ -21,9 +21,10 @@
         <activity android:name=".toolbar.WriteActivity"/>
         <activity android:name=".toolbar.NotificationActivity"/>
         <activity android:name=".main.home.GuideActivity"/>
-            <activity android:name=".main.MainActivity"/>
+        <activity android:name=".login.LoginActivity"/>
+        <activity android:name=".main.MainActivity"/>
 
-        <activity android:name=".login.LoginActivity">
+        <activity android:name=".login.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

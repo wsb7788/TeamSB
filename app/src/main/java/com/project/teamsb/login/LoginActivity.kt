@@ -11,16 +11,19 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.RemoteMessage
+import com.project.teamsb.R
 import com.project.teamsb.api.ForcedTerminationService
 import com.project.teamsb.api.ResultLogin
 import com.project.teamsb.api.ResultNoReturn
 import com.project.teamsb.api.ServerAPI
 import com.project.teamsb.databinding.ActivityLoginBinding
 import com.project.teamsb.main.MainActivity
+import com.project.teamsb.post.App
 import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -49,6 +52,12 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        Glide
+            .with(App.instance)
+            .load(R.drawable.ic_loading_gif)
+            .placeholder(R.drawable.profile_basic)
+            .into(binding.progressBar)
+
         startService(Intent(this, ForcedTerminationService::class.java))
 
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
@@ -62,18 +71,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
         imm = getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
-        val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
-        if (pref.getBoolean("autoLoginSuccess", false)) {
-            if(pref.getString("nickname","").isNullOrBlank()){
-                val intent = Intent(applicationContext, FirstNicknameSetActivity::class.java)
-                startActivity(intent)
-            }else{
-                val intent = Intent(applicationContext, MainActivity::class.java)
-                startActivity(intent)
-            }
 
-
-        }
         binding.loginBtn.setOnClickListener(this)
 
     }

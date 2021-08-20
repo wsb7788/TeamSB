@@ -266,10 +266,13 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener,KeywordRecyclerAdap
     override fun onClick(v: View?) {
         when(v){
             binding.btnAddKeyword -> {
+                var checkText = binding.etKeyword.text
                 if(keyWord.size > 2){
                     Toast.makeText(applicationContext, "키워드는 3개까지 입력이 가능합니다.", Toast.LENGTH_SHORT).show()
-                }else if (binding.etKeyword.text.isBlank()) {
+                }else if (checkText.isNullOrBlank()) {
                     Toast.makeText(applicationContext, "키워드를 입력해주세요.", Toast.LENGTH_SHORT).show()
+                }else if(checkText.length>10){
+                    Toast.makeText(applicationContext, "10자까지 입력이 가능합니다.", Toast.LENGTH_SHORT).show()
                 }
                 else{
                     val text = binding.etKeyword.text.toString()
@@ -280,12 +283,8 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener,KeywordRecyclerAdap
                     keywordRecyclerAdapter.notifyDataSetChanged()
                     binding.etKeyword.text = null
                 }
-
-
-
             }
         }
-
     }
 
 
