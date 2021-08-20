@@ -189,7 +189,9 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
         if(System.currentTimeMillis() - mBackWait >=2000 ) {
             mBackWait = System.currentTimeMillis()
             Snackbar.make(binding.root,"뒤로가기 버튼을 한번 더 누르면 종료됩니다.",Snackbar.LENGTH_SHORT).show()
+            Log.d("로그","1ewffef")
         } else {
+            Log.d("로그","1213")
             deleteTokenAndFinish()
         }
     }
@@ -203,6 +205,8 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
                     serverAPI.getToken(id,null).enqueue(object : Callback<ResultNoReturn> {
                         override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
                             Toast.makeText(applicationContext, "서버통신 오류", Toast.LENGTH_SHORT).show()
+                            edit.clear()
+                            edit.commit()
                             moveTaskToBack(true);						// 태스크를 백그라운드로 이동
                             finishAndRemoveTask();						// 액티비티 종료 + 태스크 리스트에서 지우기
                             android.os.Process.killProcess(android.os.Process.myPid());
@@ -223,7 +227,12 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
+            }else{
+                moveTaskToBack(true);						// 태스크를 백그라운드로 이동
+                finishAndRemoveTask();						// 액티비티 종료 + 태스크 리스트에서 지우기
+                android.os.Process.killProcess(android.os.Process.myPid());
             }
+
 
         }
 

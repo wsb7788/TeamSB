@@ -272,7 +272,7 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
                 val img = BitmapFactory.decodeStream(ins)
                 val settedImg = rotateBitmap(img,orientation)
                 ins?.close()
-                val resized = Bitmap.createScaledBitmap(settedImg!!,settedImg.width,settedImg.height,true)
+                val resized = Bitmap.createScaledBitmap(settedImg!!,settedImg.width/5,settedImg.height/5,true)
                 val byteArrayOutputStream = ByteArrayOutputStream()
                 resized.compress(Bitmap.CompressFormat.JPEG, 50,byteArrayOutputStream)
                 val byteArray = byteArrayOutputStream.toByteArray()
