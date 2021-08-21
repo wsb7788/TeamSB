@@ -152,7 +152,8 @@ interface ServerAPI {
     @POST("/getToken/")
     fun getToken(
         @Field("curUser") curUser: String,
-        @Field("token") token: String? = null
+        @Field("token") token: String? = null,
+        @Field("isAndroid") isAndroid: String? = "true"
     ) : Call<ResultNoReturn>
 
     @FormUrlEncoded

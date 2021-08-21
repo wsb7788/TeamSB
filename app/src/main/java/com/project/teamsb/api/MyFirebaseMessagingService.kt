@@ -13,10 +13,21 @@ import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.graphics.drawable.IconCompat
+import com.google.firebase.FirebaseApp
+import com.google.firebase.FirebaseCommonRegistrar
+import com.google.firebase.FirebaseOptions
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.FirebaseMessagingRegistrar
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.google.firebase.messaging.ktx.FirebaseMessagingKtxRegistrar
+import com.google.firebase.messaging.ktx.messaging
 import com.project.teamsb.R
 import com.project.teamsb.login.LoginActivity
+import com.project.teamsb.login.SplashActivity
+import com.project.teamsb.main.MainActivity
 
 class MyFirebaseMessagingService:FirebaseMessagingService() {
     private val TAG: String = this.javaClass.simpleName
@@ -30,11 +41,12 @@ class MyFirebaseMessagingService:FirebaseMessagingService() {
             sendNotification(remoteMessage.data!!["title"]!!, remoteMessage.data["body"]!!)
 
         }
-        if (remoteMessage.notification != null)
+        if (remoteMessage.notification == null)
         {
-
-            sendNotification(remoteMessage.notification!!.title!!, remoteMessage.notification!!.body!!)
+            //sendNotification(remoteMessage.notification!!.title!!, remoteMessage.notification!!.body!!)
+            //sendNotification(remoteMessage.data!!["title"]!!, remoteMessage.data["body"]!!)
         }
+        sendNotification(remoteMessage.data!!["title"]!!, remoteMessage.data["body"]!!)
     }
 
     override fun onNewToken(token: String)
@@ -52,7 +64,7 @@ class MyFirebaseMessagingService:FirebaseMessagingService() {
     private fun sendNotification(title:String, body:String)
     {
 
-        val intent = Intent(this, LoginActivity::class.java)
+        val intent = Intent(this, SplashActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(this, 0  , intent,
             PendingIntent.FLAG_ONE_SHOT)
@@ -62,11 +74,14 @@ class MyFirebaseMessagingService:FirebaseMessagingService() {
 
         val micon = BitmapFactory.decodeResource(applicationContext.resources,R.drawable.logo)
         try{
+
+
         val notificationBuilder = NotificationCompat.Builder(this,channelId)
             .setContentTitle(title)
             .setContentText(body)
             .setAutoCancel(true)
             .setLargeIcon(micon)
+
             .setSmallIcon(R.drawable.ic_stat_name)
             .setColor(Color.parseColor("#ff0000"))
             .setSound(defaultSoundUri)

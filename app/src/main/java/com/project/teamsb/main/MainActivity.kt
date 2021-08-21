@@ -63,7 +63,6 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
         ShowTabHome()
         getUserInfo()
 
-
         binding.ivNotification.setOnClickListener(this)
         binding.ivSearch.setOnClickListener(this)
         binding.ivSetting.setOnClickListener(this)

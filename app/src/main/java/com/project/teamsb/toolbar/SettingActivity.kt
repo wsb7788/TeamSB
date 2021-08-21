@@ -133,10 +133,7 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
                             edit.putString("token", token)
                             edit.apply()
                         } else {
-                            Toast.makeText(
-                                applicationContext,
-                                "${response.body()!!.message}",
-                                Toast.LENGTH_SHORT
+                            Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT
                             ).show()
 
                         }
