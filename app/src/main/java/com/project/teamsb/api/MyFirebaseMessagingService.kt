@@ -69,6 +69,7 @@ class MyFirebaseMessagingService:FirebaseMessagingService() {
         val pendingIntent = PendingIntent.getActivity(this, 0  , intent,
             PendingIntent.FLAG_ONE_SHOT)
 
+
         val channelId = "my_channel"
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
@@ -81,11 +82,11 @@ class MyFirebaseMessagingService:FirebaseMessagingService() {
             .setContentText(body)
             .setAutoCancel(true)
             .setLargeIcon(micon)
-
             .setSmallIcon(R.drawable.ic_stat_name)
             .setColor(Color.parseColor("#ff0000"))
             .setSound(defaultSoundUri)
             .setContentIntent(pendingIntent)
+            .setFullScreenIntent(pendingIntent,true)
 
         //val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManagerCompat
         val notificationManager = NotificationManagerCompat.from(this)
@@ -93,8 +94,9 @@ class MyFirebaseMessagingService:FirebaseMessagingService() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(channelId,
                 "Channel human readable title",
-                NotificationManager.IMPORTANCE_DEFAULT)
+                NotificationManager.IMPORTANCE_HIGH)
             notificationManager.createNotificationChannel(channel)
+
         }
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
