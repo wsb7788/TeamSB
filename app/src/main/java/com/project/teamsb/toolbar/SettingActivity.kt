@@ -21,6 +21,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.OnCompleteListener
@@ -90,7 +91,21 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
         binding.btnAppInfo.setOnClickListener(this)
         binding.switch1.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                setToken()
+                if(NotificationManagerCompat.from(applicationContext).areNotificationsEnabled()){
+                    setToken()
+                }else{
+                    binding.switch1.isChecked = false
+                    Snackbar.make(binding.root,"알림 사용을 위해서 알림 권한 설정을 해주세요.",Snackbar.LENGTH_SHORT)
+                        .setAction("확인"){
+                            val intent = Intent()
+                            intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                            val uri = Uri.fromParts("package", packageName, null)
+                            intent.data = uri
+                            startActivity(intent)
+                        }
+                        .show()
+                }
+
             } else {
                 deleteOnlyToken()
                 val edit = pref.edit()
