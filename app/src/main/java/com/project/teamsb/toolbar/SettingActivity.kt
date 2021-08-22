@@ -77,6 +77,7 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
         setContentView(binding.root)
         binding.switch1.isChecked = !pref.getString("token", null).isNullOrEmpty()
 
+        binding.tvEmail.text = pref.getString("id","")+"@gachon.ac.kr"
 
 
 
