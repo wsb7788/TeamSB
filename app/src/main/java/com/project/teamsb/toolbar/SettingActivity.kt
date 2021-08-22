@@ -10,43 +10,31 @@ import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.provider.Settings
 import android.util.Base64
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
-import android.widget.Switch
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
-import androidx.activity.result.ActivityResultCallback
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat
-import androidx.core.net.toUri
 import com.bumptech.glide.Glide
-import com.bumptech.glide.GlideBuilder
-import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.messaging.FirebaseMessaging
-import com.project.teamsb.BuildConfig
 import com.project.teamsb.R
 import com.project.teamsb.api.*
 import com.project.teamsb.databinding.*
 import com.project.teamsb.login.LoginActivity
-import com.project.teamsb.main.MainActivity
 import com.project.teamsb.main.calendar.CalendarObj
 import com.project.teamsb.post.App
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -55,7 +43,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.IOException
-import java.io.InputStream
 
 class SettingActivity:AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivitySettingBinding
@@ -210,8 +197,10 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
         isImageSet = false
         imageSet(view.ivEditProfileImage)
         view.btnGallery.setOnClickListener {
-            chekPermission()
-
+            val check = isUserGranted(Manifest.permission.READ_EXTERNAL_STORAGE)
+            if(check){
+                takeAlbum()
+            }
         }
         view.btnPrimary.setOnClickListener {
             deleteProfileImage()
@@ -232,49 +221,38 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    fun chekPermission() {
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-        ) {
-            Log.d("로그잉","${Manifest.permission.READ_EXTERNAL_STORAGE}")
-            takeAlbum()
-            //return true
+    private fun isUserGranted(permissionName: String):Boolean {
+        val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
+        val isFirstCheck = pref.getBoolean("isFirstProfileImageCheck",true)
+        val edit = pref.edit()
+        if (ContextCompat.checkSelfPermission(this, permissionName) == PackageManager.PERMISSION_GRANTED) {
+            return true
         }else{
-            val permissions: Array<String> = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
-            ActivityCompat.requestPermissions(this, permissions, 0)
-        }
-
-        //return false
-
-
-
-    }
-
-    override fun onRequestPermissionsResult( requestCode: Int, permissions: Array<out String>, grantResults: IntArray ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    when(requestCode){ 0 -> { if (grantResults.isNotEmpty()){
-        var isGranted = false
-        for(grant in grantResults){
-               if(grant != PackageManager.PERMISSION_GRANTED){
-                   isGranted = false
-                   break
-               }
+            if(isFirstCheck){
+                edit.putBoolean("isFirstProfileImageCheck",false).apply()
+                ActivityCompat.requestPermissions(this, arrayOf(permissionName),0)
+            }else{
+                if(ActivityCompat.shouldShowRequestPermissionRationale(this, permissionName)){
+                    // 그냥 거절일 때
+                    ActivityCompat.requestPermissions(this, arrayOf(permissionName),0)
+                }else { // 다시묻지 않고 거절 눌렀을 때
+                    Snackbar.make(view.root,"접근 권한이 필요합니다. 확인을 누르시면 설정으로 이동합니다.",Snackbar.LENGTH_SHORT)
+                        .setAction("확인"){
+                            val intent = Intent()
+                            intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                            val uri = Uri.fromParts("package", packageName, null)
+                            intent.data = uri
+                            startActivity(intent)
+                        }
+                        .show()
+                }
             }
-        if(isGranted){
-            takeAlbum()
-             } else {// 허용하지 않은 권한이 있음. 필수권한/선택권한 여부에 따라서 별도 처리를 해주어야 함.
-            if(!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)){
-        // 다시 묻지 않기 체크하면서 권한 거부 되었음.
-            Toast.makeText(applicationContext,"프로필 이미지 설정을 위해서는\n접근 권한이 필요합니다.",Toast.LENGTH_SHORT).show()
-                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS) .setData(Uri.parse("package:" + BuildConfig.APPLICATION_ID))        // 권한 설정하는 앱 설정으로 넘어가기
-                startActivity(intent)
-                 } else {
-                     // 접근 권한 거부하였음.
-            Toast.makeText(applicationContext,"프로필 이미지 설정을 위해서는\n접근 권한이 필요합니다.",Toast.LENGTH_SHORT).show()
-
-                      }
+            if (ContextCompat.checkSelfPermission(this, permissionName) == PackageManager.PERMISSION_GRANTED) {
+                return true
+            }
+            return false
         }
-    } } }}
+    }
 
     private fun deleteProfileImage() {
         CoroutineScope(Dispatchers.IO).launch {

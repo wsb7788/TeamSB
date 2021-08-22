@@ -123,6 +123,7 @@ class NotificationActivity:AppCompatActivity(), NotificationRecyclerAdapter.OnIt
                     override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
                         if(response.body()!!.check){
                             page = 1
+                            noMoreItem = false
                             notificationLoading()
                         }
                     }

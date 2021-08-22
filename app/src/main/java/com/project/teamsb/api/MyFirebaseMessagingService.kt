@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.media.RingtoneManager
 import android.os.Build
+import android.os.PowerManager
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -28,6 +29,8 @@ import com.project.teamsb.R
 import com.project.teamsb.login.LoginActivity
 import com.project.teamsb.login.SplashActivity
 import com.project.teamsb.main.MainActivity
+import com.project.teamsb.post.App
+import java.util.*
 
 class MyFirebaseMessagingService:FirebaseMessagingService() {
     private val TAG: String = this.javaClass.simpleName
@@ -63,43 +66,62 @@ class MyFirebaseMessagingService:FirebaseMessagingService() {
     @SuppressLint("ServiceCast")
     private fun sendNotification(title:String, body:String)
     {
-
+        val random = (System.currentTimeMillis()/1000).toInt()
         val intent = Intent(this, SplashActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        val pendingIntent = PendingIntent.getActivity(this, 0  , intent,
+        val pendingIntent = PendingIntent.getActivity(this, random  , intent,
             PendingIntent.FLAG_ONE_SHOT)
 
 
-        val channelId = "my_channel"
+        val channelId = "댓글 및 공지사항"
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
         val micon = BitmapFactory.decodeResource(applicationContext.resources,R.drawable.logo)
         try{
 
 
-        val notificationBuilder = NotificationCompat.Builder(this,channelId)
-            .setContentTitle(title)
-            .setContentText(body)
-            .setAutoCancel(true)
-            .setLargeIcon(micon)
-            .setSmallIcon(R.drawable.ic_stat_name)
-            .setColor(Color.parseColor("#ff0000"))
-            .setSound(defaultSoundUri)
-            .setContentIntent(pendingIntent)
-            .setFullScreenIntent(pendingIntent,true)
 
-        //val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManagerCompat
-        val notificationManager = NotificationManagerCompat.from(this)
-        // 오레오 버전 예외처리
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(channelId,
+
+            val notificationBuilder = NotificationCompat.Builder(App.instance, channelId)
+                .setContentTitle(title)
+                .setContentText(body)
+                .setStyle(NotificationCompat.BigTextStyle().bigText(body))
+                .setAutoCancel(true)
+                .setSmallIcon(R.drawable.ic_stat_name)
+                .setLargeIcon(micon)
+                .setColor(Color.parseColor("#ff0000"))
+                .setSound(defaultSoundUri)
+                .setContentIntent(pendingIntent)
+                .setFullScreenIntent(pendingIntent,true)                //위에 띄우기
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)            //잠금화면에서 보이기
+                .setCategory(NotificationCompat.CATEGORY_SOCIAL)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+
+
+            val name = "댓글 및 공지사항"
+            val descriptionText = "댓글 및 공지사항 알림입니다."
+            val importance = NotificationManager.IMPORTANCE_HIGH
+            val channel = NotificationChannel(channelId, name, importance).apply {
+                description = descriptionText
+            }
+
+
+            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager      //api 26부터
+            val channelId = NotificationChannel(channelId,
                 "Channel human readable title",
                 NotificationManager.IMPORTANCE_HIGH)
             notificationManager.createNotificationChannel(channel)
 
-        }
 
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
+        //val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManagerCompat
+
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+                // 오레오 버전 예외처리
+
+            }
+        notificationManager.notify(random /* ID of notification */, notificationBuilder.build())
 
         }
         catch(e: Exception){
