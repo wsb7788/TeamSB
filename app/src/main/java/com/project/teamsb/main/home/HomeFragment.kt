@@ -15,6 +15,7 @@ import com.project.teamsb.R
 import com.project.teamsb.api.*
 import com.project.teamsb.databinding.FragmentHomeBinding
 import com.project.teamsb.api.ServerObj
+import com.project.teamsb.post.PostActivity
 import com.project.teamsb.recycler.model.RecentModel
 import com.project.teamsb.recycler.adapter.RecentRecyclerAdapter
 import kotlinx.coroutines.CoroutineScope
@@ -31,7 +32,7 @@ import java.time.format.DateTimeFormatter
 import kotlin.random.Random
 
 
-class HomeFragment : Fragment(), View.OnClickListener {
+class HomeFragment : Fragment(), View.OnClickListener,RecentRecyclerAdapter.OnItemClickListener {
 
     lateinit var binding: FragmentHomeBinding
 
@@ -63,6 +64,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
             calendarLoading()
             binding.srl.isRefreshing = false
         }
+        recentRecyclerAdapter.setItemClickListener(this)
         return binding.root
     }
 
@@ -234,7 +236,8 @@ class HomeFragment : Fragment(), View.OnClickListener {
                             for (i in response.body()!!.content.indices) {
                                 val category = response.body()!!.content[i].category
                                 val text = response.body()!!.content[i].title
-                                val myModel = RecentModel(category, text)
+                                val no = response.body()!!.content[i].no
+                                val myModel = RecentModel(category, text,no)
                                 modelList.add(myModel)
                             }
                             recentRecyclerAdapter.submitList(modelList)
@@ -250,5 +253,11 @@ class HomeFragment : Fragment(), View.OnClickListener {
                 }
             }
         }
+
+    override fun onClick(v: View, position: Int) {
+        val intent = Intent(context , PostActivity::class.java)
+        intent.putExtra("no", recentRecyclerAdapter.getPostNo(position))
+        startActivity(intent)
+    }
 
 }

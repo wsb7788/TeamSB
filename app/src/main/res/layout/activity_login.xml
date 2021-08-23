@@ -8,32 +8,34 @@
         android:layout_height="match_parent"
         android:background="@color/white">
 
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="160dp"
-            android:layout_height="160dp"
-            android:src="@drawable/gachon_logo"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.1" />
-
         <TextView
-            android:id="@+id/tv_hint"
-            android:layout_width="wrap_content"
+            android:id="@+id/id_et1"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="학교 아이디와 비밀번호를 입력하세요"
+            android:gravity="center"
+            android:paddingLeft="10sp"
+            android:text="* 로그인 시 사용된 ID는 디바이스에 저장됩니다."
+            android:textAllCaps="false"
             android:textColor="@color/black"
             android:layout_marginBottom="20dp"
-            android:textSize="18sp"
+            android:textSize="12sp"
             app:layout_constraintBottom_toTopOf="@+id/cl_et_box"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageView2" />
-
-
+            app:layout_constraintStart_toStartOf="parent" />
+        <TextView
+            android:id="@+id/id_et2"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingLeft="10sp"
+            android:text="학교 아이디와 비밀번호를 입력하세요."
+            android:textAllCaps="false"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/id_et1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -42,7 +44,7 @@
             android:layout_marginTop="20dp"
             app:layout_constraintWidth_percent="0.8"
             android:layout_height="0dp"
-            app:layout_constraintHeight_percent="0.2"
+            app:layout_constraintHeight_percent="0.17"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -59,7 +61,7 @@
                 android:paddingLeft="10sp"
                 android:singleLine="true"
                 android:textAllCaps="false"
-                android:textColor="#AEABAB"
+                android:textColor="@color/black"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -84,7 +86,7 @@
                 android:inputType="textPassword"
                 android:singleLine="true"
                 android:paddingLeft="10sp"
-                android:textColor="#AEABAB"
+                android:textColor="@color/black"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -106,8 +108,8 @@
 
         <ImageView
             android:id="@+id/login_btn"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:clickable="true"
             android:paddingLeft="9dp"
             android:src="@drawable/ic_login_next"
@@ -128,5 +130,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:visibility="invisible" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12dp"
+            android:text="메디컬캠퍼스는 추후 업데이트 예정입니다."
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="10dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

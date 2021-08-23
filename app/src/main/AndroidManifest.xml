@@ -12,22 +12,22 @@
         android:allowBackup="true"
         android:name=".post.App"
         android:icon="@drawable/logo"
-        android:label="가천기숙사"
+        android:label="가천 기숙사"
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.TeamSB">
-        <activity android:name=".login.FirstNicknameSetActivity"/>
-        <activity android:name=".post.PostActivity"/>
-        <activity android:name=".main.home.PostListActivity"/>
-        <activity android:name=".toolbar.SearchActivity"/>
-        <activity android:name=".toolbar.SettingActivity"/>
-        <activity android:name=".toolbar.WriteActivity"/>
-        <activity android:name=".toolbar.NotificationActivity"/>
-        <activity android:name=".main.home.GuideActivity"/>
-        <activity android:name=".login.LoginActivity"/>
-        <activity android:name=".main.MainActivity"/>
+        <activity android:name=".login.FirstNicknameSetActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".post.PostActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".main.home.PostListActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".toolbar.SearchActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".toolbar.SettingActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".toolbar.WriteActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".toolbar.NotificationActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".main.home.GuideActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".login.LoginActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".main.MainActivity"  android:screenOrientation="portrait"/>
 
-        <activity android:name=".login.SplashActivity">
+        <activity android:name=".login.SplashActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

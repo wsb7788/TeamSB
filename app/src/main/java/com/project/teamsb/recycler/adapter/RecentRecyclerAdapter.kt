@@ -3,6 +3,7 @@ package com.project.teamsb.recycler.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.project.teamsb.databinding.LayoutRecyclerRecentBinding
@@ -16,7 +17,7 @@ class RecentRecyclerAdapter: RecyclerView.Adapter<RecentViewHolder>() {
     private var modelList = ArrayList<RecentModel>()
 
 
-
+    private lateinit var itemClickListener : OnItemClickListener
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecentViewHolder {
         Log.d(TAG, "PostRecyclerAdapter - onCreateViewHolder() called")
                 val binding = LayoutRecyclerRecentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -31,6 +32,17 @@ class RecentRecyclerAdapter: RecyclerView.Adapter<RecentViewHolder>() {
     override fun onBindViewHolder(holder: RecentViewHolder, position: Int) {
         Log.d(TAG, "CommentRecyclerAdapter - onBindViewHolder() called / position: $position")
             holder.bind(this.modelList[position])
+        holder.itemView.setOnClickListener {
+            itemClickListener.onClick(it, position)
+        }
+
+    }
+
+    interface OnItemClickListener {
+        fun onClick(v: View, position: Int)
+    }
+    fun setItemClickListener(onItemClickListener: OnItemClickListener) {
+        this.itemClickListener = onItemClickListener
     }
     fun submitList(modelList: ArrayList<RecentModel>){
         Log.d(TAG, "submitList called")
@@ -38,6 +50,9 @@ class RecentRecyclerAdapter: RecyclerView.Adapter<RecentViewHolder>() {
     }
     fun clearList(){
         modelList.clear()
+    }
+    fun getPostNo(position: Int):Int {
+        return modelList[position].no
     }
 }
 

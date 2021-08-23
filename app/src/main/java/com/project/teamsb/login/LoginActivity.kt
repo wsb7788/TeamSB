@@ -156,13 +156,8 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                     }
 
                     override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
-                        if (response.body()!!.check){
                             edit.putString("token",token)
                             edit.apply()
-                        }else{
-                            Toast.makeText(applicationContext,"${response.body()!!.message}",Toast.LENGTH_SHORT).show()
-
-                        }
                     }
                 })
             }catch(e: Exception) {

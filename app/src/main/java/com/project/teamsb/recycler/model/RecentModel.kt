@@ -2,7 +2,7 @@ package com.project.teamsb.recycler.model
 
 import android.util.Log
 
-class RecentModel(var category: String? = null, val content : String? = null) {
+class RecentModel(var category: String? = null, val content : String? = null,val no:Int) {
     val TAG: String = "로그"
 
 

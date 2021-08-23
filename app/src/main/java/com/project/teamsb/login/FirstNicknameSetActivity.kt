@@ -87,7 +87,6 @@ class FirstNicknameSetActivity : AppCompatActivity(),View.OnClickListener {
                             val edit = pref.edit()
                             edit.putString("nickname", nickName)
                             edit.apply()
-                            Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
                             val intent = Intent(applicationContext, MainActivity::class.java)
                             startActivity(intent)
                         } else {
