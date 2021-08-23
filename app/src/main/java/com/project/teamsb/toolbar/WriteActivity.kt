@@ -58,7 +58,7 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener,KeywordRecyclerAdap
         }
 
         setSupportActionBar(binding.toolbar)
-
+        supportActionBar!!.setDisplayShowTitleEnabled(false)
 
         val adapter = ArrayAdapter.createFromResource(this, R.array.category,R.layout.spinner_custom_list)
         adapter.setDropDownViewResource(R.layout.spinner_custom_list2)

@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.project.teamsb.R
 import com.project.teamsb.api.ResultPost
 import com.project.teamsb.api.ServerAPI
+import com.project.teamsb.api.ServerObj
 import com.project.teamsb.databinding.ActivityCategoryBinding
 import com.project.teamsb.post.PostActivity
 import com.project.teamsb.recycler.model.PostModel
@@ -58,12 +59,7 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
     var noMoreItem = false
     var isRefresh = false
     var returnWrite = false
-    var retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl("http://13.209.10.30:3000/home/")
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
 
-    var serverAPI: ServerAPI = retrofit.create(ServerAPI::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -167,10 +163,10 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
                     Log.d("로그", "코루틴 호출!")
                     modelList.clear()
                     try {
-                                serverAPI.categoryPost("home",categoryQuery, page).enqueue(object : Callback<ResultPost>{
+                        val category = "/home/$categoryQuery/"
+                                ServerObj.api.categoryPost(category, page).enqueue(object : Callback<ResultPost>{
                                     @RequiresApi(Build.VERSION_CODES.O)
                                     override fun onResponse(call: Call<ResultPost>, response: Response<ResultPost>) {
-
                                         if(page ==1 ){
                                             postRecyclerAdapter.clearList()
                                         }

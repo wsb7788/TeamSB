@@ -24,7 +24,7 @@ class NoticeViewHolder(val binding: LayoutRecyclerNoticeBinding): RecyclerView.V
 
 
 
-    var isvisible = false
+
 
     fun bind(noticeModel: NoticeModel){
         binding.tvTitle.text = noticeModel.title
@@ -37,20 +37,20 @@ class NoticeViewHolder(val binding: LayoutRecyclerNoticeBinding): RecyclerView.V
             binding.ivFixed.visibility = INVISIBLE
         }
         binding.clNoticeTitle.setOnClickListener {
-            if(!isvisible){
+            if(!noticeModel.isVisible!!){
                 binding.clNoticeContent.visibility = VISIBLE
                 binding.tvSubContent.visibility = VISIBLE
                 binding.tvSubTitle.visibility = VISIBLE
                 binding.ivArrow.animate().setDuration(50).rotation(180f)
                 binding.clMother.setBackgroundColor(Color.parseColor("#e0e0e0"))
-                isvisible = true
+                noticeModel.isVisible = true
             }else{
                 binding.clNoticeContent.visibility = GONE
                 binding.tvSubContent.visibility = GONE
                 binding.tvSubTitle.visibility = GONE
                 binding.ivArrow.animate().setDuration(50).rotation(0f)
                 binding.clMother.setBackgroundColor(Color.parseColor("#ffffff"))
-                isvisible = false
+                noticeModel.isVisible = false
             }
         }
 

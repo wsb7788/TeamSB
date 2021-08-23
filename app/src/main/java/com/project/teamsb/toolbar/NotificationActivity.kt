@@ -50,7 +50,7 @@ class NotificationActivity:AppCompatActivity(), NotificationRecyclerAdapter.OnIt
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
-
+        supportActionBar!!.setDisplayShowTitleEnabled(false)
 
         startService(Intent(this, ForcedTerminationService::class.java))
 

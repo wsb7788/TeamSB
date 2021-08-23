@@ -72,6 +72,7 @@ class SearchActivity:AppCompatActivity(),View.OnClickListener, PostRecyclerAdapt
         binding.btnSearch.setOnClickListener(this)
         binding.btnFilter.setOnClickListener(this)
         setSupportActionBar(binding.toolbar)
+        supportActionBar!!.setDisplayShowTitleEnabled(false)
         category = if(intent.hasExtra("category")) {
             intent.getStringExtra("category")!! }else{
             "all" }

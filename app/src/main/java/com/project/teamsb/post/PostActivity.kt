@@ -59,6 +59,7 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
         startService(Intent(this, ForcedTerminationService::class.java))
+        supportActionBar!!.setDisplayShowTitleEnabled(false)
 
         imm = getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
