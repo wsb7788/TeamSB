@@ -156,4 +156,6 @@ class NoticeFragment : Fragment(){
         loadLock = false
     }
 
+
+
 }

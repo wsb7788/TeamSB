@@ -1,6 +1,7 @@
 
 package com.project.teamsb.recycler.adapter
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,7 @@ class GuideRecyclerAdapter: RecyclerView.Adapter<GuideViewHolder>() {
 
     private var modelList = ArrayList<GuideModel>()
 
+    var expanded = ArrayList<Int>()
    // private lateinit var itemClickListener : OnItemClickListener
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GuideViewHolder {
@@ -33,24 +35,35 @@ class GuideRecyclerAdapter: RecyclerView.Adapter<GuideViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: GuideViewHolder, position: Int) {
+        for(i in 0 until expanded.size){
+            if (position == expanded[i]){
+                this.modelList[position].isVisible = true
+            }
+        }
         holder.bind(this.modelList[position])
-       /* holder.itemView.setOnClickListener {
-            itemClickListener.onClick(it, position)
-        }*/
-    }
 
+        holder.itemView.setOnClickListener{
+            //itemClickListener.onClick(it, position)
 
-/*
-interface OnItemClickListener {
-    fun onClick(v: View, position: Int)
-}
-fun setItemClickListener(onItemClickListener: OnItemClickListener) {
-    this.itemClickListener = onItemClickListener
-}
-    fun clearList(){
-        modelList.clear()
+            if(!modelList[position].isVisible!!){
+                holder.binding.clNoticeContent.visibility = View.VISIBLE
+                holder.binding.tvSubContent.visibility = View.VISIBLE
+                holder.binding.tvSubTitle.visibility = View.VISIBLE
+                holder.binding.ivArrow.animate().setDuration(50).rotation(180f)
+                holder.binding.clMother.setBackgroundColor(Color.parseColor("#e0e0e0"))
+                modelList[position].isVisible = true
+                expanded.add(position)
+            }else{
+                holder.binding.clNoticeContent.visibility = View.GONE
+                holder.binding.tvSubContent.visibility = View.GONE
+                holder.binding.tvSubTitle.visibility = View.GONE
+                holder.binding.ivArrow.animate().setDuration(50).rotation(0f)
+                holder.binding.clMother.setBackgroundColor(Color.parseColor("#ffffff"))
+                modelList[position].isVisible = false
+                expanded.remove(position)
+            }
+        }
     }
-*/
 
 
 }

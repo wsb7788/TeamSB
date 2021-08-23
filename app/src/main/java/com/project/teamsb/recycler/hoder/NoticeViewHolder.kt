@@ -36,23 +36,36 @@ class NoticeViewHolder(val binding: LayoutRecyclerNoticeBinding): RecyclerView.V
         }else{
             binding.ivFixed.visibility = INVISIBLE
         }
-        binding.clNoticeTitle.setOnClickListener {
-            if(!noticeModel.isVisible!!){
+        if(noticeModel.isVisible!!){
+            binding.clNoticeContent.visibility = VISIBLE
+            binding.tvSubContent.visibility = VISIBLE
+            binding.tvSubTitle.visibility = VISIBLE
+            binding.ivArrow.animate().setDuration(50).rotation(180f)
+            binding.clMother.setBackgroundColor(Color.parseColor("#e0e0e0"))
+        }else{
+            binding.clNoticeContent.visibility = GONE
+            binding.tvSubContent.visibility = GONE
+            binding.tvSubTitle.visibility = GONE
+            binding.ivArrow.animate().setDuration(50).rotation(0f)
+            binding.clMother.setBackgroundColor(Color.parseColor("#ffffff"))
+        }
+        /*binding.clNoticeTitle.setOnClickListener {
+            if(!noticeModel.isVisible){
                 binding.clNoticeContent.visibility = VISIBLE
                 binding.tvSubContent.visibility = VISIBLE
                 binding.tvSubTitle.visibility = VISIBLE
                 binding.ivArrow.animate().setDuration(50).rotation(180f)
                 binding.clMother.setBackgroundColor(Color.parseColor("#e0e0e0"))
-                noticeModel.isVisible = true
+                this.isvisible = true
             }else{
                 binding.clNoticeContent.visibility = GONE
                 binding.tvSubContent.visibility = GONE
                 binding.tvSubTitle.visibility = GONE
                 binding.ivArrow.animate().setDuration(50).rotation(0f)
                 binding.clMother.setBackgroundColor(Color.parseColor("#ffffff"))
-                noticeModel.isVisible = false
+                this.isvisible = false
             }
-        }
+        }*/
 
     }
 

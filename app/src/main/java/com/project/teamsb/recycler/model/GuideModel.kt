@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import android.util.Log
 import com.project.teamsb.api.Content
 
-class GuideModel(var title:String? = null, var content:String? = null) {
+class GuideModel(var title:String? = null, var content:String? = null, var isVisible:Boolean? = false) {
     val TAG: String = "로그"
 
 

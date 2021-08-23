@@ -33,22 +33,18 @@ class GuideViewHolder(val binding: LayoutRecyclerGuideBinding): RecyclerView.Vie
         binding.tvSubTitle.text = guideModel.title
         binding.tvSubContent.text = guideModel.content
 
-        binding.clNoticeTitle.setOnClickListener {
-            if(!isvisible){
-                binding.clNoticeContent.visibility = VISIBLE
-                binding.tvSubContent.visibility = VISIBLE
-                binding.tvSubTitle.visibility = VISIBLE
-                binding.ivArrow.animate().setDuration(50).rotation(180f)
-                binding.clMother.setBackgroundColor(Color.parseColor("#e0e0e0"))
-                isvisible = true
-            }else{
-                binding.clNoticeContent.visibility = GONE
-                binding.tvSubContent.visibility = GONE
-                binding.tvSubTitle.visibility = GONE
-                binding.ivArrow.animate().setDuration(50).rotation(0f)
-                binding.clMother.setBackgroundColor(Color.parseColor("#ffffff"))
-                isvisible = false
-            }
+        if(guideModel.isVisible!!){
+            binding.clNoticeContent.visibility = VISIBLE
+            binding.tvSubContent.visibility = VISIBLE
+            binding.tvSubTitle.visibility = VISIBLE
+            binding.ivArrow.animate().setDuration(50).rotation(180f)
+            binding.clMother.setBackgroundColor(Color.parseColor("#e0e0e0"))
+        }else{
+            binding.clNoticeContent.visibility = GONE
+            binding.tvSubContent.visibility = GONE
+            binding.tvSubTitle.visibility = GONE
+            binding.ivArrow.animate().setDuration(50).rotation(0f)
+            binding.clMother.setBackgroundColor(Color.parseColor("#ffffff"))
         }
 
     }
