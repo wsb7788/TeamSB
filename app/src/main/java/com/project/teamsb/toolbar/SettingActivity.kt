@@ -31,7 +31,7 @@ import com.project.teamsb.R
 import com.project.teamsb.api.*
 import com.project.teamsb.databinding.*
 import com.project.teamsb.login.LoginActivity
-import com.project.teamsb.main.calendar.CalendarObj
+import com.project.teamsb.api.ServerObj
 import com.project.teamsb.post.App
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -53,12 +53,6 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
     var isImageSet = false
     lateinit var token: String
 
-    var retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl("http://13.209.10.30:3000/")
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-
-    var serverAPI: ServerAPI = retrofit.create(ServerAPI::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -123,7 +117,7 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
             val id = prefInfo.getString("id", "")!!
             val token = token
             try {
-                serverAPI.getToken(id, token).enqueue(object : Callback<ResultNoReturn> {
+                ServerObj.api.getToken(id, token).enqueue(object : Callback<ResultNoReturn> {
                     override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
                         Toast.makeText(applicationContext, "서버통신 오류", Toast.LENGTH_SHORT).show()
                     }
@@ -275,7 +269,7 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
             try {
                 val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
                 val id = pref.getString("id","")!!
-                CalendarObj.api.profileDelete(id).enqueue(object : Callback<ResultNoReturn>{
+                ServerObj.api.profileDelete(id).enqueue(object : Callback<ResultNoReturn>{
                     override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
                         if(response.body()!!.code == 200){
                             Toast.makeText(applicationContext,"기본 이미지로 변경되었습니다.",Toast.LENGTH_SHORT).show()
@@ -393,7 +387,7 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
                 try {
                     val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
                     val id = pref.getString("id","")!!
-                    CalendarObj.api.getUserProfileImage(id).enqueue(object : Callback<ResultProfileImage>{
+                    ServerObj.api.getUserProfileImage(id).enqueue(object : Callback<ResultProfileImage>{
                         override fun onResponse(call: Call<ResultProfileImage>, response: Response<ResultProfileImage>) {
                             if(response.body()!!.code == 200){
                                 var stringProfileImage:String?
@@ -435,7 +429,7 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
                 try {
                     val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
                     val id = pref.getString("id","")!!
-                    CalendarObj.api.profileSet(id,image).enqueue(object : Callback<ResultNoReturn>{
+                    ServerObj.api.profileSet(id,image).enqueue(object : Callback<ResultNoReturn>{
                         override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
                             if(response.body()!!.code == 200){
                                 Toast.makeText(applicationContext,"이미지가 설정 되었습니다.",Toast.LENGTH_SHORT).show()
@@ -464,7 +458,7 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
             try {
                 val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
                 val id = pref.getString("id","")!!
-                serverAPI.feedback(id, content).enqueue(object : Callback<ResultNoReturn> {
+                ServerObj.api.feedback(id, content).enqueue(object : Callback<ResultNoReturn> {
                     override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
                         if (response.body()!!.check) {
                             Toast.makeText(applicationContext, "피드백 감사합니다.", Toast.LENGTH_SHORT).show()
@@ -503,7 +497,7 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
             val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
             val id = pref.getString("id", "")!!
             try {
-                serverAPI.getToken(id,null).enqueue(object : Callback<ResultNoReturn> {
+                ServerObj.api.getToken(id,null).enqueue(object : Callback<ResultNoReturn> {
                     override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
                         Toast.makeText(applicationContext, "서버통신 오류", Toast.LENGTH_SHORT).show()
                     }
@@ -521,7 +515,7 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
             val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
             val id = pref.getString("id", "")!!
             try {
-                serverAPI.getToken(id,null).enqueue(object : Callback<ResultNoReturn> {
+                ServerObj.api.getToken(id,null).enqueue(object : Callback<ResultNoReturn> {
                     override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
                         Toast.makeText(applicationContext, "서버통신 오류", Toast.LENGTH_SHORT).show()
                     }
@@ -578,15 +572,15 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
                 val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
                 val editUser = pref.edit()
                 val id = pref.getString("id","")!!
-                serverAPI.nicknameSet(id, nickname).enqueue(object : Callback<NicknameSet> {
+                ServerObj.api.nicknameSet(id, nickname).enqueue(object : Callback<NicknameSet> {
                     override fun onResponse(call: Call<NicknameSet>, response: Response<NicknameSet>) {
-                        if (response.body()!!.check) {
+                        if (response.body()!!.code == 200) {
                             Toast.makeText(applicationContext, "닉네임 변경 완료", Toast.LENGTH_SHORT).show()
                             editUser.putString("nickname",nickname)
                             editUser.apply()
                             nicknameSet()
                         } else {
-                            Toast.makeText(applicationContext, "${response.body()}", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
                         }
                     }
 

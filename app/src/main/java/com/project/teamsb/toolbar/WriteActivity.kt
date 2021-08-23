@@ -34,12 +34,6 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener,KeywordRecyclerAdap
     var modelList = ArrayList<KeywordModel>()
     private lateinit var keywordRecyclerAdapter: KeywordRecyclerAdapter
 
-    var retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl("http://13.209.10.30:3000/")
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-
-    var serverAPI: ServerAPI = retrofit.create(ServerAPI::class.java)
 
     var keyWord = ArrayList<String>()
 
@@ -103,7 +97,7 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener,KeywordRecyclerAdap
     private fun setEdit(no: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                serverAPI.detail(no).enqueue(object :
+                ServerObj.api.detail(no).enqueue(object :
                     Callback<ResultPost> {
                     override fun onResponse(call: Call<ResultPost>, response: Response<ResultPost>) {
                         if(response.body()!!.check){
@@ -221,7 +215,7 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener,KeywordRecyclerAdap
                 val title = binding.etTitle.text.toString()
                 val text = binding.etContent.text.toString()
                 val keyword1 = ArrayList<String>(keyWord)
-                serverAPI.modifyArticle(id,title,category,text,keyword1,no).enqueue(object: Callback<ResultWrite> {
+                ServerObj.api.modifyArticle(id,title,category,text,keyword1,no).enqueue(object: Callback<ResultWrite> {
                     override fun onResponse(call: Call<ResultWrite>, response: Response<ResultWrite>) {
                         Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
                     }
@@ -244,7 +238,7 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener,KeywordRecyclerAdap
                     val title = binding.etTitle.text.toString()
                     val text = binding.etContent.text.toString()
                     val keyWord1 = ArrayList<String>(keyWord)
-                    serverAPI.writeArticle(title,category,userID,text,keyWord1).enqueue(object: Callback<ResultWrite> {
+                    ServerObj.api.writeArticle(title,category,userID,text,keyWord1).enqueue(object: Callback<ResultWrite> {
                         override fun onResponse(call: Call<ResultWrite>, response: Response<ResultWrite>) {
                             if (response.body()!!.check){
                                 Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()

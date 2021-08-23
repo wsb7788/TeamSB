@@ -17,12 +17,9 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.project.teamsb.R
-import com.project.teamsb.api.Content
 import com.project.teamsb.api.ResultPost
-import com.project.teamsb.databinding.FragmentNoticeBinding
 import com.project.teamsb.databinding.FragmentUserBinding
-import com.project.teamsb.main.calendar.CalendarObj
+import com.project.teamsb.api.ServerObj
 import com.project.teamsb.post.App
 import com.project.teamsb.post.PostActivity
 import com.project.teamsb.recycler.adapter.PostRecyclerAdapter
@@ -112,7 +109,7 @@ class UserFragment : Fragment(),PostRecyclerAdapter.OnItemClickListener {
             Log.d("로그", "코루틴 호출!")
             modelList.clear()
             try {
-                CalendarObj.api.myArticleList(page,id).enqueue(object : Callback<ResultPost> {
+                ServerObj.api.myArticleList(page,id).enqueue(object : Callback<ResultPost> {
                     @RequiresApi(Build.VERSION_CODES.O)
                     override fun onResponse(call: Call<ResultPost>, response: Response<ResultPost>) {
 

@@ -11,13 +11,10 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.viewpager2.widget.ViewPager2
 import com.project.teamsb.R
 import com.project.teamsb.api.*
-import com.project.teamsb.databinding.ActivityGuideBinding
-import com.project.teamsb.databinding.ActivityMainBinding
 import com.project.teamsb.databinding.FragmentHomeBinding
-import com.project.teamsb.main.calendar.CalendarObj
+import com.project.teamsb.api.ServerObj
 import com.project.teamsb.recycler.model.RecentModel
 import com.project.teamsb.recycler.adapter.RecentRecyclerAdapter
 import kotlinx.coroutines.CoroutineScope
@@ -45,12 +42,6 @@ class HomeFragment : Fragment(), View.OnClickListener {
     private lateinit var recentRecyclerAdapter: RecentRecyclerAdapter
 
 
-    var retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl("http://13.209.10.30:3000/")
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-
-    var serverAPI: ServerAPI = retrofit.create(ServerAPI::class.java)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         binding.btn1.setOnClickListener(this)
@@ -79,7 +70,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
         CoroutineScope(Dispatchers.IO).launch {
 
             try {
-                CalendarObj.api.topBanner().enqueue(object: Callback<ResponseBanner>{
+                ServerObj.api.topBanner().enqueue(object: Callback<ResponseBanner>{
                     override fun onResponse(call: Call<ResponseBanner>, response: Response<ResponseBanner>) {
                         if(response.body()!!.code ==200){
                             setbanner(response.body()!!.topBannerList)
@@ -125,7 +116,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
     private fun guideLoading() {
         CoroutineScope(Dispatchers.IO).launch {
             try{
-                CalendarObj.api.guideList().enqueue(object :Callback<ResultGuide>{
+                ServerObj.api.guideList().enqueue(object :Callback<ResultGuide>{
                     override fun onResponse(call: Call<ResultGuide>, response: Response<ResultGuide>) {
                         val rand = Random.nextInt(response.body()!!.content.size)
                         binding.tvGuideTitle.text = response.body()!!.content[rand].title
@@ -146,7 +137,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
         CoroutineScope(Dispatchers.IO).launch {
             try{
-                CalendarObj.api.getCalendar().enqueue(object :Callback<GetCalendar>{
+                ServerObj.api.getCalendar().enqueue(object :Callback<GetCalendar>{
                     override fun onResponse(call: Call<GetCalendar>, response: Response<GetCalendar>) {
                         setCalendar(response.body()!!.menu)
                     }
@@ -233,7 +224,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
             CoroutineScope(Dispatchers.Default).launch {
 
                 try {
-                    serverAPI.recentPost("home/recentPost/").enqueue(object : Callback<ResultPost> {
+                    ServerObj.api.recentPost("home/recentPost/").enqueue(object : Callback<ResultPost> {
                         override fun onResponse(
                             call: Call<ResultPost>,
                             response: Response<ResultPost>

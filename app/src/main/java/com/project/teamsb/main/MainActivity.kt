@@ -41,12 +41,7 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
     val manager = supportFragmentManager
     var mBackWait:Long = 0
     var isNotiCheck = false
-    var retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl("http://13.209.10.30:3000/")
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
 
-    var serverAPI: ServerAPI = retrofit.create(ServerAPI::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,7 +75,7 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
             val id = prefInfo.getString("id","")!!
 
             try{
-                serverAPI.getUserNickname(id).enqueue(object :Callback<ResultNickname>{
+                ServerObj.api.getUserNickname(id).enqueue(object :Callback<ResultNickname>{
                     override fun onResponse(call: Call<ResultNickname>, response: Response<ResultNickname>) {
                         if (response.body()!!.check){
                             editorInfo.putString("nickname",response.body()!!.content)
@@ -105,7 +100,7 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
             val pref= getSharedPreferences("userInfo", MODE_PRIVATE)
             val id = pref.getString("id","")!!
             try {
-                serverAPI.notiCheck("notification/check",id).enqueue(object :
+                ServerObj.api.notiCheck("notification/check",id).enqueue(object :
                     Callback<ResultNotiCheck>{
                     override fun onResponse(call: Call<ResultNotiCheck>, response: Response<ResultNotiCheck>) {
                         if(response.body()!!.check){
@@ -201,7 +196,7 @@ class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSel
             val id = pref.getString("id","")!!
             if(!pref.getBoolean("autoLoginSuccess",false)){
                 try {
-                    serverAPI.getToken(id,null).enqueue(object : Callback<ResultNoReturn> {
+                    ServerObj.api.getToken(id,null).enqueue(object : Callback<ResultNoReturn> {
                         override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
                             Toast.makeText(applicationContext, "서버통신 오류", Toast.LENGTH_SHORT).show()
                             edit.clear()

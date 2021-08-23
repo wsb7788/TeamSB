@@ -43,12 +43,6 @@ class NotificationActivity:AppCompatActivity(), NotificationRecyclerAdapter.OnIt
     var loadLock = false
     var noMoreItem = false
     var isRefresh = false
-    var retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl("http://13.209.10.30:3000/")
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-
-    var serverAPI: ServerAPI = retrofit.create(ServerAPI::class.java)
 
 
 
@@ -118,7 +112,7 @@ class NotificationActivity:AppCompatActivity(), NotificationRecyclerAdapter.OnIt
             try {
                 val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
                 val id = pref.getString("id","")!!
-                serverAPI.notiReadAll(id).enqueue(object :
+                ServerObj.api.notiReadAll(id).enqueue(object :
                     Callback<ResultNoReturn> {
                     override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
                         if(response.body()!!.check){
@@ -150,7 +144,7 @@ class NotificationActivity:AppCompatActivity(), NotificationRecyclerAdapter.OnIt
             try {
                 val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
                 val id = pref.getString("id","")!!
-                serverAPI.notiList(page,id).enqueue(object :
+                ServerObj.api.notiList(page,id).enqueue(object :
                     Callback<ResultNotiList> {
                     override fun onResponse(call: Call<ResultNotiList>, response: Response<ResultNotiList>) {
                         if(response.body()!!.check){
@@ -249,7 +243,7 @@ class NotificationActivity:AppCompatActivity(), NotificationRecyclerAdapter.OnIt
             try {
                 val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
                 val id = pref.getString("id","")!!
-                serverAPI.notiRead(id,notiNo).enqueue(object :
+                ServerObj.api.notiRead(id,notiNo).enqueue(object :
                     Callback<ResultNoReturn> {
                     override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
                         if(response.body()!!.check){

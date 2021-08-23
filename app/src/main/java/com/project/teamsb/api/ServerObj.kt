@@ -1,14 +1,13 @@
-package com.project.teamsb.main.calendar
+package com.project.teamsb.api
 
-import com.project.teamsb.api.ServerAPI
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-object CalendarObj {
+object ServerObj {
     var api: ServerAPI
     init {
         val retrofit = Retrofit.Builder()
-                .baseUrl("http://13.209.10.30:3000/")
+                .baseUrl("http://13.209.10.30:3030/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
 

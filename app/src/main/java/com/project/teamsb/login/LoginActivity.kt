@@ -1,7 +1,6 @@
 package com.project.teamsb.login
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -9,27 +8,23 @@ import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.messaging.FirebaseMessaging
-import com.google.firebase.messaging.RemoteMessage
 import com.project.teamsb.R
 import com.project.teamsb.api.ForcedTerminationService
 import com.project.teamsb.api.ResultLogin
 import com.project.teamsb.api.ResultNoReturn
-import com.project.teamsb.api.ServerAPI
 import com.project.teamsb.databinding.ActivityLoginBinding
 import com.project.teamsb.main.MainActivity
+import com.project.teamsb.api.ServerObj
 import com.project.teamsb.post.App
 import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 
 class LoginActivity : AppCompatActivity(), View.OnClickListener {
@@ -38,11 +33,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
     var mBackWait:Long = 0
 
-    var retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl("http://13.209.10.30:3000/")
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-    var serverAPI: ServerAPI = retrofit.create(ServerAPI::class.java)
+
 
     lateinit var imm: InputMethodManager
     lateinit var token:String
@@ -90,7 +81,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             val editorInfo = prefInfo.edit()
 
             try{
-                serverAPI.requestLogin(id, pw).enqueue(object : Callback<ResultLogin> {
+                ServerObj.api.requestLogin(id, pw).enqueue(object : Callback<ResultLogin> {
                     override fun onFailure(call: Call<ResultLogin>, t: Throwable) {
                         //메인스레드
                         Toast.makeText(applicationContext, "로그인 실패", Toast.LENGTH_SHORT).show()
@@ -138,7 +129,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             val token = token
 
             try{
-                serverAPI.getToken(id, token).enqueue(object : Callback<ResultNoReturn> {
+                ServerObj.api.getToken(id, token).enqueue(object : Callback<ResultNoReturn> {
                     override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
                        Toast.makeText(applicationContext,"서버통신 오류",Toast.LENGTH_SHORT).show()
 
@@ -196,7 +187,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             val id = pref.getString("id","")!!
             if(!pref.getBoolean("autoLoginSuccess",false)){
                 try {
-                    serverAPI.getToken(id,null).enqueue(object : Callback<ResultNoReturn> {
+                    ServerObj.api.getToken(id,null).enqueue(object : Callback<ResultNoReturn> {
                         override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
                             Toast.makeText(applicationContext, "서버통신 오류", Toast.LENGTH_SHORT).show()
                         }

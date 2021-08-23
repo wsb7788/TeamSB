@@ -21,6 +21,7 @@ import com.project.teamsb.R
 import com.project.teamsb.api.ForcedTerminationService
 import com.project.teamsb.api.ResultPost
 import com.project.teamsb.api.ServerAPI
+import com.project.teamsb.api.ServerObj
 import com.project.teamsb.databinding.ActivitySearchBinding
 import com.project.teamsb.databinding.DialogEditProfileImageBinding
 import com.project.teamsb.databinding.DialogFilterBinding
@@ -59,12 +60,7 @@ class SearchActivity:AppCompatActivity(),View.OnClickListener, PostRecyclerAdapt
     lateinit var imm: InputMethodManager
 
     private var filterFocus:Int = 0
-    var retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl("http://13.209.10.30:3000/")
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
 
-    var serverAPI: ServerAPI = retrofit.create(ServerAPI::class.java)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -152,7 +148,7 @@ class SearchActivity:AppCompatActivity(),View.OnClickListener, PostRecyclerAdapt
                     val keyword = binding.etSearch.text.toString()
                     val category1 = category
                     val page1 = page
-                    serverAPI.search(page1,category1,keyword ).enqueue(object : Callback<ResultPost> {
+                    ServerObj.api.search(page1,category1,keyword ).enqueue(object : Callback<ResultPost> {
                         override fun onResponse(call: Call<ResultPost>, response: Response<ResultPost>) {
                             if(page == 1 ){
                                 postRecyclerAdapter.clearList()

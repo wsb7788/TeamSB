@@ -51,12 +51,6 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
     lateinit var nickname:String
     lateinit var id:String
     var no: Int = 0
-    var retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl("http://13.209.10.30:3000/")
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-
-    var serverAPI: ServerAPI = retrofit.create(ServerAPI::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -118,7 +112,7 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
     private fun checkMod(curUser: String, no: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                serverAPI.checkMod(curUser, no).enqueue(object :
+                ServerObj.api.checkMod(curUser, no).enqueue(object :
                     Callback<ResultNoReturn>{
                     override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
                         if(response.body()!!.check){
@@ -141,7 +135,7 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
     private fun contentLoading(no:Int) {
         CoroutineScope(Dispatchers.Default).launch {
             try {
-                serverAPI.detail(no).enqueue(object :
+                ServerObj.api.detail(no).enqueue(object :
                     Callback<ResultPost> {
                     override fun onResponse(call: Call<ResultPost>, response: Response<ResultPost>) {
                         if(response.body()!!.check){
@@ -163,7 +157,7 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
     private fun accessArticle(no:Int) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                serverAPI.accessArticle(no).enqueue(object : Callback<ResultNoReturn>{
+                ServerObj.api.accessArticle(no).enqueue(object : Callback<ResultNoReturn>{
                     override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
                         if(response.body()!!.check){
                             contentLoading(no)
@@ -188,7 +182,7 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
         modelList.clear()
                 CoroutineScope(Dispatchers.IO).launch {
                     try {
-                        serverAPI.replyList(page, no,id).enqueue(object :
+                        ServerObj.api.replyList(page, no,id).enqueue(object :
                             Callback<ResultReply> {
                             override fun onResponse(call: Call<ResultReply>, response: Response<ResultReply>) {
                                 noMoreItem = response.body()!!.content.size % 20 != 0 || response.body()!!.content.isNullOrEmpty()
@@ -254,7 +248,7 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
         CoroutineScope(Dispatchers.IO).launch {
             val content = binding.etComment.text.toString()
             try {
-                serverAPI.writeComment(no, content, curUser).enqueue(object :
+                ServerObj.api.writeComment(no, content, curUser).enqueue(object :
                     Callback<ResultNoReturn> {
                     override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
                         if(response.body()!!.check){
@@ -354,7 +348,7 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
 
         CoroutineScope(Dispatchers.Default).launch {
             try {
-                serverAPI.report(id,no,content).enqueue(object : Callback<ResultNoReturn>{
+                ServerObj.api.report(id,no,content).enqueue(object : Callback<ResultNoReturn>{
                     override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
                         if(response.body()!!.check){
                             Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
@@ -376,7 +370,7 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
     private fun deleteArticle(id: String, no: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                serverAPI.deleteArticle(id,no).enqueue(object :
+                ServerObj.api.deleteArticle(id,no).enqueue(object :
                     Callback<ResultNoReturn> {
                     override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
                         if(response.body()!!.check){

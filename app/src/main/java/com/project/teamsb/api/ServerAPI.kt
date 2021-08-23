@@ -32,6 +32,7 @@ interface ServerAPI {
 
     @GET
     fun categoryPost(
+        @Url home: String,
         @Url url: String,
         @Query("page") page: Int
     ) : Call<ResultPost>

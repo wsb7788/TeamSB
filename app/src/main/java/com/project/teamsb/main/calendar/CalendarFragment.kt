@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.project.teamsb.api.GetCalendar
 import com.project.teamsb.databinding.FragmentCalendarBinding
-import com.project.teamsb.main.calendar.CalendarObj
+import com.project.teamsb.api.ServerObj
 import com.project.teamsb.main.calendar.DayDecorator
 import com.project.teamsb.main.calendar.SunDayDecorator
 import com.prolificinteractive.materialcalendarview.*
@@ -51,7 +51,7 @@ class CalendarFragment : Fragment(), OnDateSelectedListener{
         binding.materialCalendar.addDecorators(decoSunday)
 
         //API
-        CalendarObj.api.getCalendar().enqueue(object : Callback<GetCalendar> {
+        ServerObj.api.getCalendar().enqueue(object : Callback<GetCalendar> {
             override fun onResponse(call: Call<GetCalendar>, response: Response<GetCalendar>) {
                 var getCalendar = response.body()
                 var arr = getCalendar?.menu

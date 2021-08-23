@@ -167,7 +167,7 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
                     Log.d("로그", "코루틴 호출!")
                     modelList.clear()
                     try {
-                                serverAPI.categoryPost(categoryQuery, page).enqueue(object : Callback<ResultPost>{
+                                serverAPI.categoryPost("home",categoryQuery, page).enqueue(object : Callback<ResultPost>{
                                     @RequiresApi(Build.VERSION_CODES.O)
                                     override fun onResponse(call: Call<ResultPost>, response: Response<ResultPost>) {
 

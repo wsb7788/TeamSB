@@ -4,11 +4,6 @@ import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import android.util.Log
-import android.widget.Toast
-import com.project.teamsb.main.calendar.CalendarObj
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -27,7 +22,7 @@ class ForcedTerminationService: Service(){
                 val id = pref.getString("id","")!!
                 if(!pref.getBoolean("autoLoginSuccess",false)){
                     try {
-                        CalendarObj.api.getToken(id,null).enqueue(object : Callback<ResultNoReturn> {
+                        ServerObj.api.getToken(id,null).enqueue(object : Callback<ResultNoReturn> {
                             override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
                             }
                             override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {

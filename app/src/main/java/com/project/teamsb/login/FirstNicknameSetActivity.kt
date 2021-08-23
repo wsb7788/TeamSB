@@ -8,17 +8,15 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.project.teamsb.api.NicknameCheck
 import com.project.teamsb.api.NicknameSet
-import com.project.teamsb.api.ServerAPI
 import com.project.teamsb.main.MainActivity
 import com.project.teamsb.databinding.ActivityFirstnicknamesetBinding
+import com.project.teamsb.api.ServerObj
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class FirstNicknameSetActivity : AppCompatActivity(),View.OnClickListener {
 
@@ -27,12 +25,6 @@ class FirstNicknameSetActivity : AppCompatActivity(),View.OnClickListener {
 
     lateinit var id:String
     lateinit var imm:InputMethodManager
-    var retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl("http://13.209.10.30:3000/")
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-
-    var serverAPI: ServerAPI = retrofit.create(ServerAPI::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -65,7 +57,7 @@ class FirstNicknameSetActivity : AppCompatActivity(),View.OnClickListener {
     private fun nicknameCheck(nickName: String) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                serverAPI.nicknameCheck(nickName).enqueue(object : Callback<NicknameCheck> {
+                ServerObj.api.nicknameCheck(nickName).enqueue(object : Callback<NicknameCheck> {
                     override fun onFailure(call: Call<NicknameCheck>, t: Throwable) {
                         Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()
                     }
@@ -88,18 +80,18 @@ class FirstNicknameSetActivity : AppCompatActivity(),View.OnClickListener {
         CoroutineScope(Dispatchers.IO).launch {
             try {
 
-                serverAPI.nicknameSet(id, nickName).enqueue(object : Callback<NicknameSet> {
+                ServerObj.api.nicknameSet(id, nickName).enqueue(object : Callback<NicknameSet> {
                     override fun onResponse(call: Call<NicknameSet>, response: Response<NicknameSet>) {
                         if (response.body()!!.code == 200) {
                             val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
                             val edit = pref.edit()
                             edit.putString("nickname", nickName)
                             edit.apply()
-                            Toast.makeText(applicationContext, "${response.body()}", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
                             val intent = Intent(applicationContext, MainActivity::class.java)
                             startActivity(intent)
                         } else {
-                            Toast.makeText(applicationContext, "${response.body()}", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
                         }
                     }
 
