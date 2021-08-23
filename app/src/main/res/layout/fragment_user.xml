@@ -45,6 +45,39 @@
 
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/cl_no_post"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent">
+    <ImageView
+        android:id="@+id/iv_no_post"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/ic_write"
+        app:tint="#aaaaaa"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_no_post"
+        android:layout_marginTop="10dp"
+        android:text="작성된 글이 없습니다."
+        android:textSize="20dp"
+        android:textColor="#aaaaaa"
+        android:textStyle="bold"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
 

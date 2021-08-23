@@ -5,13 +5,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.project.teamsb.databinding.FragmentHomeBinding
 import com.project.teamsb.databinding.LayoutRecyclerCommentBinding
-import com.project.teamsb.databinding.LayoutRecyclerProgressBinding
 import com.project.teamsb.recycler.model.CommentModel
 import com.project.teamsb.recycler.hoder.CommentViewHolder
-import com.project.teamsb.recycler.hoder.ProgressViewHolder
-import kotlinx.coroutines.NonDisposableHandle.parent
 
 class CommentRecyclerAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -25,19 +21,16 @@ class CommentRecyclerAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         Log.d(TAG, "CommentRecyclerAdapter - onCreateViewHolder() called")
-        return when (viewType) {
-            VIEW_TYPE_ITEM -> {
-                val binding = LayoutRecyclerCommentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                CommentViewHolder(binding)
-            }
-            else -> {
-                val binding = LayoutRecyclerProgressBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                ProgressViewHolder(binding)
-            }
-        }
+
+
+        val binding = LayoutRecyclerCommentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return CommentViewHolder(binding)
+
+
+    }
         /* val binding = LayoutRecyclerCommentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
          return CommentViewHolder(binding)*/
-    }
+
     override fun getItemCount() = this.modelList.size
     fun submitList(modelList: ArrayList<CommentModel>){
         Log.d(TAG, "submitList called")

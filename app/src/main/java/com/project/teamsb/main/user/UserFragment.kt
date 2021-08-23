@@ -10,7 +10,7 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.VISIBLE
+import android.view.View.*
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -98,6 +98,7 @@ class UserFragment : Fragment(),PostRecyclerAdapter.OnItemClickListener {
 
         }
 
+        binding.clNoPost.visibility = VISIBLE
         postRecyclerAdapter.setItemClickListener(this)
 
         return binding.root
@@ -135,6 +136,9 @@ class UserFragment : Fragment(),PostRecyclerAdapter.OnItemClickListener {
         }
     }
     private fun setPost(response: Response<ResultPost>) {
+        if(response.body()!!.content.isNotEmpty()){
+            binding.clNoPost.visibility = INVISIBLE
+        }
         for (i in response.body()!!.content.indices) {
             val nickname = response.body()!!.content[i].userNickname
             val category = response.body()!!.content[i].category
@@ -179,6 +183,7 @@ class UserFragment : Fragment(),PostRecyclerAdapter.OnItemClickListener {
             val myModel = PostModel(title,keywords,timeStamp,nickname,comment,category,no,profileImage)
             modelList.add(myModel)
         }
+
         postRecyclerAdapter.submitList(modelList)
         if(isRefresh){
             postRecyclerAdapter.notifyDataSetChanged()

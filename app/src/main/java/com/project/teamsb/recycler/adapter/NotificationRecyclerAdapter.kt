@@ -6,13 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.project.teamsb.databinding.LayoutRecyclerCommentBinding
 import com.project.teamsb.databinding.LayoutRecyclerNotificationBinding
-import com.project.teamsb.databinding.LayoutRecyclerProgressBinding
-import com.project.teamsb.recycler.model.CommentModel
-import com.project.teamsb.recycler.hoder.CommentViewHolder
+
 import com.project.teamsb.recycler.hoder.NotificationViewHolder
-import com.project.teamsb.recycler.hoder.ProgressViewHolder
 import com.project.teamsb.recycler.model.NotificationModel
 
 class NotificationRecyclerAdapter: RecyclerView.Adapter<NotificationViewHolder>() {

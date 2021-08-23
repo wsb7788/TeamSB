@@ -187,6 +187,7 @@ class PostActivity : AppCompatActivity(),View.OnClickListener {
                             Callback<ResultReply> {
                             override fun onResponse(call: Call<ResultReply>, response: Response<ResultReply>) {
                                 noMoreItem = response.body()!!.content.size % 20 != 0 || response.body()!!.content.isNullOrEmpty()
+
                                 for (i in response.body()!!.content.indices) {
                                     val nickname = response.body()!!.content[i].userNickname
                                     val content = response.body()!!.content[i].content

@@ -7,10 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.project.teamsb.databinding.LayoutRecyclerPostListBinding
-import com.project.teamsb.databinding.LayoutRecyclerProgressBinding
+
 import com.project.teamsb.recycler.model.PostModel
 import com.project.teamsb.recycler.hoder.PostViewHolder
-import com.project.teamsb.recycler.hoder.ProgressViewHolder
 
 class PostRecyclerAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -26,16 +25,12 @@ class PostRecyclerAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         Log.d(TAG, "PostRecyclerAdapter - onCreateViewHolder() called")
-        return when(viewType){
-            VIEW_TYPE_POST_LIST -> {
-                val binding = LayoutRecyclerPostListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                PostViewHolder(binding)
-            }
-            else -> {
-                val binding = LayoutRecyclerProgressBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                ProgressViewHolder(binding)
-            }
-        }
+
+
+        val binding = LayoutRecyclerPostListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return PostViewHolder(binding)
+
+
 
     }
     override fun getItemCount() = this.modelList.size

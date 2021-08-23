@@ -104,6 +104,7 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
             binding.srlCategory.isRefreshing = false
 
         }
+        binding.clNoPost.visibility = VISIBLE
         binding.ivSearch.setOnClickListener(this)
         binding.ivWrite.setOnClickListener(this)
         postRecyclerAdapter.setItemClickListener(this)
@@ -190,6 +191,10 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
     }
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setPost(response: Response<ResultPost>) {
+
+        if(response.body()!!.content.isNotEmpty()){
+            binding.clNoPost.visibility = INVISIBLE
+        }
         for (i in response.body()!!.content.indices) {
             val nickname = response.body()!!.content[i].userNickname
             val category = response.body()!!.content[i].category
