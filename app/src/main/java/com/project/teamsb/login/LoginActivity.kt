@@ -1,7 +1,10 @@
 package com.project.teamsb.login
 
+import android.Manifest
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.view.View.INVISIBLE
@@ -9,6 +12,8 @@ import android.view.View.VISIBLE
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationManagerCompat
 import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.snackbar.Snackbar
@@ -62,6 +67,21 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
         imm = getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
+        val pref = getSharedPreferences("SettingInfo", MODE_PRIVATE)
+        if(pref.getBoolean("isFirstLaunch",true)){
+            if(!NotificationManagerCompat.from(applicationContext).areNotificationsEnabled()){
+                Snackbar.make(binding.root,"알림 사용을 위해서 알림 권한 설정을 해주세요.",Snackbar.LENGTH_LONG)
+                    .setAction("확인"){
+                        val intent = Intent()
+                        intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                        val uri = Uri.fromParts("package", packageName, null)
+                        intent.data = uri
+                        startActivity(intent)
+                    }
+                    .show()
+                pref.edit().putBoolean("isFirstLaunch",false).apply()
+            }
+        }
 
         binding.loginBtn.setOnClickListener(this)
 

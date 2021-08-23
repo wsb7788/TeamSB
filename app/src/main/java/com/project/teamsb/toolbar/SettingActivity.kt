@@ -232,7 +232,7 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
     }
 
     private fun isUserGranted(permissionName: String):Boolean {
-        val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
+        val pref = getSharedPreferences("SettingInfo", MODE_PRIVATE)
         val isFirstCheck = pref.getBoolean("isFirstProfileImageCheck",true)
         val edit = pref.edit()
         if (ContextCompat.checkSelfPermission(this, permissionName) == PackageManager.PERMISSION_GRANTED) {
