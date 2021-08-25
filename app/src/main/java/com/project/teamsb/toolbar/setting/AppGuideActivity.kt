@@ -3,6 +3,7 @@ package com.project.teamsb.toolbar.setting
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayoutMediator
 import com.project.teamsb.R
 import com.project.teamsb.databinding.ActivityAppGuideBinding
 import com.project.teamsb.recycler.adapter.AppGuideAdapter
@@ -18,6 +19,14 @@ class AppGuideActivity:AppCompatActivity() {
         binding.vp.adapter = AppGuideAdapter(getImgList())
         binding.vp.orientation = ViewPager2.ORIENTATION_HORIZONTAL
 
+        binding.vp.scrollIndicators
+        TabLayoutMediator(
+            binding.indicator,
+            binding.vp
+        ){
+            tab, position ->
+            binding.vp.currentItem = tab.position
+        }.attach()
     }
 
     private fun getImgList(): ArrayList<Int> {
