@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
@@ -15,9 +14,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.project.teamsb.CalendarFragment
 import com.project.teamsb.R
 import com.project.teamsb.api.*
-import com.project.teamsb.toolbar.SettingActivity
+import com.project.teamsb.toolbar.setting.SettingActivity
 import com.project.teamsb.databinding.ActivityMainBinding
-import com.project.teamsb.login.LoginActivity
 import com.project.teamsb.main.home.HomeFragment
 import com.project.teamsb.main.notice.NoticeFragment
 import com.project.teamsb.main.user.UserFragment
@@ -26,12 +24,9 @@ import com.project.teamsb.toolbar.SearchActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 class MainActivity:AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener,View.OnClickListener {
