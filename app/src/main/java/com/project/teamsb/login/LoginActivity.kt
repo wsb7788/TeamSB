@@ -79,7 +79,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                         startActivity(intent)
                     }
                     .show()
-                pref.edit().putBoolean("isFirstLaunch",false).apply()
             }
         }
 
