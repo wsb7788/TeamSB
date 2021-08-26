@@ -24,6 +24,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.messaging.FirebaseMessaging
@@ -83,6 +84,7 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
         binding.btnPersonalInfo.setOnClickListener(this)
         binding.btnAppInfo.setOnClickListener(this)
         binding.btnAppGuide.setOnClickListener(this)
+        binding.btnOpenSource.setOnClickListener(this)
         binding.switch1.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 if(NotificationManagerCompat.from(applicationContext).areNotificationsEnabled()){
@@ -173,6 +175,9 @@ class SettingActivity:AppCompatActivity(), View.OnClickListener {
             binding.btnAppGuide ->{
                 val intent = Intent(this, AppGuideActivity::class.java)
                 startActivity(intent)
+            }
+            binding.btnOpenSource ->{
+                startActivity(Intent(this,OssLicensesMenuActivity::class.java))
             }
         }
 
