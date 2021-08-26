@@ -14,6 +14,7 @@ import android.view.View
 import android.view.View.*
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +24,9 @@ import com.project.teamsb.api.ResultPost
 import com.project.teamsb.api.ServerAPI
 import com.project.teamsb.api.ServerObj
 import com.project.teamsb.databinding.ActivityCategoryBinding
+import com.project.teamsb.databinding.DialogEditNicknameBinding
+import com.project.teamsb.databinding.DialogEditProfileImageBinding
+import com.project.teamsb.databinding.DialogNoEnterRoommateBinding
 import com.project.teamsb.post.PostActivity
 import com.project.teamsb.recycler.model.PostModel
 import com.project.teamsb.recycler.adapter.PostRecyclerAdapter
@@ -47,7 +51,7 @@ import kotlin.collections.ArrayList
 
 class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListener, View.OnClickListener {
     val binding by lazy {ActivityCategoryBinding.inflate(layoutInflater)}
-
+    private lateinit var view: DialogNoEnterRoommateBinding
     var modelList = ArrayList<PostModel>()
     private lateinit var postRecyclerAdapter: PostRecyclerAdapter
 
@@ -168,13 +172,19 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
                                 ServerObj.api.categoryPost(category, page).enqueue(object : Callback<ResultPost>{
                                     @RequiresApi(Build.VERSION_CODES.O)
                                     override fun onResponse(call: Call<ResultPost>, response: Response<ResultPost>) {
-                                        if(page ==1 ){
-                                            postRecyclerAdapter.clearList()
+                                        if(response.body()!!.code ==200){
+                                            if(page ==1 ){
+                                                postRecyclerAdapter.clearList()
+                                            }
+                                            if (response.body()!!.content.size % 10 != 0 || response.body()!!.content.isEmpty()) {
+                                                noMoreItem = true
+                                            }
+                                            setPost(response)
+                                        }else if (response.body()!!.code ==301) {
+                                            dialogNoEnter()
+                                        }else{
+                                            Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
                                         }
-                                        if (response.body()!!.content.size % 10 != 0 || response.body()!!.content.isEmpty()) {
-                                            noMoreItem = true
-                                        }
-                                        setPost(response)
                                         loadLock = false
                                         binding.progressBar.visibility = INVISIBLE
 
@@ -189,6 +199,24 @@ class PostListActivity: AppCompatActivity(),PostRecyclerAdapter.OnItemClickListe
                     }
                 }
     }
+
+    private fun dialogNoEnter() {
+        val dialogBuilder = AlertDialog.Builder(this)
+        view = DialogNoEnterRoommateBinding.inflate(layoutInflater)
+        dialogBuilder.setView(view.root)
+        val alertDialog = dialogBuilder.create()
+        alertDialog.show()
+        view.btnPositive.setOnClickListener {
+            alertDialog.onBackPressed()
+
+        }
+        alertDialog.setOnCancelListener {
+            finish()
+        }
+
+
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setPost(response: Response<ResultPost>) {
 
