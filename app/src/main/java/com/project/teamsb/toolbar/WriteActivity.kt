@@ -1,19 +1,27 @@
 package com.project.teamsb.toolbar
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
+import android.text.Layout
 import android.text.SpannableStringBuilder
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.WindowManager
 import android.widget.ArrayAdapter
+import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.teamsb.R
 import com.project.teamsb.api.*
 import com.project.teamsb.databinding.ActivityWriteBinding
+import com.project.teamsb.databinding.DialogNoEnterRoommateBinding
+import com.project.teamsb.databinding.DialogWriteArticleBackPressedBinding
 import com.project.teamsb.recycler.adapter.KeywordRecyclerAdapter
 import com.project.teamsb.recycler.model.KeywordModel
 import kotlinx.coroutines.CoroutineScope
@@ -265,6 +273,24 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener,KeywordRecyclerAdap
                 }
 
             }
+    }
+
+    override fun onBackPressed() {
+        val dialogBuilder = AlertDialog.Builder(this)
+        val view = DialogWriteArticleBackPressedBinding.inflate(layoutInflater)
+        dialogBuilder.setView(view.root)
+        val alertDialog = dialogBuilder.create()
+        alertDialog.show()
+
+        view.btnPositive.setOnClickListener {
+            finish()
+
+        }
+        view.btnNegative.setOnClickListener {
+            alertDialog.onBackPressed()
+
+        }
+
     }
 
     override fun onClick(v: View?) {
