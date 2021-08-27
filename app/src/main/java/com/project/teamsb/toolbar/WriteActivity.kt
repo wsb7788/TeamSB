@@ -175,7 +175,7 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener,KeywordRecyclerAdap
                             else-> ""
                         }
                         submit(id, category)
-                        finish()
+
                     }
                 }
             }
@@ -201,7 +201,7 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener,KeywordRecyclerAdap
                         else-> ""
                     }
                     modify(id,category,no)
-                    finish()
+
                     }
 
                 }
@@ -217,7 +217,12 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener,KeywordRecyclerAdap
                 val keyword1 = ArrayList<String>(keyWord)
                 ServerObj.api.modifyArticle(id,title,category,text,keyword1,no).enqueue(object: Callback<ResultWrite> {
                     override fun onResponse(call: Call<ResultWrite>, response: Response<ResultWrite>) {
-                        Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
+                        if(response.body()!!.check){
+                            responseSuccess(response.body()!!.message)
+                        }else {
+                            Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
+                        }
+
                     }
                     override fun onFailure(call: Call<ResultWrite>, t: Throwable) {
                         Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()
@@ -231,6 +236,11 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener,KeywordRecyclerAdap
 
     }
 
+    private fun responseSuccess(message: String) {
+        Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
+        finish()
+    }
+
     private fun submit(userID: String, category: String){
 
             CoroutineScope(Dispatchers.IO).launch {
@@ -241,8 +251,8 @@ class WriteActivity:AppCompatActivity(),View.OnClickListener,KeywordRecyclerAdap
                     ServerObj.api.writeArticle(title,category,userID,text,keyWord1).enqueue(object: Callback<ResultWrite> {
                         override fun onResponse(call: Call<ResultWrite>, response: Response<ResultWrite>) {
                             if (response.body()!!.check){
-                                Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
-                            }else{
+                                responseSuccess(response.body()!!.message)
+                            }else {
                                 Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
                             }
                         }
