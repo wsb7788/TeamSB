@@ -69,6 +69,8 @@ class NoticeFragment : Fragment(){
 
     override fun onResume() {
         super.onResume()
+        noticeRecyclerAdapter.clearList()
+        page =1
         dataLoading()
     }
 
