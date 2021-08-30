@@ -93,8 +93,8 @@ class CalendarFragment : Fragment(), OnDateSelectedListener{
 
                     //불러온 식단 textView에 넣기
                     binding.breakfastTv.text = "$breakfast"
-                    binding.lunchTv1.text = "A코스\n$lunch1"
-                    binding.lunchTv2.text = "B코스\n$lunch2"
+                    binding.lunchTv1.text = "$lunch1"
+                    binding.lunchTv2.text = "$lunch2"
                     binding.dinnerTv.text = "$dinner"
                 }
             }
