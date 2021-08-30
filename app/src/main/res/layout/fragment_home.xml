@@ -176,7 +176,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView1"
-                app:layout_constraintWidth_percent="0.95">
+                app:layout_constraintWidth_percent="0.90">
 
                 <TextView
                     android:id="@+id/tv_recent"
@@ -219,7 +219,7 @@
                 android:id="@+id/cl_guide"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintWidth_percent="0.95"
+                app:layout_constraintWidth_percent="0.90"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:padding="20dp"
@@ -285,7 +285,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cl_guide"
-                app:layout_constraintWidth_percent="0.95">
+                app:layout_constraintWidth_percent="0.90">
 
                 <TextView
                     android:id="@+id/foodtv"
@@ -330,7 +330,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="준비된 음식이 없습니다."
+                    android:text="준비된 메뉴가 없습니다."
                     android:minLines="3"
                     android:textColor="@color/black"
                     android:textSize="15sp"
@@ -344,7 +344,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="준비된 음식이 없습니다."
+                    android:text="준비된 메뉴가 없습니다."
                     android:minLines="3"
                     android:textColor="@color/black"
                     android:textSize="15sp"
