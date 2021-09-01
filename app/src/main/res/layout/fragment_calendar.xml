@@ -30,20 +30,21 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:paddingLeft="10dp"
-            android:background="@drawable/home_guide_rectangle">
+            android:background="@drawable/home_guide_rectangle"
+            android:paddingLeft="10dp">
 
             <TextView
-                android:layout_marginTop="10dp"
                 android:id="@+id/breakfast"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:layout_marginTop="10dp"
                 android:text="아침 (07:00~08:30)"
-                android:textStyle="bold"
+                android:textColor="@color/black"
                 android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/breakfastTv"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -55,32 +56,48 @@
 
                 android:textColor="@color/black"
                 android:textSize="18sp"
+                app:layout_constraintBottom_toTopOf="@+id/line1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/breakfast"
                 app:layout_constraintWidth_percent="0.5" />
+
+            <ImageView
+                android:id="@+id/line1"
+                android:layout_width="0dp"
+                android:layout_height="20dp"
+                android:layerType="software"
+                android:src="@drawable/dashed_line"
+                app:layout_constraintBottom_toTopOf="@+id/lunch"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/breakfastTv" />
+
             <TextView
                 android:id="@+id/lunch"
-                android:text="점심 (11:50~13:30)"
                 android:layout_width="180dp"
-                android:textStyle="bold"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:text="점심 (11:50~13:30)"
                 android:textColor="@color/black"
                 android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/lunchA"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/breakfastTv"/>
+                app:layout_constraintTop_toBottomOf="@+id/line1" />
+
             <TextView
                 android:id="@+id/lunchA"
-                android:text="A코너"
-
                 android:layout_width="0dp"
-                app:layout_constraintWidth_percent="0.5"
+
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:text="A코너"
                 android:textColor="@color/black"
                 android:textSize="18sp"
+                app:layout_constraintBottom_toTopOf="@+id/lunchTv1"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/lunch" />
+                app:layout_constraintTop_toBottomOf="@+id/lunch"
+                app:layout_constraintWidth_percent="0.5" />
 
             <TextView
                 android:id="@+id/lunchB"
@@ -93,16 +110,18 @@
                 app:layout_constraintStart_toEndOf="@+id/lunchA"
                 app:layout_constraintTop_toTopOf="@+id/lunchA"
                 app:layout_constraintWidth_percent="0.5" />
+
             <TextView
                 android:id="@+id/lunchTv1"
                 android:layout_width="0dp"
-                app:layout_constraintWidth_percent="0.5"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:textColor="@color/black"
                 android:textSize="18sp"
-                android:layout_marginTop="10dp"
+                app:layout_constraintBottom_toTopOf="@+id/line2"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/lunchA" />
+                app:layout_constraintTop_toBottomOf="@+id/lunchA"
+                app:layout_constraintWidth_percent="0.5" />
 
             <TextView
                 android:id="@+id/lunchTv2"
@@ -115,28 +134,41 @@
                 app:layout_constraintTop_toTopOf="@+id/lunchTv1"
                 app:layout_constraintWidth_percent="0.5" />
 
+            <ImageView
+                android:id="@+id/line2"
+                android:layout_width="0dp"
+                android:layout_height="20dp"
+                android:layerType="software"
+                android:src="@drawable/dashed_line"
+                app:layout_constraintBottom_toTopOf="@+id/dinner"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lunchTv1" />
+
             <TextView
                 android:id="@+id/dinner"
-                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="저녁 (18:00~19:30)"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/dinnerTv"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/lunchTv1" />
+                app:layout_constraintTop_toBottomOf="@+id/line2" />
 
             <TextView
                 android:id="@+id/dinnerTv"
                 android:layout_width="0dp"
-                app:layout_constraintWidth_percent="0.5"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:textColor="@color/black"
                 android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/dinner" />
+                app:layout_constraintTop_toBottomOf="@+id/dinner"
+                app:layout_constraintWidth_percent="0.5" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 
