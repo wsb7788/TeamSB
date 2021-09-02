@@ -23,6 +23,7 @@ class LoginActivity:BaseActivity(),LoginListener {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+        viewModel.loginListener = this
 
     }
 
@@ -31,26 +32,18 @@ class LoginActivity:BaseActivity(),LoginListener {
 
 
     override fun onLoginStarted() {
-        Log.d("로그","1")
         binding.progressBar.visibility = VISIBLE
-        Log.d("로그","1")
     }
 
     override fun onLoginSuccess() {
-        Log.d("로그","2")
         binding.progressBar.visibility = INVISIBLE
-        Log.d("로그","2")
         val intent = Intent(this, FirstNicknameSetActivity::class.java)
         startActivity(intent)
         finish()
     }
 
     override fun onLoginFailure(message: String) {
-        Log.d("로그","3")
         binding.progressBar.visibility = INVISIBLE
-        Log.d("로그","3")
         Toast.makeText(this,message,Toast.LENGTH_SHORT).show()
-
-
     }
 }
