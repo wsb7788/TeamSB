@@ -7,54 +7,37 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
-import android.graphics.Color
 import android.media.RingtoneManager
 import android.os.Build
-import android.os.PowerManager
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.graphics.drawable.IconCompat
-import com.google.firebase.FirebaseApp
-import com.google.firebase.FirebaseCommonRegistrar
-import com.google.firebase.FirebaseOptions
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.messaging.FirebaseMessaging
-import com.google.firebase.messaging.FirebaseMessagingRegistrar
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.google.firebase.messaging.ktx.FirebaseMessagingKtxRegistrar
-import com.google.firebase.messaging.ktx.messaging
 import com.project.teamsb.R
-import com.project.teamsb.login.LoginActivity
 import com.project.teamsb.login.SplashActivity
-import com.project.teamsb.main.MainActivity
 import com.project.teamsb.post.App
-import java.util.*
 
-class MyFirebaseMessagingService:FirebaseMessagingService() {
+class MyFirebaseMessagingService : FirebaseMessagingService() {
     private val TAG: String = this.javaClass.simpleName
     lateinit var managerCompat: NotificationManagerCompat
 
     var channel_id = 0
-    override fun onMessageReceived(remoteMessage: RemoteMessage)
-    {
+    override fun onMessageReceived(remoteMessage: RemoteMessage) {
 
 
-    /*    if(remoteMessage.data.isNotEmpty()){
-            sendNotification(remoteMessage.data!!["title"]!!, remoteMessage.data["body"]!!)
+        /*    if(remoteMessage.data.isNotEmpty()){
+                sendNotification(remoteMessage.data!!["title"]!!, remoteMessage.data["body"]!!)
 
-        }*/
-        if (remoteMessage.notification == null)
-        {
+            }*/
+        if (remoteMessage.notification == null) {
             //sendNotification(remoteMessage.notification!!.title!!, remoteMessage.notification!!.body!!)
             //sendNotification(remoteMessage.data!!["title"]!!, remoteMessage.data["body"]!!)
         }
         sendNotification(remoteMessage.data!!["title"]!!, remoteMessage.data["body"]!!)
     }
 
-    override fun onNewToken(token: String)
-    {
+    override fun onNewToken(token: String) {
         Log.d(TAG, "Refreshed token : $token")
         super.onNewToken(token)
         val pref = this.getSharedPreferences("token", Context.MODE_PRIVATE)
@@ -65,20 +48,21 @@ class MyFirebaseMessagingService:FirebaseMessagingService() {
 
     // 받은 알림을 기기에 표시하는 메서드
     @SuppressLint("ServiceCast")
-    private fun sendNotification(title:String, body:String)
-    {
-        val random = (System.currentTimeMillis()/1000).toInt()
+    private fun sendNotification(title: String, body: String) {
+        val random = (System.currentTimeMillis() / 1000).toInt()
         val intent = Intent(this, SplashActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        val pendingIntent = PendingIntent.getActivity(this, random  , intent,
-            PendingIntent.FLAG_ONE_SHOT)
+        val pendingIntent = PendingIntent.getActivity(
+            this, random, intent,
+            PendingIntent.FLAG_ONE_SHOT
+        )
 
 
         val channelId = "댓글 및 공지사항"
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
-        val micon = BitmapFactory.decodeResource(applicationContext.resources,R.drawable.logo)
-        try{
+        val micon = BitmapFactory.decodeResource(applicationContext.resources, R.drawable.logo)
+        try {
 
 
             val notificationBuilder = NotificationCompat.Builder(App.instance, channelId)
@@ -104,14 +88,17 @@ class MyFirebaseMessagingService:FirebaseMessagingService() {
             }
 
 
-            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager      //api 26부터
-            val channelId = NotificationChannel(channelId,
+            val notificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager      //api 26부터
+            val channelId = NotificationChannel(
+                channelId,
                 "Channel human readable title",
-                NotificationManager.IMPORTANCE_HIGH)
+                NotificationManager.IMPORTANCE_HIGH
+            )
             notificationManager.createNotificationChannel(channel)
 
 
-        //val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManagerCompat
+            //val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManagerCompat
 
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -119,11 +106,13 @@ class MyFirebaseMessagingService:FirebaseMessagingService() {
                 // 오레오 버전 예외처리
 
             }
-        notificationManager.notify(channel_id /* ID of notification */, notificationBuilder.build())
-        channel_id++
-            if(channel_id == 100) channel_id = 0
-        }
-        catch(e: Exception){
+            notificationManager.notify(
+                channel_id /* ID of notification */,
+                notificationBuilder.build()
+            )
+            channel_id++
+            if (channel_id == 100) channel_id = 0
+        } catch (e: Exception) {
             e.printStackTrace();
         }
     }

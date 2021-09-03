@@ -2,6 +2,9 @@ package com.project.teamsb.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 
 
 class SharedPreferencesManager(private val context: Context){
@@ -19,13 +22,21 @@ class SharedPreferencesManager(private val context: Context){
         const val EMAIL = "EMAIL"
     }
 
+
     private fun getUserInfoPref() : SharedPreferences {
-        return context.getSharedPreferences("UserInfo", Context.MODE_PRIVATE)
+        return context.getSharedPreferences("userInfo", Context.MODE_PRIVATE)
     }
     private fun getSettingInfoPref() : SharedPreferences{
         return context.getSharedPreferences("SettingInfo",Context.MODE_PRIVATE)
     }
+    private fun getTokenPref() : SharedPreferences{
+        return context.getSharedPreferences("token",Context.MODE_PRIVATE)
+    }
 
+    private fun getToken():String{
+        val pref = getTokenPref()
+        return pref.getString("token","")!!
+    }
     fun removeAll(){
         val pref = getUserInfoPref()
         val edit = pref.edit()
@@ -33,13 +44,14 @@ class SharedPreferencesManager(private val context: Context){
         edit.apply()
     }
 
-    fun saveUser(id: String, pw: String){
+    fun saveUser(id: String){
         val pref = getUserInfoPref()
         val edit = pref.edit()
         edit.putString("id",id)
-        edit.putString("pw",pw)
+        edit.putString("token",getToken())
         edit.apply()
     }
+
     fun notFirstLaunch(){
         val pref = getSettingInfoPref()
         val edit = pref.edit()
@@ -67,7 +79,6 @@ class SharedPreferencesManager(private val context: Context){
     fun getAutoLoginSuccess(): Boolean {
         val pref = getUserInfoPref()
         return pref.getBoolean("autoLoginSuccess",false)
-
     }
 
 
