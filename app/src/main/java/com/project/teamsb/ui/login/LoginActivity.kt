@@ -2,18 +2,15 @@ package com.project.teamsb.ui.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import com.google.android.material.snackbar.Snackbar
 import com.project.teamsb.R
 import com.project.teamsb.data.remote.login.LoginListener
 import com.project.teamsb.databinding.ActivityLoginBinding
-import com.project.teamsb.login.FirstNicknameSetActivity
 import com.project.teamsb.ui.BaseActivity
+import com.project.teamsb.ui.main.MainActivity
 import com.project.teamsb.ui.nickname.NicknameActivity
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -37,11 +34,19 @@ class LoginActivity:BaseActivity(),LoginListener {
         binding.progressBar.visibility = VISIBLE
     }
 
-    override fun onLoginSuccess() {
+    override fun onStartMain() {
         binding.progressBar.visibility = INVISIBLE
-        val intent = Intent(this, NicknameActivity::class.java)
+
+        val intent = Intent(this, com.project.teamsb.main.MainActivity::class.java)
         startActivity(intent)
         finish()
+    }
+
+    override fun onStartNickname() {
+        binding.progressBar.visibility = INVISIBLE
+
+        val intent = Intent(this, NicknameActivity::class.java)
+        startActivity(intent)
     }
 
     override fun onLoginFailure(message: String) {

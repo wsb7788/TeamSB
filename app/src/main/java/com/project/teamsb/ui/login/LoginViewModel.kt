@@ -30,10 +30,7 @@ class LoginViewModel(private val repository: LoginRepository, private val shared
         }
     }
 
-
-
     fun login(){
-
         val id = id.value.toString()
         val pw = pw.value.toString()
         loginListener?.onLoginStarted()
@@ -42,7 +39,11 @@ class LoginViewModel(private val repository: LoginRepository, private val shared
                 val loginResponse = repository.login(id, pw)
                 if(loginResponse.code == 200){
                     sharedPreferencesManager.saveUser(id)
-                    loginListener?.onLoginSuccess()
+                    if(loginResponse.nickname){
+                        loginListener?.onStartMain()
+                        return@main
+                    }
+                   loginListener?.onStartNickname()
                     return@main
                 }
                 loginListener?.onLoginFailure(loginResponse.message)

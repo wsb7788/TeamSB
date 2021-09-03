@@ -1,6 +1,7 @@
 package com.project.teamsb.di
 
 import com.project.teamsb.ui.login.LoginViewModel
+import com.project.teamsb.ui.main.MainViewModel
 import com.project.teamsb.ui.nickname.NicknameViewModel
 import com.project.teamsb.ui.splash.SplashViewModel
 import org.koin.android.viewmodel.dsl.viewModel
@@ -10,4 +11,5 @@ val viewModelModule = module {
     viewModel { LoginViewModel(get(),get()) }
     viewModel { NicknameViewModel(get(),get()) }
     viewModel { SplashViewModel(get()) }
+    viewModel { MainViewModel(get(),get()) }
 }
