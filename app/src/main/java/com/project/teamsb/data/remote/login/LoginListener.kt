@@ -4,4 +4,6 @@ interface LoginListener {
     fun onLoginStarted()
     fun onLoginSuccess()
     fun onLoginFailure(message: String)
+    fun backPressedMessage(message: String)
+    fun finish()
 }

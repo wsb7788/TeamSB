@@ -3,6 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="nicknameViewModel"
+            type="com.project.teamsb.ui.nickname.NicknameViewModel" />
+    </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -30,6 +36,7 @@
             app:layout_constraintHeight_percent="0.085"
             android:background="@drawable/login_rectangle"
             android:hint="2~8자 이내로 설정해주세요."
+            android:text="@={nicknameViewModel.nickname}"
             android:paddingStart="10sp"
             android:textColor="@color/black"
             android:singleLine="true"

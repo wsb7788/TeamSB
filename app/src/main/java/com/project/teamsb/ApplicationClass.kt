@@ -4,6 +4,7 @@ import android.app.Application
 
 import com.project.teamsb.di.networkModule
 import com.project.teamsb.di.repositoryModule
+import com.project.teamsb.di.utilityModule
 import com.project.teamsb.di.viewModelModule
 import com.project.teamsb.post.App
 
@@ -24,7 +25,7 @@ class ApplicationClass : Application(){
 //        }
             androidContext(this@ApplicationClass)
             modules(
-
+                utilityModule,
                 viewModelModule,
                 networkModule,
                 repositoryModule

@@ -1,6 +1,7 @@
 package com.project.teamsb.di
 
 import com.project.teamsb.data.remote.login.LoginService
+import com.project.teamsb.data.remote.nickname.NicknameService
 import org.koin.core.module.Module
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -21,10 +22,12 @@ val networkModule: Module = module {
 
     fun provideLoginService(retrofit: Retrofit): LoginService =
         retrofit.create(LoginService::class.java)
-
+    fun provideNicknameService(retrofit: Retrofit): NicknameService =
+        retrofit.create(NicknameService::class.java)
 
 
     single { provideRetrofit() }
     single { provideLoginService(get()) }
+    single { provideNicknameService(get()) }
 }
 
