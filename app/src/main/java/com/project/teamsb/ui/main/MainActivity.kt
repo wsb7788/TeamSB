@@ -12,11 +12,13 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationManagerCompat
+import androidx.databinding.DataBindingUtil
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.project.teamsb.CalendarFragment
 import com.project.teamsb.R
 import com.project.teamsb.api.*
+import com.project.teamsb.data.remote.main.MainListener
 import com.project.teamsb.toolbar.setting.SettingActivity
 import com.project.teamsb.databinding.ActivityMainBinding
 import com.project.teamsb.main.home.HomeFragment
@@ -29,13 +31,15 @@ import com.project.teamsb.ui.BaseActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.android.viewmodel.ext.android.viewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainActivity:BaseActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
+class MainActivity:BaseActivity(), BottomNavigationView.OnNavigationItemSelectedListener,MainListener {
 
-    private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
+    lateinit var binding: ActivityMainBinding
+    val viewModel: MainViewModel by viewModel()
 
     val manager = supportFragmentManager
     var mBackWait:Long = 0
@@ -45,17 +49,15 @@ class MainActivity:BaseActivity(), BottomNavigationView.OnNavigationItemSelected
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(binding.root)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
+        viewModel.mainListener = this
 
-        startService(Intent(this, ForcedTerminationService::class.java))
 
+        botttomInit()
 
-        val bottomNavigationView = findViewById<View>(binding.bnv.id) as BottomNavigationView             //OnNavigationItemSelectedListener 연결 aaa
-        bottomNavigationView.setOnNavigationItemSelectedListener(this)
-        bottomNavigationView.selectedItemId = R.id.navigation_home
-
-        ShowTabHome()
-        getUserInfo()
+        viewModel.getUserNickname()
 
         val pref = getSharedPreferences("SettingInfo", MODE_PRIVATE)
         if(pref.getBoolean("isFirstLaunch",true)){
@@ -68,69 +70,11 @@ class MainActivity:BaseActivity(), BottomNavigationView.OnNavigationItemSelected
         binding.ivSearch.setOnClickListener(this)
         binding.ivSetting.setOnClickListener(this)
     }
-
     override fun onResume() {
         super.onResume()
-        checkNotification()
+        viewModel.checkNotification()
     }
-
-    private fun getUserInfo() {
-        CoroutineScope(Dispatchers.IO).launch {
-            val prefInfo = getSharedPreferences("userInfo", MODE_PRIVATE)
-            val editorInfo = prefInfo.edit()
-            val id = prefInfo.getString("id","")!!
-
-            try{
-                ServerObj.api.getUserNickname(id).enqueue(object :Callback<ResultNickname>{
-                    override fun onResponse(call: Call<ResultNickname>, response: Response<ResultNickname>) {
-                        if (response.body()!!.check){
-                            editorInfo.putString("nickname",response.body()!!.content)
-                            editorInfo.apply()
-                        }else{
-                            Toast.makeText(applicationContext, response.body()!!.message,Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                    override fun onFailure(call: Call<ResultNickname>, t: Throwable) {
-                        Toast.makeText(applicationContext, "통신 실패 !",Toast.LENGTH_SHORT).show()
-                    }
-                })
-            }catch (e:Exception){
-                Toast.makeText(applicationContext, "인터넷 오류",Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-
-    private fun checkNotification() {
-        CoroutineScope(Dispatchers.IO).launch {
-            val pref= getSharedPreferences("userInfo", MODE_PRIVATE)
-            val id = pref.getString("id","")!!
-            try {
-                ServerObj.api.notiCheck("notification/check",id).enqueue(object :
-                    Callback<ResultNotiCheck>{
-                    override fun onResponse(call: Call<ResultNotiCheck>, response: Response<ResultNotiCheck>) {
-                        if(response.body()!!.check){
-                            if(response.body()!!.notificationCount == 0){
-                                isNotiCheck = false
-                                binding.ivNotification.setImageResource(R.drawable.ic_notification)
-                            }else{
-                                isNotiCheck = true
-                                binding.ivNotification.setImageResource(R.drawable.ic_notification_new)
-                            }
-                        }else{
-                            Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                    override fun onFailure(call: Call<ResultNotiCheck>, t: Throwable) {
-                        Toast.makeText(applicationContext, "통신 에러", Toast.LENGTH_SHORT).show()
-                    }
-                })
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-    }
-    fun ShowTabCalendar(){
+    private fun showTabCalendar(){
         val transaction = manager.beginTransaction()
         val fragment = CalendarFragment()
         binding.tvToolbar.text = "식단표"
@@ -138,7 +82,7 @@ class MainActivity:BaseActivity(), BottomNavigationView.OnNavigationItemSelected
         transaction.addToBackStack(null)
         transaction.commit()
     }
-    fun ShowTabHome(){
+    private fun showTabHome(){
         val transaction = manager.beginTransaction()
         val fragment = HomeFragment()
         binding.tvToolbar.text = "홈"
@@ -146,7 +90,7 @@ class MainActivity:BaseActivity(), BottomNavigationView.OnNavigationItemSelected
         transaction.addToBackStack(null)
         transaction.commit()
     }
-    fun ShowTabNotice(){
+    private fun showTabNotice(){
         val transaction = manager.beginTransaction()
         val fragment = NoticeFragment()
         binding.tvToolbar.text = "공지사항"
@@ -154,7 +98,7 @@ class MainActivity:BaseActivity(), BottomNavigationView.OnNavigationItemSelected
         transaction.addToBackStack(null)
         transaction.commit()
     }
-    fun ShowTabUser(){
+    private fun showTabUser(){
         val transaction = manager.beginTransaction()
         val fragment = UserFragment()
         binding.tvToolbar.text = "내 글"
@@ -162,21 +106,19 @@ class MainActivity:BaseActivity(), BottomNavigationView.OnNavigationItemSelected
         transaction.addToBackStack(null)
         transaction.commit()
     }
-
-
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item?.itemId){
             R.id.navigation_calendar ->{
-                ShowTabCalendar()
+                showTabCalendar()
             }
             R.id.navigation_home ->{
-                ShowTabHome()
+                showTabHome()
             }
             R.id.navigation_notice ->{
-                ShowTabNotice()
+                showTabNotice()
             }
             R.id.navigation_user ->{
-                ShowTabUser()
+                showTabUser()
             }
         }
         for(i in 0 until binding.bnv.menu.size()){
@@ -185,59 +127,8 @@ class MainActivity:BaseActivity(), BottomNavigationView.OnNavigationItemSelected
         return true
     }
     override fun onBackPressed() {
-        // 뒤로가기 버튼 클릭
-        if(System.currentTimeMillis() - mBackWait >=2000 ) {
-            mBackWait = System.currentTimeMillis()
-            Snackbar.make(binding.root,"뒤로가기 버튼을 한번 더 누르면 종료됩니다.",Snackbar.LENGTH_SHORT).show()
-            Log.d("로그","1ewffef")
-        } else {
-            Log.d("로그","1213")
-            deleteTokenAndFinish()
-        }
+        viewModel.backPressed()
     }
-    private fun deleteTokenAndFinish() {
-        CoroutineScope(Dispatchers.IO).launch {
-            val pref = getSharedPreferences("userInfo", MODE_PRIVATE)
-            val edit = pref.edit()
-            val id = pref.getString("id","")!!
-            if(!pref.getBoolean("autoLoginSuccess",false)){
-                try {
-                    ServerObj.api.getToken(id,null).enqueue(object : Callback<ResultNoReturn> {
-                        override fun onFailure(call: Call<ResultNoReturn>, t: Throwable) {
-                            Toast.makeText(applicationContext, "서버통신 오류", Toast.LENGTH_SHORT).show()
-                            edit.clear()
-                            edit.commit()
-                            moveTaskToBack(true);						// 태스크를 백그라운드로 이동
-                            finishAndRemoveTask();						// 액티비티 종료 + 태스크 리스트에서 지우기
-                            android.os.Process.killProcess(android.os.Process.myPid());
-                        }
-                        override fun onResponse(call: Call<ResultNoReturn>, response: Response<ResultNoReturn>) {
-                            if (response.body()!!.check) {
-                                edit.clear()
-                                edit.commit()
-                                Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
-                            } else {
-                                Toast.makeText(applicationContext, "${response.body()!!.message}", Toast.LENGTH_SHORT).show()
-                            }
-                            moveTaskToBack(true);						// 태스크를 백그라운드로 이동
-                            finishAndRemoveTask();						// 액티비티 종료 + 태스크 리스트에서 지우기
-                            android.os.Process.killProcess(android.os.Process.myPid());
-                        }
-                    })
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }else{
-                moveTaskToBack(true);						// 태스크를 백그라운드로 이동
-                finishAndRemoveTask();						// 액티비티 종료 + 태스크 리스트에서 지우기
-                android.os.Process.killProcess(android.os.Process.myPid());
-            }
-
-
-        }
-
-    }
-
     override fun onClick(v: View?) {
         when(v){
             binding.ivNotification -> {
@@ -254,5 +145,31 @@ class MainActivity:BaseActivity(), BottomNavigationView.OnNavigationItemSelected
                 startActivity(intent)
             }
         }
+    }
+    override fun backPressedMessage(message: String) {
+        Toast.makeText(this,message,Toast.LENGTH_SHORT).show()
+    }
+
+    override fun botttomInit() {
+        val bottomNavigationView = findViewById<View>(binding.bnv.id) as BottomNavigationView             //OnNavigationItemSelectedListener 연결 aaa
+        bottomNavigationView.setOnNavigationItemSelectedListener(this)
+        bottomNavigationView.selectedItemId = R.id.navigation_home
+        showTabHome()
+    }
+
+    override fun onNicknameFailure(message: String) {
+        Toast.makeText(this,message,Toast.LENGTH_SHORT).show()
+    }
+
+    override fun existNoti() {
+        binding.ivNotification.setImageResource(R.drawable.ic_notification_new)
+    }
+
+    override fun noExistNoti() {
+        binding.ivNotification.setImageResource(R.drawable.ic_notification)
+    }
+
+    override fun onNotiFailure(message: String) {
+        Toast.makeText(this,message,Toast.LENGTH_SHORT).show()
     }
 }
