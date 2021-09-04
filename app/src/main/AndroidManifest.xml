@@ -25,7 +25,7 @@
         <activity android:name=".toolbar.NotificationActivity" android:screenOrientation="portrait"/>
         <activity android:name=".main.home.GuideActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.nickname.NicknameActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".main.MainActivity"  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.main.MainActivity"  android:screenOrientation="portrait"/>
         <activity android:name=".toolbar.setting.AppGuideActivity"  android:screenOrientation="portrait"/>
 
         <activity android:name=".login.SplashActivity" android:screenOrientation="portrait"/>

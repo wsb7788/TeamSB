@@ -13,6 +13,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationManagerCompat
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.project.teamsb.CalendarFragment
@@ -42,9 +43,8 @@ class MainActivity:BaseActivity(), BottomNavigationView.OnNavigationItemSelected
     val viewModel: MainViewModel by viewModel()
 
     val manager = supportFragmentManager
-    var mBackWait:Long = 0
-    var isNotiCheck = false
-
+    val transaction = manager.beginTransaction()
+    lateinit var fragment: Fragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +55,7 @@ class MainActivity:BaseActivity(), BottomNavigationView.OnNavigationItemSelected
         viewModel.mainListener = this
 
 
-        botttomInit()
+        //botttomInit()
 
         viewModel.getUserNickname()
 
@@ -75,32 +75,28 @@ class MainActivity:BaseActivity(), BottomNavigationView.OnNavigationItemSelected
         viewModel.checkNotification()
     }
     private fun showTabCalendar(){
-        val transaction = manager.beginTransaction()
-        val fragment = CalendarFragment()
+        fragment = CalendarFragment()
         binding.tvToolbar.text = "식단표"
         transaction.replace(binding.fragment.id, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
     }
     private fun showTabHome(){
-        val transaction = manager.beginTransaction()
-        val fragment = HomeFragment()
+        fragment = HomeFragment()
         binding.tvToolbar.text = "홈"
         transaction.replace(binding.fragment.id, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
     }
     private fun showTabNotice(){
-        val transaction = manager.beginTransaction()
-        val fragment = NoticeFragment()
+        fragment = NoticeFragment()
         binding.tvToolbar.text = "공지사항"
         transaction.replace(binding.fragment.id, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
     }
     private fun showTabUser(){
-        val transaction = manager.beginTransaction()
-        val fragment = UserFragment()
+        fragment = UserFragment()
         binding.tvToolbar.text = "내 글"
         transaction.replace(binding.fragment.id, fragment)
         transaction.addToBackStack(null)

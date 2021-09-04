@@ -1,5 +1,6 @@
 package com.project.teamsb.di
 
+import com.project.teamsb.ui.home.HomeViewModel
 import com.project.teamsb.ui.login.LoginViewModel
 import com.project.teamsb.ui.main.MainViewModel
 import com.project.teamsb.ui.nickname.NicknameViewModel
@@ -12,4 +13,5 @@ val viewModelModule = module {
     viewModel { NicknameViewModel(get(),get()) }
     viewModel { SplashViewModel(get()) }
     viewModel { MainViewModel(get(),get()) }
+    viewModel { HomeViewModel(get()) }
 }

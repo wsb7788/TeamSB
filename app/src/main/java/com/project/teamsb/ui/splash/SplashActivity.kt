@@ -11,7 +11,7 @@ import com.project.teamsb.R
 import com.project.teamsb.data.remote.splash.SplashListener
 import com.project.teamsb.databinding.ActivitySplashBinding
 import com.project.teamsb.login.FirstNicknameSetActivity
-import com.project.teamsb.main.MainActivity
+import com.project.teamsb.ui.main.MainActivity
 import com.project.teamsb.ui.BaseActivity
 import com.project.teamsb.ui.login.LoginActivity
 import org.koin.android.viewmodel.ext.android.viewModel

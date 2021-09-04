@@ -37,7 +37,7 @@ class LoginActivity:BaseActivity(),LoginListener {
     override fun onStartMain() {
         binding.progressBar.visibility = INVISIBLE
 
-        val intent = Intent(this, com.project.teamsb.main.MainActivity::class.java)
+        val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
     }

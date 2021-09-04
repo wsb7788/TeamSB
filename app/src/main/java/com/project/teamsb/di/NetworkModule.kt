@@ -1,5 +1,6 @@
 package com.project.teamsb.di
 
+import com.project.teamsb.data.remote.home.HomeService
 import com.project.teamsb.data.remote.login.LoginService
 import com.project.teamsb.data.remote.main.MainService
 import com.project.teamsb.data.remote.nickname.NicknameService
@@ -27,10 +28,13 @@ val networkModule: Module = module {
         retrofit.create(NicknameService::class.java)
     fun provideMainService(retrofit: Retrofit): MainService =
         retrofit.create(MainService::class.java)
+    fun provideHomeService(retrofit: Retrofit): HomeService =
+        retrofit.create(HomeService::class.java)
 
     single { provideRetrofit() }
     single { provideLoginService(get()) }
     single { provideNicknameService(get()) }
     single { provideMainService(get()) }
+    single { provideHomeService(get()) }
 }
 
