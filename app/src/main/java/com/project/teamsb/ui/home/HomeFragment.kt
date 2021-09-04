@@ -15,6 +15,7 @@ import com.project.teamsb.R
 import com.project.teamsb.api.*
 import com.project.teamsb.databinding.FragmentHomeBinding
 import com.project.teamsb.api.ServerObj
+import com.project.teamsb.data.remote.home.HomeListener
 import com.project.teamsb.main.home.GuideActivity
 import com.project.teamsb.main.home.PostListActivity
 import com.project.teamsb.post.PostActivity
@@ -36,7 +37,7 @@ import java.time.format.DateTimeFormatter
 import kotlin.random.Random
 
 
-class HomeFragment : BaseFragment(), View.OnClickListener,RecentRecyclerAdapter.OnItemClickListener {
+class HomeFragment : BaseFragment(), View.OnClickListener,RecentRecyclerAdapter.OnItemClickListener, HomeListener {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -53,18 +54,10 @@ class HomeFragment : BaseFragment(), View.OnClickListener,RecentRecyclerAdapter.
         binding.viewModel = viewModel
         viewModel.homeListener = this
 
-        binding.btn1.setOnClickListener(this)
-        binding.btn2.setOnClickListener(this)
-        binding.btn3.setOnClickListener(this)
-        binding.btn4.setOnClickListener(this)
-        binding.tvGuidePost.setOnClickListener(this)
-        binding.tvRecentPost.setOnClickListener(this)
-        recentRecyclerAdapter = RecentRecyclerAdapter()
 
-        binding.rcvRecent5.apply {
-            layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-            adapter = recentRecyclerAdapter
-        }
+
+        recyclerInit()
+
 
         bannerLoading()
         binding.srl.setOnRefreshListener {
@@ -73,7 +66,21 @@ class HomeFragment : BaseFragment(), View.OnClickListener,RecentRecyclerAdapter.
             binding.srl.isRefreshing = false
         }
         recentRecyclerAdapter.setItemClickListener(this)
+        binding.btn1.setOnClickListener(this)
+        binding.btn2.setOnClickListener(this)
+        binding.btn3.setOnClickListener(this)
+        binding.btn4.setOnClickListener(this)
+        binding.tvGuidePost.setOnClickListener(this)
+        binding.tvRecentPost.setOnClickListener(this)
         return binding.root
+    }
+
+    private fun recyclerInit() {
+        recentRecyclerAdapter = RecentRecyclerAdapter()
+        binding.rcvRecent5.apply {
+            layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+            adapter = recentRecyclerAdapter
+        }
     }
 
     private fun bannerLoading() {
