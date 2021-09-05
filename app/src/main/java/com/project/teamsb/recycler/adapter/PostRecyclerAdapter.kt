@@ -38,6 +38,7 @@ class PostRecyclerAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     fun submitList(modelList: ArrayList<PostModel>){
         Log.d(TAG, "submitList called")
         this.modelList.addAll(modelList)
+        notifyDataSetChanged()
     }
     override fun getItemViewType(position: Int): Int {
         return when (modelList[position].title) {

@@ -49,7 +49,9 @@ class HomeViewModel(private val repository: HomeRepository):ViewModel() {
                         data.add(i)
                     }
                     liveData.postValue(data)
+                    return@main
                 }
+                homeListener?.apiFailure(recentResponse.message)
             } catch (e:Exception){
                 Log.d("로그",e.message!!)
             }

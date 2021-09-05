@@ -63,7 +63,7 @@ class UserFragment : Fragment(),PostRecyclerAdapter.OnItemClickListener {
         postRecyclerAdapter = PostRecyclerAdapter()
         postRecyclerAdapter.clearList()
         binding.rcvPost.apply {
-            layoutManager = GridLayoutManager(App.instance, 2)
+            layoutManager = GridLayoutManager(context, 2)
             adapter = postRecyclerAdapter
         }
         id = this!!.requireActivity().getSharedPreferences("userInfo", Context.MODE_PRIVATE).getString("id","")!!
