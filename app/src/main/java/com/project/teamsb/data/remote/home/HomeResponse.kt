@@ -19,7 +19,8 @@ data class GuideResponse(
 data class CalendarResponse(
     var check: Boolean,
     var code: Int,
-    var menu: ArrayList<GetMenu>)
+    var menu: ArrayList<GetMenu>,
+    var message: String)
 
 data class PostResponse(
     var check: Boolean = false,

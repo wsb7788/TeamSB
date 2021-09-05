@@ -21,6 +21,6 @@ interface HomeService {
     suspend fun getCalendar(): Response<CalendarResponse>
 
     @GET("/home/recentPost/")
-    fun recentPost() : Response<PostResponse>
+    suspend fun recentPost() : Response<PostResponse>
 
 }

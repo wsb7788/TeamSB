@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.project.teamsb.data.entities.Content
 import com.project.teamsb.databinding.LayoutRecyclerRecentBinding
 import com.project.teamsb.recycler.model.RecentModel
 import com.project.teamsb.recycler.hoder.RecentViewHolder
@@ -14,7 +15,7 @@ class RecentRecyclerAdapter: RecyclerView.Adapter<RecentViewHolder>() {
 
     val TAG: String = "로그"
 
-    private var modelList = ArrayList<RecentModel>()
+    private var modelList = ArrayList<Content>()
 
 
     private lateinit var itemClickListener : OnItemClickListener
@@ -24,10 +25,6 @@ class RecentRecyclerAdapter: RecyclerView.Adapter<RecentViewHolder>() {
                 return RecentViewHolder(binding)
     }
     override fun getItemCount() = this.modelList.size
-    fun deleteLoading(){
-        Log.d(TAG, "deleteLoading called")
-        modelList.removeAt(modelList.lastIndex) // 로딩이 완료되면 프로그레스바를 지움
-    }
 
     override fun onBindViewHolder(holder: RecentViewHolder, position: Int) {
         Log.d(TAG, "CommentRecyclerAdapter - onBindViewHolder() called / position: $position")
@@ -44,9 +41,10 @@ class RecentRecyclerAdapter: RecyclerView.Adapter<RecentViewHolder>() {
     fun setItemClickListener(onItemClickListener: OnItemClickListener) {
         this.itemClickListener = onItemClickListener
     }
-    fun submitList(modelList: ArrayList<RecentModel>){
+    fun submitList(modelList: ArrayList<Content>){
         Log.d(TAG, "submitList called")
         this.modelList.addAll(modelList)
+        notifyDataSetChanged()
     }
     fun clearList(){
         modelList.clear()
