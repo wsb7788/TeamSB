@@ -17,6 +17,7 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.project.teamsb.ApplicationClass
 import com.project.teamsb.api.ResultPost
 import com.project.teamsb.databinding.FragmentUserBinding
 import com.project.teamsb.api.ServerObj
@@ -113,11 +114,11 @@ class UserFragment : Fragment(), UserListener,PostRecyclerAdapter.OnItemClickLis
     override fun recyclerInit() {
         postRecyclerAdapter = PostRecyclerAdapter()
         binding.rcvPost.apply {
-            layoutManager = GridLayoutManager(App.instance, 2)
+            layoutManager = GridLayoutManager(ApplicationClass.instance, 2)
             adapter = postRecyclerAdapter
         }
         viewModel.liveData.observe(viewLifecycleOwner,{
-            binding.clNoPost.visibility = INVISIBLE
+
             postRecyclerAdapter.submitList(it)
         } )
         viewModel.page.observe(viewLifecycleOwner,{
@@ -136,6 +137,10 @@ class UserFragment : Fragment(), UserListener,PostRecyclerAdapter.OnItemClickLis
 
     override fun onLoadingEnd() {
         binding.progressBar.visibility = INVISIBLE
+    }
+
+    override fun existPost() {
+        binding.clNoPost.visibility = INVISIBLE
     }
 
 }

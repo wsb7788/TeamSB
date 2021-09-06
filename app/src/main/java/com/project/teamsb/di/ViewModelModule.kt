@@ -4,6 +4,7 @@ import com.project.teamsb.ui.home.HomeViewModel
 import com.project.teamsb.ui.login.LoginViewModel
 import com.project.teamsb.ui.main.MainViewModel
 import com.project.teamsb.ui.nickname.NicknameViewModel
+import com.project.teamsb.ui.notice.NoticeViewModel
 import com.project.teamsb.ui.splash.SplashViewModel
 import com.project.teamsb.ui.user.UserViewModel
 import org.koin.android.viewmodel.dsl.viewModel
@@ -16,4 +17,5 @@ val viewModelModule = module {
     viewModel { MainViewModel(get(),get()) }
     viewModel { HomeViewModel(get()) }
     viewModel { UserViewModel(get(),get()) }
+    viewModel { NoticeViewModel(get(),get()) }
 }

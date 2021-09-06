@@ -76,6 +76,7 @@ class UserViewModel(private val repository: UserRepository, private val sharedPr
     }
 
     private fun setPost(response: ArrayList<Content>) {
+        if (response.size>0) userListener?.existPost()
         var data = ArrayList<PostModel>()
         if (response.size % 10 != 0 || response.isEmpty()) {
             noMoreItem.value = true

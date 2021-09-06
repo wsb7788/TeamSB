@@ -12,7 +12,7 @@ import com.project.teamsb.CalendarFragment
 import com.project.teamsb.R
 import com.project.teamsb.data.remote.main.MainListener
 import com.project.teamsb.databinding.ActivityMainBinding
-import com.project.teamsb.main.notice.NoticeFragment
+
 import com.project.teamsb.main.user.UserFragment
 import com.project.teamsb.toolbar.NotificationActivity
 import com.project.teamsb.toolbar.SearchActivity
@@ -20,6 +20,7 @@ import com.project.teamsb.toolbar.setting.AppGuideActivity
 import com.project.teamsb.toolbar.setting.SettingActivity
 import com.project.teamsb.ui.BaseActivity
 import com.project.teamsb.ui.home.HomeFragment
+import com.project.teamsb.ui.notice.NoticeFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class MainActivity:BaseActivity(), BottomNavigationView.OnNavigationItemSelectedListener,MainListener {
@@ -87,7 +88,7 @@ class MainActivity:BaseActivity(), BottomNavigationView.OnNavigationItemSelected
     }
     private fun showTabUser(){
         val transaction = supportFragmentManager.beginTransaction()
-        fragment = UserFragment()
+        fragment = com.project.teamsb.ui.user.UserFragment()
         binding.tvToolbar.text = "내 글"
         transaction.replace(binding.fragment.id, fragment)
         transaction.addToBackStack(null)
