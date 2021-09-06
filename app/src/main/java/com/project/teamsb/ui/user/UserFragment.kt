@@ -59,7 +59,7 @@ class UserFragment : Fragment(), UserListener,PostRecyclerAdapter.OnItemClickLis
         recyclerInit()
 
         id = this!!.requireActivity().getSharedPreferences("userInfo", Context.MODE_PRIVATE).getString("id","")!!
-        viewModel.userPostLoading()
+
 
         binding.rcvPost.addOnScrollListener(object : RecyclerView.OnScrollListener(){
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -93,6 +93,12 @@ class UserFragment : Fragment(), UserListener,PostRecyclerAdapter.OnItemClickLis
         postRecyclerAdapter.setItemClickListener(this)
 
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.pageInit()
+        viewModel.userPostLoading()
     }
 
     private fun userPostLoading() {

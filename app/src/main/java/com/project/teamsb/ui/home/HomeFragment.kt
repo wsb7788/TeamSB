@@ -66,6 +66,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener,RecentRecyclerAdapter.
     }
 
     private fun setupViewModel() {
+        viewModel.recentPostLoading()
         viewModel.bannerLoading()
         viewModel.calendarLoading()
         viewModel.guideLoading()
@@ -79,6 +80,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener,RecentRecyclerAdapter.
             adapter = recentRecyclerAdapter
         }
         viewModel.liveData.observe(viewLifecycleOwner,{
+            recentRecyclerAdapter.clearList()
             recentRecyclerAdapter.submitList(it)
         })
     }
