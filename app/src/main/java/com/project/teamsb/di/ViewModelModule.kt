@@ -1,5 +1,6 @@
 package com.project.teamsb.di
 
+import com.project.teamsb.ui.calendar.CalendarViewModel
 import com.project.teamsb.ui.home.HomeViewModel
 import com.project.teamsb.ui.login.LoginViewModel
 import com.project.teamsb.ui.main.MainViewModel
@@ -18,4 +19,5 @@ val viewModelModule = module {
     viewModel { HomeViewModel(get()) }
     viewModel { UserViewModel(get(),get()) }
     viewModel { NoticeViewModel(get(),get()) }
+    viewModel { CalendarViewModel(get()) }
 }

@@ -8,7 +8,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.project.teamsb.CalendarFragment
+
 import com.project.teamsb.R
 import com.project.teamsb.data.remote.main.MainListener
 import com.project.teamsb.databinding.ActivityMainBinding
@@ -19,6 +19,7 @@ import com.project.teamsb.toolbar.SearchActivity
 import com.project.teamsb.toolbar.setting.AppGuideActivity
 import com.project.teamsb.toolbar.setting.SettingActivity
 import com.project.teamsb.ui.BaseActivity
+import com.project.teamsb.ui.calendar.CalendarFragment
 import com.project.teamsb.ui.home.HomeFragment
 import com.project.teamsb.ui.notice.NoticeFragment
 import org.koin.android.viewmodel.ext.android.viewModel

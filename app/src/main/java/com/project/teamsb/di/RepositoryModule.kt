@@ -1,5 +1,6 @@
 package com.project.teamsb.di
 
+import com.project.teamsb.data.repository.calendar.CalendarRepository
 import com.project.teamsb.data.repository.home.HomeRepository
 import com.project.teamsb.data.repository.login.LoginRepository
 import com.project.teamsb.data.repository.main.MainRepository
@@ -15,4 +16,5 @@ val repositoryModule = module {
     single{ HomeRepository(get()) }
     single{ UserRepository(get()) }
     single{ NoticeRepository(get()) }
+    single{ CalendarRepository(get()) }
 }

@@ -1,5 +1,6 @@
 package com.project.teamsb.di
 
+import com.project.teamsb.data.remote.calendar.CalendarService
 import com.project.teamsb.data.remote.home.HomeService
 import com.project.teamsb.data.remote.login.LoginService
 import com.project.teamsb.data.remote.main.MainService
@@ -36,6 +37,8 @@ val networkModule: Module = module {
         retrofit.create(UserService::class.java)
     fun provideNoticeService(retrofit: Retrofit): NoticeService =
         retrofit.create(NoticeService::class.java)
+    fun provideCalendarService(retrofit: Retrofit): CalendarService =
+        retrofit.create(CalendarService::class.java)
 
     single { provideRetrofit() }
     single { provideLoginService(get()) }
@@ -44,5 +47,6 @@ val networkModule: Module = module {
     single { provideHomeService(get()) }
     single { provideUserService(get()) }
     single { provideNoticeService(get()) }
+    single { provideCalendarService(get()) }
 }
 
