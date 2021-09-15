@@ -223,6 +223,7 @@ class HomeFragment : Fragment(), View.OnClickListener,RecentRecyclerAdapter.OnIt
 
     fun postLoading() {
 
+/*
             CoroutineScope(Dispatchers.Default).launch {
 
                 try {
@@ -252,6 +253,7 @@ class HomeFragment : Fragment(), View.OnClickListener,RecentRecyclerAdapter.OnIt
                     e.printStackTrace()
                 }
             }
+*/
         }
 
     override fun onClick(v: View, position: Int) {

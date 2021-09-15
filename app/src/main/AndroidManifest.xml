@@ -10,7 +10,7 @@
     <application
         android:usesCleartextTraffic="true"
         android:allowBackup="true"
-        android:name=".post.App"
+        android:name=".ApplicationClass"
         android:icon="@drawable/logo"
         android:label="가천 기숙사"
         android:roundIcon="@drawable/logo"
@@ -24,11 +24,14 @@
         <activity android:name=".toolbar.WriteActivity" android:screenOrientation="portrait"/>
         <activity android:name=".toolbar.NotificationActivity" android:screenOrientation="portrait"/>
         <activity android:name=".main.home.GuideActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".login.LoginActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".main.MainActivity"  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.nickname.NicknameActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.splash.SplashActivity"  android:screenOrientation="portrait"/>
         <activity android:name=".toolbar.setting.AppGuideActivity"  android:screenOrientation="portrait"/>
 
-        <activity android:name=".login.SplashActivity" android:screenOrientation="portrait">
+
+        <activity android:name=".login.SplashActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.login.LoginActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.main.MainActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

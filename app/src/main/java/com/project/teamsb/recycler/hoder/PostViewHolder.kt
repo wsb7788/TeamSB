@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.project.teamsb.ApplicationClass
 import com.project.teamsb.R
 import com.project.teamsb.databinding.LayoutRecyclerPostListBinding
 import com.project.teamsb.post.App
@@ -50,7 +51,7 @@ class PostViewHolder(val binding: LayoutRecyclerPostListBinding): RecyclerView.V
         binding.tvTimeStamp.text = postModel.time
 
         Glide
-            .with(App.instance)
+            .with(ApplicationClass.instance)
             .load(postModel.profileImage)
             .circleCrop()
             .placeholder(R.drawable.profile_basic)

@@ -17,14 +17,21 @@ class NoticeRecyclerAdapter: RecyclerView.Adapter<NoticeViewHolder>() {
     private var modelList = ArrayList<NoticeModel>()
     var expanded = ArrayList<Int>()
    private lateinit var itemClickListener : OnItemClickListener
+    var topCount = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoticeViewHolder {
         val binding = LayoutRecyclerNoticeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return NoticeViewHolder(binding)
     }
     override fun getItemCount() = this.modelList.size
-    fun submitList(modelList: ArrayList<NoticeModel>){
+    fun submitList(page: Int,modelList: ArrayList<NoticeModel>){
         this.modelList.addAll(modelList)
+        notifyItemRangeInserted((topCount+((page - 1) * 10)),modelList.size)
+    }
+    fun submitTopList(topCount:Int, modelList: ArrayList<NoticeModel>){
+        this.modelList.addAll(modelList)
+        this.topCount = topCount
+        notifyDataSetChanged()
     }
     fun deleteLoading(){
         modelList.removeAt(modelList.lastIndex)
@@ -71,6 +78,7 @@ fun setItemClickListener(onItemClickListener: OnItemClickListener) {
 }
     fun clearList(){
         modelList.clear()
+        topCount = 0
     }
 
     fun getNoticeNo(position:Int) = modelList[position].notice_no

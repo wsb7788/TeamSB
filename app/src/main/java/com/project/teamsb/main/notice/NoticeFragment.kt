@@ -142,7 +142,7 @@ class NoticeFragment : Fragment(){
             val myModel = NoticeModel(noticeNo.toString(),title,text,viewCount.toString(),timeStamp,topFix)
             modelList.add(myModel)
         }
-        noticeRecyclerAdapter.submitList(modelList)
+        //noticeRecyclerAdapter.submitList(modelList)
 
         if(isTopLoading){
             noticeRecyclerAdapter.notifyDataSetChanged()
