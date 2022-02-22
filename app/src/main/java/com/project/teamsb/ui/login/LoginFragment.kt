@@ -1,17 +1,12 @@
-package com.project.teamsb.ui
+package com.project.teamsb.ui.login
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import com.project.teamsb.ui.BaseFragment
 
-open class BaseFragment: Fragment(), View.OnClickListener {
-    override fun onClick(v: View?) {
-
-    }
-
+class LoginFragment:BaseFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
